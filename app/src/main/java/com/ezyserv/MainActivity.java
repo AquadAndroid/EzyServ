@@ -83,7 +83,7 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
     private GoogleApiClient googleApiClient;
     private LatLng sourceLocation = null;
     private LocationProvider locationProvider;
-    // hi commit
+    // hi
 
 
     ImageButton search_tab, service_tab, notification_tab, account_tab;
