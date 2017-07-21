@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ezyserv.ServiceDetailActivityTwo">
+
+    <include layout="@layout/detail_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dim_55"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dim_25"
+                android:layout_marginTop="@dimen/dim_15"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dim_20"
+                    android:text="Add services you have to offer"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_15"
+                    android:textStyle="bold" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5px"
+                    android:layout_below="@+id/edt_doc_one"
+                    android:layout_marginTop="@dimen/dim_20"
+                    android:background="#E8E8E8" />
+
+                <TextView
+                    android:id="@+id/tv_domestic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:layout_marginRight="@dimen/dim_10"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:drawableRight="@drawable/view_details"
+                    android:paddingBottom="@dimen/dim_5"
+                    android:paddingTop="@dimen/dim_5"
+                    android:text="Domestic Services"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_20"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_domestic_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:text="12 services added" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5px"
+                    android:layout_below="@+id/edt_doc_one"
+                    android:layout_marginTop="@dimen/dim_15"
+                    android:background="#E8E8E8" />
+
+                <TextView
+                    android:id="@+id/tv_construction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:layout_marginRight="@dimen/dim_10"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:drawableRight="@drawable/view_details"
+                    android:paddingBottom="@dimen/dim_5"
+                    android:paddingTop="@dimen/dim_5"
+                    android:text="Construction Services"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_20"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_construction_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:text="12 services added" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5px"
+                    android:layout_below="@+id/edt_doc_one"
+                    android:layout_marginTop="@dimen/dim_15"
+                    android:background="#E8E8E8" />
+
+                <TextView
+                    android:id="@+id/tv_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:layout_marginRight="@dimen/dim_10"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:drawableRight="@drawable/view_details"
+                    android:paddingBottom="@dimen/dim_5"
+                    android:paddingTop="@dimen/dim_5"
+                    android:text="Events Services"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_20"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_events_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:text="12 services added" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10px"
+                    android:layout_below="@+id/edt_doc_one"
+                    android:layout_marginTop="@dimen/dim_15"
+                    android:background="#E8E8E8" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dim_20"
+                    android:text="Add Areas &amp; Locations to serve"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_15"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/edt_add_loaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dim_15"
+                    android:background="@drawable/rect_bg_blue"
+                    android:drawableLeft="@drawable/add_location_active"
+                    android:drawablePadding="@dimen/dim_15"
+                    android:paddingBottom="@dimen/dim_10"
+                    android:paddingLeft="@dimen/dim_25"
+                    android:paddingRight="@dimen/dim_25"
+                    android:paddingTop="@dimen/dim_10"
+                    android:text="Add another location"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/dim_20" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/location_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dim_15"
+                    android:layout_marginTop="@dimen/dim_15" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/pink"
+            android:text="CONTINUE"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_20" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dailog_bg"
+    android:paddingTop="@dimen/dim_10"
+    android:paddingLeft="@dimen/dim_10"
+    android:paddingRight="@dimen/dim_5">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verification"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/dim_20"
+        android:textStyle="bold"
+        android:id="@+id/title_label"
+        android:layout_marginTop="@dimen/dim_8"
+        />
+
+    <TextView
+        android:id="@+id/labelone"
+        android:layout_below="@+id/title_label"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="@dimen/dim_15"
+        android:textColor="#757575"
+        android:layout_height="wrap_content"
+        android:text="A verification code will be sent"
+        android:textSize="@dimen/dim_20" />
+
+    <TextView
+        android:id="@+id/labeltwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelone"
+        android:gravity="center"
+        android:textColor="#757575"
+        android:text="to"
+        android:textSize="@dimen/dim_20" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labeltwo"
+        android:text="+60 8898786756"
+        android:layout_below="@+id/labelone"
+        android:gravity="center"
+        android:textColor="#757575"
+        android:id="@+id/tv_mb_no"
+        android:layout_marginLeft="@dimen/dim_4"
+        android:textSize="@dimen/dim_20"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_mb_no"
+        android:text="for"
+        android:layout_below="@+id/labelone"
+        android:gravity="center"
+        android:id="@+id/labelthree"
+        android:textColor="#757575"
+        android:layout_marginLeft="@dimen/dim_4"
+        android:textSize="@dimen/dim_20" />
+
+    <TextView
+        android:id="@+id/labelfour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labeltwo"
+        android:gravity="center"
+        android:textColor="#757575"
+        android:text="verification."
+        android:textSize="@dimen/dim_20" />
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:text="SEND"
+    android:layout_below="@+id/labelfour"
+    android:textSize="@dimen/dim_17"
+    android:layout_marginTop="@dimen/dim_10"
+    android:layout_marginRight="@dimen/dim_10"
+    android:id="@+id/btn_send"
+    android:paddingLeft="@dimen/dim_10"
+    android:paddingRight="@dimen/dim_10"
+    android:background="@null"
+    android:textColor="@color/pink" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelfour"
+        android:text="CANCEL"
+        android:textColor="#757575"
+        android:layout_marginTop="@dimen/dim_10"
+       android:id="@+id/ph_verify_cancel"
+        android:paddingRight="@dimen/dim_10"
+        android:paddingLeft="@dimen/dim_10"
+        android:textSize="@dimen/dim_17"
+        android:layout_marginRight="@dimen/dim_15"
+        android:background="@null"
+        android:layout_toLeftOf="@+id/btn_send" />
+</RelativeLayout>

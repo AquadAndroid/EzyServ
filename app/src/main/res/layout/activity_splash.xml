@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/SplashTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_bg">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_placeholder"
+        android:layout_above="@+id/company_name"
+        android:background="@null"
+        android:layout_centerHorizontal="true"/>
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+   android:layout_centerHorizontal="true"
+    android:layout_marginTop="@dimen/dim_10"
+    android:layout_above="@+id/tegline"
+    android:id="@+id/company_name"
+    android:src="@drawable/app_name"
+    android:background="@null"
+    android:textColor="#3949AB"
+    android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/apptagline"
+        android:id="@+id/tegline"
+        android:layout_above="@+id/center_space"
+        android:layout_marginTop="@dimen/dim_10"
+        android:layout_marginBottom="@dimen/dim_10"
+        android:layout_centerHorizontal="true"/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/center_space"/>
+
+</RelativeLayout>

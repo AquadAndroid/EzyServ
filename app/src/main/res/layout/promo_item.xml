@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/dim_10"
+        android:text="NEWUSER"
+        android:id="@+id/tv_promo_code_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_15"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dim_10">
+
+        <TextView
+            android:id="@+id/tv_code_discp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+
+            android:text="Use NEWUSER and get cashback on convenience fee upto S$50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dim_7"
+            android:background="@drawable/rect_bound_pink"
+            android:text="Apply"
+            android:padding="@dimen/dim_10"
+            android:id="@+id/btn_code_apply"
+            android:textColor="@color/pink" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/d_tv_term_cond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dim_10"
+        android:text="Terms &amp; Condition"
+        android:textColor="@color/blue" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_2"
+        android:layout_marginTop="@dimen/dim_10"
+        android:background="#D8D8D8" />
+</LinearLayout>

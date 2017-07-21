@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ezyserv.fragment.AllCategoryFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10">
+
+        <TextView
+            android:id="@+id/cat_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Showing All Categories"
+            android:textColor="#000000"
+            android:textSize="@dimen/dim_20"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/total_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_toRightOf="@+id/cat_label"
+            android:text="(72)"
+            android:textColor="#000000"
+            android:textSize="@dimen/dim_20"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/close_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:src="@drawable/close_catlist" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/Cat_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="4"
+        android:padding="@dimen/dim_10" />
+</LinearLayout>

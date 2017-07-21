@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.ezyserv.ServiceLoginActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dim_20"
+            android:paddingRight="@dimen/dim_20"
+            android:paddingTop="@dimen/dim_15">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dim_20"
+                android:text="Enter your mobile number \n             to continue"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_20"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_mb_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:layout_marginTop="@dimen/dim_30"
+                android:text="Phone Number"
+                android:textColor="@color/blue" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_10"
+                android:paddingBottom="@dimen/dim_5">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dim_10"
+                    app:contentColor="@color/black"
+                    app:countryPreference="country"
+                    app:keyboardAutoPopOnSearch="false"
+                    app:selectionDialogShowSearch="false"
+                    app:textSize="@dimen/dim_15" />
+
+                <EditText
+                    android:id="@+id/service_mb_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ccp"
+                    android:gravity="left"
+                    android:hint="Phone Number"
+                    android:inputType="number"
+                    android:maxLength="12"
+                    android:textSize="@dimen/dim_20" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/service_btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_25"
+                android:background="@drawable/rect_pink"
+                android:gravity="center"
+                android:text="Log In"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_20" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bg_img"
+            android:layout_marginBottom="@dimen/dim_25"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:paddingLeft="@dimen/dim_15">
+
+            <CheckBox
+                android:id="@+id/service_terms_condition_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/terms_condition_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/service_terms_condition_checkbox"
+                android:text="I agree with the "
+                android:textSize="@dimen/dim_15" />
+
+            <TextView
+                android:id="@+id/service_terms_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dim_5"
+                android:layout_toRightOf="@+id/terms_condition_label"
+                android:text="@string/term"
+                android:textSize="@dimen/dim_15" />
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/bg_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:src="@drawable/bg" />
+    </RelativeLayout>
+</LinearLayout>

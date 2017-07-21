@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/search"
+    android:icon="@drawable/search_active"
+    android:title="Search">
+    </item>
+
+    <item
+        android:id="@+id/services"
+        android:icon="@drawable/services_inactive"
+        android:title="Services">
+    </item>
+
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/notifications_inactive"
+        android:title="Notifications">
+    </item>
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/account_inactive"
+        android:title="Account">
+    </item>
+</menu>

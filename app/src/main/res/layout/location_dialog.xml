@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dailog_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/locate_me_bg"
+       android:id="@+id/img"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img"
+        android:layout_centerHorizontal="true"
+
+
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_30"
+            android:layout_gravity="center_horizontal"
+            android:text="Allow Location Acess"
+            android:textSize="@dimen/dim_20"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            />
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/blue"
+    android:text="Locate Me"
+    android:layout_marginTop="@dimen/dim_20"
+    android:textColor="@color/white"
+    android:paddingTop="@dimen/dim_10"
+    android:paddingBottom="@dimen/dim_10"
+    android:drawableLeft="@drawable/bbitmap"
+    android:layout_gravity="center_horizontal"
+    android:textSize="@dimen/dim_20"
+    android:paddingLeft="@dimen/dim_10"
+    android:paddingRight="@dimen/dim_10"
+    android:drawablePadding="@dimen/dim_7"
+    android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or"
+            android:layout_marginTop="@dimen/dim_15"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/dim_15"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Enter Location manually"
+            android:textSize="@dimen/dim_18"
+            android:layout_marginTop="@dimen/dim_20"
+            android:textStyle="bold"
+            android:textColor="@color/pink"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/dim_35"
+            />
+
+</LinearLayout>
+
+
+</RelativeLayout>

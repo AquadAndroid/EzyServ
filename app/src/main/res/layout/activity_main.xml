@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <include
+        layout="@layout/app_bar_main4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main4"
+        app:menu="@menu/activity_main4_drawer" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main_drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+   android:orientation="vertical"
+        tools:context="com.ezyserv.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.ezyserv.MainActivity" />
+
+
+        </FrameLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/location"
+            android:layout_centerInParent="true"
+            android:id="@+id/_map_marker"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="@dimen/dim_10"
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu"
+                android:id="@+id/nav_drawer_btn"
+                android:layout_alignParentLeft="true"
+                android:background="@null"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:background="@null"
+                android:layout_toRightOf="@id/nav_drawer_btn"
+                android:text="YOUR LOCATION"
+                android:drawableRight="@drawable/location_chevron"
+                android:textSize="@dimen/dim_20"
+                android:textColor="#ED365B"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+                android:background="@null"
+                android:src="@drawable/search"/>
+             </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_50">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+
+    android:layout_centerHorizontal="true"
+    android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10"
+        android:layout_weight="1">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/all_category"
+            app:backgroundTint="@color/white"
+            android:layout_centerInParent="true"
+            android:src="@drawable/all_cats"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/all_category"
+            android:text="Show All"
+            android:textSize="@dimen/dim_15"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"
+            android:layout_marginTop="@dimen/dim_20"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10"
+        android:layout_weight="1">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            android:id="@+id/domestic"
+            android:src="@drawable/domestic"
+            android:layout_centerInParent="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/domestic"
+            android:text="Domestic"
+            android:textSize="@dimen/dim_15"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"
+            android:layout_marginTop="@dimen/dim_20"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10"
+        android:layout_weight="1">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/construction"
+            app:backgroundTint="@color/white"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:src="@drawable/construction"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/construction"
+            android:text="Construction"
+            android:textSize="@dimen/dim_12"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"
+            android:layout_marginTop="@dimen/dim_20"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10"
+        android:layout_weight="1">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/events"
+            app:backgroundTint="@color/white"
+            android:layout_centerInParent="true"
+            android:src="@drawable/events"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/events"
+            android:text="Events"
+            android:textSize="@dimen/dim_15"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"
+            android:layout_marginTop="@dimen/dim_20"/>
+    </RelativeLayout>
+        </LinearLayout>
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+        <include layout="@layout/bottom"></include>
+        </LinearLayout>
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>
+    </android.support.v4.widget.DrawerLayout>

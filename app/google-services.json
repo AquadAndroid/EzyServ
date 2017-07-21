@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "356369631946",
+    "firebase_url": "https://ezyserv-f3d55.firebaseio.com",
+    "project_id": "ezyserv-f3d55",
+    "storage_bucket": "ezyserv-f3d55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356369631946:android:ca5f9fb3e6fdc128",
+        "android_client_info": {
+          "package_name": "com.ezyserv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356369631946-62vfp0c1mhvr4hss2o2srrour9tpk22t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezyserv",
+            "certificate_hash": "22b325bfd1a68978f8b6e23c7afc12bd0946fabb"
+          }
+        },
+        {
+          "client_id": "356369631946-rlmkvqs3neeoatokg9p9pgcrr7rn45ll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezyserv",
+            "certificate_hash": "5cb2b7b462aaff5e8e11c503fe4527c805fcc50a"
+          }
+        },
+        {
+          "client_id": "356369631946-0vvchs804i7godg8vglpr74mcdknsm6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA3Z4YdjpHEitDGcBkIvJjD-j3JhmxWs8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356369631946-0vvchs804i7godg8vglpr74mcdknsm6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

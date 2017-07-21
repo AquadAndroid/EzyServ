@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   android:orientation="vertical"
+    android:background="@drawable/bg_pattern"
+    tools:context="com.ezyserv.SignUpSelection">
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up as"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+
+            android:layout_below="@+id/first_label"
+            android:textSize="@dimen/dim_20"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To continue, please"
+            android:textSize="@dimen/dim_20"
+            android:id="@+id/first_label"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/dim_35"
+           android:layout_centerHorizontal="true"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dim_25"
+            android:paddingLeft="@dimen/dim_25"
+            android:layout_marginBottom="@dimen/dim_15"
+            android:layout_above="@+id/tv_label">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_sign_up_cust"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rect_pink"
+                    android:text="Customer"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dim_15" />
+
+                <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="OR"
+              android:textSize="@dimen/dim_15"
+              android:layout_marginTop="@dimen/dim_10"
+              android:layout_gravity="center"
+              android:layout_marginBottom="@dimen/dim_10"
+              />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_blue"
+                android:id="@+id/btn_sign_up_service"
+                android:textSize="@dimen/dim_15"
+                android:gravity="center"
+                android:text="Service Provider"
+                android:textColor="@color/white"
+                />
+            </LinearLayout>
+            </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can switch between the two \n      from your profile later also"
+            android:layout_above="@+id/bg_img"
+            android:id="@+id/tv_label"
+            android:layout_marginBottom="@dimen/dim_10"
+            android:layout_centerHorizontal="true"
+            />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+        android:id="@+id/bg_img"
+        android:src="@drawable/bg"/>
+    </RelativeLayout>
+
+</LinearLayout>

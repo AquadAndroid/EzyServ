@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/account_active"
+
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My Service Request" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/chat"
+            android:title="Chats" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/notifications_inactive"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/icn_added_to_wallet"
+            android:title="Wallet" />
+        <item
+            android:id="@+id/nav_switch"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Switch to Service Provider" />
+    </group>
+
+
+</menu>

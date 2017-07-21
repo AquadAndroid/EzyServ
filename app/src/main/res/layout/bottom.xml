@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/btn_tab_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dim_10"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/search_active" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/tv_search"
+            android:layout_below="@+id/btn_tab_1"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ED365B"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/btn_tab_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dim_10"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/services_inactive" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Services"
+            android:id="@+id/tv_services"
+            android:layout_below="@+id/btn_tab_2"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/btn_tab_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dim_10"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/notifications_inactive" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification"
+            android:id="@+id/tv_notification"
+            android:layout_below="@+id/btn_tab_3"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/btn_tab_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dim_10"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/account_inactive" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account"
+            android:id="@+id/tv_account"
+            android:layout_below="@+id/btn_tab_4"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_color_volet"/>
+    </RelativeLayout>
+
+
+
+</LinearLayout>

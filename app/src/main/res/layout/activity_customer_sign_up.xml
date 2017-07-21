@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical"
+    tools:context="com.ezyserv.CustomerSignUpActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dim_15"
+            android:paddingRight="@dimen/dim_15">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_10"
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+
+
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPersonName"
+
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/blue" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--   <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_marginTop="@dimen/dim_10"
+                   android:layout_height="wrap_content"
+                   android:text="Name"
+                   android:id="@+id/tv_name"
+                   android:visibility="visible"
+                   android:layout_marginLeft="@dimen/dim_5"
+                   android:textColor="@color/blue"/>
+
+               <EditText
+                   android:id="@+id/edt_customer_name"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="left"
+                   android:hint="Name"
+                   android:inputType="textPersonName"
+                   android:textSize="@dimen/dim_16" />-->
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_5"
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_customer_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+
+
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/blue" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/dim_10"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:id="@+id/tv_email"
+                android:layout_marginLeft="@dimen/dim_5"
+                android:textColor="@color/blue"/>
+
+            <EditText
+                android:id="@+id/edt_customer_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/dim_16"
+
+                />-->
+
+            <!--  <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Phone"
+              android:layout_gravity="center_horizontal"
+              android:id="@+id/tv_phone"
+              android:textColor="@color/blue"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_5">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    app:contentColor="@color/black"
+                    app:countryPreference="country"
+                    app:keyboardAutoPopOnSearch="false"
+                    app:selectionDialogShowSearch="false"
+                    app:textSize="@dimen/dim_15" />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/ccp"
+                    android:theme="@style/MyTextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_customer_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Phone Number"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="number"
+                        android:maxLength="12"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/blue" />
+
+
+                </android.support.design.widget.TextInputLayout>
+                <!--   <EditText
+                       android:id="@+id/edt_customer_mb_no"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_toRightOf="@+id/ccp"
+                       android:gravity="left"
+                       android:hint="Phone Number"
+                       android:inputType="phone"
+                       android:textSize="@dimen/dim_16" />-->
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_fb_customer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_25"
+                android:background="#3B51C0"
+                android:drawableLeft="@drawable/fb_connect"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dim_15"
+                android:text="@string/fb_connect"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_15" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dim_7">
+
+                <TextView
+                    android:id="@+id/login_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account?"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_15" />
+
+                <TextView
+                    android:id="@+id/customer_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_5"
+                    android:layout_toRightOf="@+id/login_label"
+                    android:text="Log In"
+                    android:textColor="@color/pink"
+                    android:textSize="@dimen/dim_15" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dim_12">
+
+                <CheckBox
+                    android:id="@+id/cust_terms_condition_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:checked="false" />
+
+                <TextView
+                    android:id="@+id/terms_condition_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/cust_terms_condition_checkbox"
+                    android:text="I agree with the "
+                    android:textSize="@dimen/dim_15" />
+
+                <TextView
+                    android:id="@+id/tv_term_con"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dim_5"
+                    android:layout_toRightOf="@+id/terms_condition_label"
+                    android:text="@string/term"
+                    android:textSize="@dimen/dim_15" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/bg" />
+
+        <Button
+            android:id="@+id/cust_btn_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/pink"
+            android:text="SIGN UP"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_20" />
+    </RelativeLayout>
+
+
+</LinearLayout>

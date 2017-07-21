@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dailog_bg"
+android:paddingBottom="@dimen/dim_12"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dim_10"
+        android:text="TERMS &amp; CONDITIONS"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_20"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_2"
+        android:layout_marginTop="@dimen/dim_10"
+        android:background="#D8D8D8" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/promocode_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dim_10"
+            android:text="Promo Code : "
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_20" />
+
+        <TextView
+            android:id="@+id/tv_promo_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dim_10"
+            android:layout_toRightOf="@+id/promocode_label"
+            android:text="NEWUSER"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_20" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_8"
+        android:padding="@dimen/dim_10"
+        android:textColor="#363636"
+        android:textSize="@dimen/dim_15"
+        android:text="Also Regarding the tap feature following are the details of the tap feature.To Pause speech, Tap anywhere on the screen with 2- fingers. Tap 2 with 2 fingers again to continue reading.While the app the app is speaking, you can scroll down to another part of the document to look ahead. To scroll back to the highlighted part, tap with 2 fingers. Many useful gestures can be performed using 2 finger gestures for example, to slow down speech " />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:text="OK"
+        android:id="@+id/btn_ok"
+        android:gravity="center"
+        android:textColor="@color/pink"
+        android:layout_marginTop="@dimen/dim_10"
+        android:textSize="@dimen/dim_20"/>
+</LinearLayout>

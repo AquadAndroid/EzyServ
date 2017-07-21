@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:padding="@dimen/dim_10"
+    android:layout_height="wrap_content">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cicle_bg_white"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/all_cat_icon"
+        android:src="@drawable/all_cats"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dim_2"
+        android:text="Ac Installation"
+        android:id="@+id/label"
+        android:textColor="@color/text_color_volet"/>
+
+</LinearLayout>
