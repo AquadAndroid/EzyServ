@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.fragment.FragmentDrawer;
 import com.ezyserv.utills.LocationProvider;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -74,7 +75,7 @@ import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MainActivity extends CustomActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class MainActivity extends CustomActivity implements FragmentDrawer.FragmentDrawerListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,LocationProvider.LocationCallback, LocationProvider.PermissionCallback,
         ResultCallback<LocationSettingsResult>{
@@ -83,7 +84,7 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
     private GoogleApiClient googleApiClient;
     private LatLng sourceLocation = null;
     private LocationProvider locationProvider;
-    // hi
+    private FragmentDrawer drawerFragment;
 
 
     ImageButton search_tab, service_tab, notification_tab, account_tab;
@@ -114,8 +115,11 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
         toggle.syncState();
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        drawerFragment = (FragmentDrawer) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout),null);
+        drawerFragment.setDrawerListener(this);
 
 
 
@@ -148,35 +152,35 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
         }
         if (sourceLocation != null && isFirstSet) {
 //            currentLocation.distanceTo()
-           // getNearbyDrivers(sourceLocation.latitude + "", sourceLocation.longitude + "");
+            // getNearbyDrivers(sourceLocation.latitude + "", sourceLocation.longitude + "");
         }
 
 
     }
 
-   /* public static boolean isLocationEnabled(Context context) {
-        int locationMode = 0;
-        String locationProviders;
+    /* public static boolean isLocationEnabled(Context context) {
+         int locationMode = 0;
+         String locationProviders;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            try {
-                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+             try {
+                 locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
 
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-                return false;
-            }
+             } catch (Settings.SettingNotFoundException e) {
+                 e.printStackTrace();
+                 return false;
+             }
 
-            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+             return locationMode != Settings.Secure.LOCATION_MODE_OFF;
 
-        } else {
-            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-            return !TextUtils.isEmpty(locationProviders);
-        }
+         } else {
+             locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+             return !TextUtils.isEmpty(locationProviders);
+         }
 
 
-    }
-*/
+     }
+ */
     public void enableGPS() {
 
         if (googleApiClient == null) {
@@ -289,13 +293,13 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+
+   /* public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-          startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
+            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -307,7 +311,7 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+    }*/
 
     public void onClick(View v) {
         super.onClick(v);
@@ -341,7 +345,7 @@ public class MainActivity extends CustomActivity implements NavigationView.OnNav
             Tv_service.setTextColor(Color.parseColor("#ED365B"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
-startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
+            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
         } else if (v == notification_tab) {
             search_tab.setSelected(false);
             service_tab.setSelected(false);
@@ -375,14 +379,15 @@ startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
-            searchRadius();
+            // searchRadius();
+            openImage();
         }else if(v == navBtn){
             drawer.openDrawer(GravityCompat.START);
 
         }
 
 
-        }
+    }
 
 
 
@@ -496,8 +501,8 @@ startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 30, 90);
+        }
     }
-}
 
 
 
@@ -614,7 +619,32 @@ startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
     }
 
 
+    private void openImage(){
 
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_attach_file);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = lp.WRAP_CONTENT;
+        lp.height = lp.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+        dialog.show();
+
+    }
+
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+        if(position == 0){
+
+        }
+        if (position == 1) {
+
+        } else if (position == 2) {
+
+        }
+    }
 }
 
 

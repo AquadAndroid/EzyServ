@@ -8,30 +8,238 @@
     <RelativeLayout
         android:id="@+id/rl_profile"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dim_180"
+        android:background="#C0CFF5"
+        android:paddingBottom="@dimen/dim_10">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_profile"
-            android:layout_width="@dimen/dim_200"
-            android:layout_height="@dimen/dim_200"
-            />
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/markzuckerberg"
+            android:layout_centerInParent="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"/>
 
         <TextView
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dim_10"
-            android:layout_marginTop="@dimen/dim_150"
-
-            android:text="JAY CLIFF"
+            android:layout_below="@+id/img_profile"
+            android:layout_centerHorizontal="true"
+           android:layout_marginTop="@dimen/dim_8"
+            android:text="Mark Zuckerberg "
+            android:textColor="@color/blue"
             android:textSize="@dimen/dim_16"
             android:textStyle="bold" />
-
     </RelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/drawerList"
-        android:layout_width="match_parent"
 
-        android:layout_height="wrap_content" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/nav_item_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/household"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5"
+            android:text="Home"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
+
+        <TextView
+            android:id="@+id/nav_item_service_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:drawableLeft="@drawable/household"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5"
+            android:text="My Service Request"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
+
+        <RelativeLayout
+            android:id="@+id/nav_item_chats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/household"
+                android:drawablePadding="@dimen/dim_10"
+
+                android:gravity="center_vertical"
+                android:text="Chats"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+
+            <TextView
+                android:id="@+id/count_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/curvey_bg_ping"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_18" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nav_item_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/household"
+                android:drawablePadding="@dimen/dim_10"
+
+                android:gravity="center_vertical"
+                android:text="Notifications"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+
+            <TextView
+                android:id="@+id/count_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/curvey_bg_ping"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:text="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_18" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nav_item_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/household"
+                android:drawablePadding="@dimen/dim_10"
+
+                android:gravity="center_vertical"
+                android:text="Wallet"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+
+            <TextView
+                android:id="@+id/nav_wallet_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/dim_7"
+                android:paddingRight="@dimen/dim_7"
+                android:text="SGD 200"
+                android:textSize="@dimen/dim_18" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/nav_item_promo_offer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:drawableLeft="@drawable/household"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5"
+            android:text="Promos &amp; Offer"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
+
+        <TextView
+            android:id="@+id/nav_item_switch_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:drawableLeft="@drawable/household"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dim_5"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_5"
+            android:text="Switch to Service Provider"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/nav_item_customer_support"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/dim_10"
+                android:background="#C0CFF5"
+                android:drawableLeft="@drawable/household"
+                android:drawablePadding="@dimen/dim_10"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:paddingTop="@dimen/dim_10"
+                android:text="Switch to Service Provider"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

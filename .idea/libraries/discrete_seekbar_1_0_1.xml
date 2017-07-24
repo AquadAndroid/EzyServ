@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="discrete-seekbar-1.0.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/fe9aa29d413618c573143906ce69e72ef8821fc4/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/fe9aa29d413618c573143906ce69e72ef8821fc4/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/878cb49552afc35567e486ec445b5edd0ca113c8/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/878cb49552afc35567e486ec445b5edd0ca113c8/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
