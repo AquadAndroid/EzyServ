@@ -380,7 +380,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
             // searchRadius();
-            openImage();
+           // openImage();
+            //startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
+            startActivity(new Intent(MainActivity.this, ChatActivity.class));
         }else if(v == navBtn){
             drawer.openDrawer(GravityCompat.START);
 

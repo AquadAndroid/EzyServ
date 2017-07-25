@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EBEBEB"
+    android:orientation="vertical"
+    tools:context="com.ezyserv.AddMoneyActivity">
+
+    <include layout="@layout/side_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dim_5"
+        android:paddingLeft="@dimen/dim_20"
+        android:paddingBottom="@dimen/dim_10"
+        android:paddingRight="@dimen/dim_20">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_5"
+            android:text="Add money to wallet"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_18" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_5"
+            android:hint="S$ (SGD) "
+            android:id="@+id/edt_add_money"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/dim_18" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/dim_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dim_15"
+                android:layout_toLeftOf="@+id/money_five_hundred"
+                android:background="@drawable/rect_bg_blue"
+                android:id="@+id/money_three_hundred"
+                android:padding="@dimen/dim_10"
+                android:text="+300"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+
+            <TextView
+                android:id="@+id/money_five_hundred"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dim_15"
+                android:layout_toLeftOf="@+id/money_thousand"
+                android:background="@drawable/rect_bg_blue"
+                android:padding="@dimen/dim_10"
+                android:text="+500"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+
+            <TextView
+                android:id="@+id/money_thousand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/rect_bg_blue"
+                android:padding="@dimen/dim_10"
+                android:text="+1000"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dim_10"
+
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/pink"
+            android:text="DONE"
+            android:gravity="center"
+            android:id="@+id/btn_done"
+            android:textSize="@dimen/dim_20"
+            android:paddingTop="@dimen/dim_10"
+            android:paddingBottom="@dimen/dim_10"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+</LinearLayout>

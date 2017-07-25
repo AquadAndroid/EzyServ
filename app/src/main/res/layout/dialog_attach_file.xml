@@ -51,6 +51,7 @@
         android:layout_marginTop="@dimen/dim_20"
         android:background="@null"
         android:text="CANCEL"
+        android:id="@+id/diag_btn_cancel"
         android:textColor="@color/pink"
         android:textSize="@dimen/dim_18" />
 </LinearLayout>
