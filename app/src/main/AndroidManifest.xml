@@ -143,6 +143,8 @@
             android:name=".SavedAddressActivity"
             android:screenOrientation="sensorPortrait" />
         <activity android:name=".WalletActivity" />
+        <activity android:name=".ServiceRequestActivity" />
+        <activity android:name=".CancelServiceActivity"></activity>
     </application>
 
 </manifest>

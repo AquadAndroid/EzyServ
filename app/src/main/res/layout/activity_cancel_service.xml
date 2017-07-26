@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.ezyserv.CancelServiceActivity">
+    <include
+        layout="@layout/side_toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_cancel_service"
+        android:layout_below="@+id/side_toolbar"
+        android:paddingTop="@dimen/dim_10"
+        android:paddingBottom="@dimen/dim_10"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_18"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:text="Please provide a reason for\ncancellation"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_20"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:text="Serviceman declined the service"
+            android:textSize="@dimen/dim_16"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_2"
+            android:layout_marginTop="@dimen/dim_8"
+            android:background="#D8D8D8"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price was too high"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_marginTop="@dimen/dim_10"
+            android:textSize="@dimen/dim_16"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_2"
+            android:layout_marginTop="@dimen/dim_8"
+            android:background="#D8D8D8"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reason"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_marginTop="@dimen/dim_10"
+            android:textSize="@dimen/dim_16"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_2"
+            android:layout_marginTop="@dimen/dim_8"
+            android:background="#D8D8D8"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reason goes here"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_marginTop="@dimen/dim_10"
+            android:textSize="@dimen/dim_16"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_2"
+            android:layout_marginTop="@dimen/dim_8"
+            android:background="#D8D8D8"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:text="Any other reason, please describe"
+            android:textSize="@dimen/dim_16"
+            />
+</RadioGroup>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:inputType="textMultiLine"
+            android:textSize="@dimen/dim_15"
+            android:layout_marginTop="@dimen/dim_10"
+            android:layout_marginLeft="@dimen/dim_40"
+            android:layout_marginRight="@dimen/dim_18"
+            android:hint="write here"/>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_2"
+            android:layout_marginTop="@dimen/dim_15"
+            android:background="#D8D8D8"/>
+        </LinearLayout>
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/pink"
+    android:text="CANCEL SERVICE"
+    android:gravity="center"
+    android:id="@+id/btn_cancel_service"
+    android:textColor="@color/white"
+    android:textSize="@dimen/dim_20"
+    android:padding="@dimen/dim_10"
+    />
+</RelativeLayout>

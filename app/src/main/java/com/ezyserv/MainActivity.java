@@ -383,7 +383,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
            // openImage();
             //startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
             //startActivity(new Intent(MainActivity.this, ChatActivity.class));
-            startActivity(new Intent(MainActivity.this, WalletActivity.class));
+           // startActivity(new Intent(MainActivity.this, WalletActivity.class));
+            startActivity(new Intent(MainActivity.this, CancelServiceActivity.class));
         }else if(v == navBtn){
             drawer.openDrawer(GravityCompat.START);
 
