@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class AddAddressActivity extends CustomActivity {
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.btn_save_address) {
-            Toast.makeText(this, "Address Saved Sucessfully", Toast.LENGTH_SHORT).show();
+          startActivity(new Intent(new Intent(AddAddressActivity.this, SavedAddressActivity.class)));
         }
     }
 

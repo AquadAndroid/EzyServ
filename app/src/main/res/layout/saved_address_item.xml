@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dim_15"
+        android:padding="@dimen/dim_10"
+        android:background="@drawable/rect_white_bg">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address1"
+            android:id="@+id/address_label"
+            android:textSize="@dimen/dim_20"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address Line 1"
+            android:id="@+id/tv_addres_one"
+            android:layout_marginTop="@dimen/dim_10"
+            android:textSize="@dimen/dim_15"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address Line 2"
+            android:id="@+id/tv_address_two"
+            android:textSize="@dimen/dim_15"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="667854"
+            android:id="@+id/tv_pin"
+            android:textSize="@dimen/dim_15"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_white_bg"
+        android:padding="@dimen/dim_10">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:id="@+id/img_btn_delete"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="USE THIS ADDRESS"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_15"
+            android:id="@+id/chk_select_add"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete"/>
+    </RelativeLayout>
+</LinearLayout>

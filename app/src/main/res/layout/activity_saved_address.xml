@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:background="@color/white"
+    tools:context="com.ezyserv.SavedAddressActivity">
+    <include
+        layout="@layout/side_toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="@dimen/dim_18"
+        android:paddingLeft="@dimen/dim_18"
+        android:paddingTop="@dimen/dim_10"
+        android:background="@color/white"
+        android:layout_below="@+id/side_toolbar"
+        android:paddingBottom="@dimen/dim_10"
+        android:layout_above="@+id/btn_continue"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Address"
+            android:textColor="@color/pink"
+            android:textStyle="bold"
+            android:id="@+id/tv_add_new_add"
+            android:drawablePadding="@dimen/dim_10"
+            android:textSize="@dimen/dim_20"
+            android:drawableLeft="@drawable/add_new"
+            />
+<android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginTop="@dimen/dim_15"
+    android:id="@+id/recy_saved_address"/>
+</LinearLayout>
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:id="@+id/btn_continue"
+    android:background="@color/pink"
+    android:text="CONTINUE"
+    android:textColor="@color/white"
+    android:textSize="@dimen/dim_20"
+    android:padding="@dimen/dim_10"
+    />
+</RelativeLayout>
