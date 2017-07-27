@@ -8,19 +8,19 @@
     <RelativeLayout
         android:id="@+id/rl_profile"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dim_180"
+        android:layout_height="wrap_content"
         android:background="#C0CFF5"
         android:paddingBottom="@dimen/dim_10">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_profile"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="@dimen/dim_90"
+            android:layout_height="@dimen/dim_90"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dim_15"
             android:src="@drawable/markzuckerberg"
-            android:layout_centerInParent="true"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"/>
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="1dp" />
 
         <TextView
             android:id="@+id/profile_name"
@@ -28,16 +28,18 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_profile"
             android:layout_centerHorizontal="true"
-           android:layout_marginTop="@dimen/dim_8"
+            android:layout_marginTop="@dimen/dim_10"
             android:text="Mark Zuckerberg "
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_16"
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        android:id="@+id/ll_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@null"
         android:orientation="vertical">
 
 
@@ -45,13 +47,11 @@
             android:id="@+id/nav_item_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/household"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5"
+            android:padding="@dimen/dim_10"
             android:text="Home"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
@@ -60,37 +60,30 @@
             android:id="@+id/nav_item_service_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
+            android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/household"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5"
+            android:padding="@dimen/dim_10"
             android:text="My Service Request"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
         <RelativeLayout
+
             android:id="@+id/nav_item_chats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5">
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/dim_10">
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_centerVertical="true"
                 android:drawableLeft="@drawable/household"
                 android:drawablePadding="@dimen/dim_10"
-
                 android:gravity="center_vertical"
                 android:text="Chats"
                 android:textColor="@color/blue"
@@ -103,32 +96,29 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/curvey_bg_ping"
-                android:paddingLeft="@dimen/dim_10"
-                android:paddingRight="@dimen/dim_10"
+                android:paddingBottom="@dimen/dim_3"
+                android:paddingLeft="@dimen/dim_15"
+                android:paddingRight="@dimen/dim_15"
+                android:paddingTop="@dimen/dim_3"
                 android:text="3"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dim_18" />
+                android:textSize="@dimen/dim_15" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/nav_item_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5">
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/dim_10">
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_centerVertical="true"
                 android:drawableLeft="@drawable/household"
                 android:drawablePadding="@dimen/dim_10"
-
                 android:gravity="center_vertical"
                 android:text="Notifications"
                 android:textColor="@color/blue"
@@ -141,22 +131,21 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/curvey_bg_ping"
-                android:paddingLeft="@dimen/dim_10"
-                android:paddingRight="@dimen/dim_10"
+                android:paddingBottom="@dimen/dim_3"
+                android:paddingLeft="@dimen/dim_15"
+                android:paddingRight="@dimen/dim_15"
+                android:paddingTop="@dimen/dim_3"
                 android:text="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dim_18" />
+                android:textSize="@dimen/dim_15" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/nav_item_wallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5">
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/dim_10">
 
             <TextView
 
@@ -177,7 +166,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-
                 android:layout_centerVertical="true"
                 android:paddingLeft="@dimen/dim_7"
                 android:paddingRight="@dimen/dim_7"
@@ -190,14 +178,11 @@
             android:id="@+id/nav_item_promo_offer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
+            android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/household"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5"
+            android:padding="@dimen/dim_10"
             android:text="Promos &amp; Offer"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
@@ -206,15 +191,25 @@
             android:id="@+id/nav_item_switch_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
+            android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/household"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/dim_5"
-            android:paddingLeft="@dimen/dim_10"
-            android:paddingRight="@dimen/dim_10"
-            android:paddingTop="@dimen/dim_5"
+            android:padding="@dimen/dim_10"
             android:text="Switch to Service Provider"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
+
+        <TextView
+            android:id="@+id/nav_item_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableLeft="@drawable/household"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dim_10"
+            android:text="Logout"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
@@ -222,23 +217,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/nav_item_customer_support"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="@dimen/dim_10"
-                android:background="#C0CFF5"
-                android:drawableLeft="@drawable/household"
-                android:drawablePadding="@dimen/dim_10"
-                android:gravity="center_vertical"
-                android:paddingBottom="@dimen/dim_10"
-                android:paddingLeft="@dimen/dim_10"
-                android:paddingRight="@dimen/dim_10"
-                android:paddingTop="@dimen/dim_10"
-                android:text="Switch to Service Provider"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/dim_18" />
+                android:background="#C0CFF5">
+
+                <TextView
+                    android:id="@+id/nav_item_customer_support"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:drawableLeft="@drawable/household"
+                    android:drawablePadding="@dimen/dim_10"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dim_10"
+                    android:text="Contact Customer support"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/dim_18" />
+            </RelativeLayout>
+
         </RelativeLayout>
     </LinearLayout>
 

@@ -53,6 +53,11 @@
 
         <activity
             android:name=".MapsActivity"
+            android:screenOrientation="sensorPortrait"
+            android:label="@string/title_activity_maps" />
+       <activity
+            android:name=".PicturePickerActivity"
+           android:screenOrientation="sensorPortrait"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".Painting"
@@ -96,13 +101,21 @@
         <activity
             android:name=".ServiceDeatailActivityOne"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ServiceDetailActivityTwo"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ServiceEmailVerificationActivity"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".SearchActivity"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".AddServicesActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -143,6 +156,25 @@
             android:name=".SavedAddressActivity"
             android:screenOrientation="sensorPortrait" />
         <activity android:name=".WalletActivity" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        ...
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".ServiceRequestActivity" />
         <activity android:name=".CancelServiceActivity" />
         <activity android:name=".FiltersActivity"></activity>

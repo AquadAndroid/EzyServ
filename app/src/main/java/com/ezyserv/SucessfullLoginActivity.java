@@ -1,12 +1,13 @@
 package com.ezyserv;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.utills.AppConstant;
 
 public class SucessfullLoginActivity extends CustomActivity {
     private static final int SPLASH_DURATION_MS = 1000;
@@ -34,12 +35,10 @@ public class SucessfullLoginActivity extends CustomActivity {
 
                 @Override
                 public void run() {
-
+                    MyApp.setStatus(AppConstant.IS_LOGIN, true);
                     Intent i = new Intent(SucessfullLoginActivity.this, MainActivity.class);
                     startActivity(i);
-
-
-                    finish();
+                    finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
 
@@ -53,12 +52,10 @@ public class SucessfullLoginActivity extends CustomActivity {
 
                 @Override
                 public void run() {
-
+                    MyApp.setStatus(AppConstant.IS_LOGIN, true);
                     Intent i = new Intent(SucessfullLoginActivity.this, MainActivity.class);
                     startActivity(i);
-
-
-                    finish();
+                    finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
         }else if(value.equals("customer_signup")){
@@ -71,12 +68,10 @@ public class SucessfullLoginActivity extends CustomActivity {
 
                 @Override
                 public void run() {
-
+                    MyApp.setStatus(AppConstant.IS_LOGIN, true);
                     Intent i = new Intent(SucessfullLoginActivity.this, MainActivity.class);
                     startActivity(i);
-
-
-                    finish();
+                    finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
         }else if(value.equals("service_facebook")){
@@ -90,10 +85,9 @@ public class SucessfullLoginActivity extends CustomActivity {
                 @Override
                 public void run() {
 
-                    Intent i = new Intent(SucessfullLoginActivity.this, MainActivity.class);
+                    Intent i = new Intent(SucessfullLoginActivity.this, ServiceDeatailActivityOne.class);
+                    i.putExtra("key", "phone_verified");
                     startActivity(i);
-
-
                     finish();
                 }
             }, SPLASH_DURATION_MS);
@@ -107,12 +101,10 @@ public class SucessfullLoginActivity extends CustomActivity {
 
                 @Override
                 public void run() {
-
+                    MyApp.setStatus(AppConstant.IS_LOGIN, true);
                     Intent i = new Intent(SucessfullLoginActivity.this, MainActivity.class);
                     startActivity(i);
-
-
-                    finish();
+                    finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
         }else if(value.equals("service_signup")){
@@ -125,7 +117,7 @@ public class SucessfullLoginActivity extends CustomActivity {
                     Intent i = new Intent(SucessfullLoginActivity.this, ServiceDeatailActivityOne.class);
                     i.putExtra("key", "phone_verified");
                     startActivity(i);
-
+                    finish();
 
                 }
             }, SPLASH_DURATION_MS);

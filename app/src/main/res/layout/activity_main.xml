@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -26,7 +27,6 @@
 
 
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:map="http://schemas.android.com/apk/res-auto"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -36,151 +36,178 @@
 
 
             </FrameLayout>
+
             <ImageView
+                android:id="@+id/_map_marker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/location"
                 android:layout_centerInParent="true"
-                android:id="@+id/_map_marker"
-                />
+                android:src="@drawable/location" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:padding="@dimen/dim_10"
-                android:orientation="horizontal">
+                android:id="@+id/rl_top"
+                android:orientation="horizontal"
+                android:padding="@dimen/dim_10">
+
                 <ImageButton
+                    android:id="@+id/nav_drawer_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/menu"
-                    android:id="@+id/nav_drawer_btn"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:background="@null"/>
+                    android:background="@null"
+                    android:src="@drawable/menu" />
+
                 <TextView
+                    android:id="@+id/txt_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10"
-                    android:background="@null"
                     android:layout_toRightOf="@id/nav_drawer_btn"
-                    android:text="YOUR LOCATION"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:shadowColor="@color/grey"
+                    android:shadowDx="-2"
+                    android:shadowDy="-2"
+                    android:shadowRadius="1"
+                    android:drawablePadding="@dimen/dim_5"
                     android:drawableRight="@drawable/location_chevron"
-                    android:textSize="@dimen/dim_20"
-                    android:textColor="#ED365B"/>
+                    android:padding="@dimen/dim_5"
+                    android:text="YOUR LOCATION"
+                    android:textColor="#ED365B"
+                    android:textSize="@dimen/dim_16" />
+
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:background="@null"
-                    android:src="@drawable/search"/>
+                    android:src="@drawable/search" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dim_50">
+                android:layout_marginTop="-15dp"
+                android:layout_below="@+id/rl_top">
+
                 <FrameLayout
+                    android:id="@+id/rl_floating_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rl_floating_btn">
+                    android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-
                         android:layout_centerHorizontal="true"
+                        android:background="@android:color/transparent"
                         android:orientation="horizontal">
+
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/dim_10"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:padding="@dimen/dim_10">
+
                             <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/all_category"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/all_category"
-                                app:backgroundTint="@color/white"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/all_cats"/>
+                                android:src="@drawable/all_cats"
+                                app:backgroundTint="@color/white" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/all_category"
-                                android:text="Show All"
-                                android:textSize="@dimen/dim_15"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/dim_20"
+                                android:text="Show All"
                                 android:textColor="@color/text_color_volet"
-                                android:layout_marginTop="@dimen/dim_20"/>
+                                android:textSize="@dimen/dim_15" />
                         </RelativeLayout>
 
 
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/dim_10"
+                            android:layout_weight="1"
 
-                            android:layout_weight="1">
+                            android:padding="@dimen/dim_10">
 
                             <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/domestic"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:backgroundTint="@color/white"
-                                android:id="@+id/domestic"
+                                android:layout_centerInParent="true"
                                 android:src="@drawable/domestic"
-                                android:layout_centerInParent="true" />
+                                app:backgroundTint="@color/white" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/domestic"
-                                android:text="Domestic"
-                                android:textSize="@dimen/dim_15"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/dim_20"
+                                android:text="Domestic"
                                 android:textColor="@color/text_color_volet"
-                                android:layout_marginTop="@dimen/dim_20"/>
+                                android:textSize="@dimen/dim_15" />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/dim_10"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:padding="@dimen/dim_10">
+
                             <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/construction"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/construction"
-                                app:backgroundTint="@color/white"
                                 android:layout_centerInParent="true"
                                 android:background="@null"
-                                android:src="@drawable/construction"/>
+                                android:src="@drawable/construction"
+                                app:backgroundTint="@color/white" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/construction"
-                                android:text="Construction"
-                                android:textSize="@dimen/dim_12"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/dim_20"
+                                android:text="Construction"
                                 android:textColor="@color/text_color_volet"
-                                android:layout_marginTop="@dimen/dim_20"/>
+                                android:textSize="@dimen/dim_12" />
                         </RelativeLayout>
+
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/dim_10"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:padding="@dimen/dim_10">
+
                             <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/events"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/events"
-                                app:backgroundTint="@color/white"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/events"/>
+                                android:src="@drawable/events"
+                                app:backgroundTint="@color/white" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/events"
-                                android:text="Events"
-                                android:textSize="@dimen/dim_15"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/dim_20"
+                                android:text="Events"
                                 android:textColor="@color/text_color_volet"
-                                android:layout_marginTop="@dimen/dim_20"/>
+                                android:textSize="@dimen/dim_15" />
                         </RelativeLayout>
                     </LinearLayout>
                 </FrameLayout>
@@ -188,24 +215,27 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dim_10"
                     android:layout_below="@+id/rl_floating_btn"
-                   app:cardCornerRadius="@dimen/dim_2"
-                    app:cardElevation="@dimen/dim_5"
-                    android:layout_marginRight="@dimen/dim_10">
-                    <EditText
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:layout_marginRight="@dimen/dim_10"
+                    app:cardCornerRadius="@dimen/dim_2"
+                    app:cardElevation="@dimen/dim_5">
+
+                    <TextView
+                        android:id="@+id/txt_address"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Enter YOur Loction"
-                        android:backgroundTint="@null"
-                        android:padding="@dimen/dim_10"
                         android:background="@null"
-                        />
-                    </android.support.v7.widget.CardView>
+                        android:backgroundTint="@null"
+                        android:hint="Enter YOur Loction"
+                        android:padding="@dimen/dim_10" />
+                </android.support.v7.widget.CardView>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true">
+
                     <include layout="@layout/bottom"></include>
                 </LinearLayout>
 

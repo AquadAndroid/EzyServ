@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.ezyserv.ServiceDetailActivityTwo">
 
     <include layout="@layout/detail_toolbar" />
@@ -16,6 +17,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/scrollView"
+            android:scrollbars="none"
             android:layout_marginBottom="@dimen/dim_55"
             android:layout_weight="1">
 
@@ -39,7 +42,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5px"
+                    android:layout_height="3px"
                     android:layout_below="@+id/edt_doc_one"
                     android:layout_marginTop="@dimen/dim_20"
                     android:background="#E8E8E8" />
@@ -56,7 +59,7 @@
                     android:paddingTop="@dimen/dim_5"
                     android:text="Domestic Services"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dim_20"
+                    android:textSize="@dimen/dim_18"
                     android:textStyle="bold" />
 
                 <TextView
@@ -69,9 +72,9 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5px"
+                    android:layout_height="3px"
                     android:layout_below="@+id/edt_doc_one"
-                    android:layout_marginTop="@dimen/dim_15"
+                    android:layout_marginTop="@dimen/dim_12"
                     android:background="#E8E8E8" />
 
                 <TextView
@@ -86,7 +89,7 @@
                     android:paddingTop="@dimen/dim_5"
                     android:text="Construction Services"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dim_20"
+                    android:textSize="@dimen/dim_18"
                     android:textStyle="bold" />
 
                 <TextView
@@ -99,9 +102,9 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5px"
+                    android:layout_height="3px"
                     android:layout_below="@+id/edt_doc_one"
-                    android:layout_marginTop="@dimen/dim_15"
+                    android:layout_marginTop="@dimen/dim_12"
                     android:background="#E8E8E8" />
 
                 <TextView
@@ -116,7 +119,7 @@
                     android:paddingTop="@dimen/dim_5"
                     android:text="Events Services"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dim_20"
+                    android:textSize="@dimen/dim_18"
                     android:textStyle="bold" />
 
                 <TextView
@@ -129,9 +132,9 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10px"
+                    android:layout_height="5px"
                     android:layout_below="@+id/edt_doc_one"
-                    android:layout_marginTop="@dimen/dim_15"
+                    android:layout_marginTop="@dimen/dim_12"
                     android:background="#E8E8E8" />
 
 

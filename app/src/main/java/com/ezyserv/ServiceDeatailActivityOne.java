@@ -1,23 +1,27 @@
 package com.ezyserv;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.hbb20.CountryCodePicker;
 
 public class ServiceDeatailActivityOne extends CustomActivity {
     private Toolbar Dtoolbar;
     private Button btn_continue;
     private TextView verifyemail;
     private EditText demail;
+    private EditText edt_service_name;
+    private EditText edt_service_mobile;
     private String value="";
+    private CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +39,20 @@ public class ServiceDeatailActivityOne extends CustomActivity {
         mCount.setText("1/2");
         actionBar.setTitle("");
         demail = (EditText) findViewById(R.id.edt_service_detail_email);
+        edt_service_name = (EditText) findViewById(R.id.edt_service_name);
+        edt_service_mobile = (EditText) findViewById(R.id.edt_service_mobile);
         verifyemail = (TextView) findViewById(R.id.verify_email);
         btn_continue = (Button) findViewById(R.id.btn_serv_detail_sign_up);
 
-        Bundle extras = getIntent().getExtras();
+        demail.setText(MyApp.getSharedPrefString("email"));
+        edt_service_name.setText(MyApp.getSharedPrefString("name"));
+        edt_service_mobile.setText(MyApp.getSharedPrefString("phone"));
 
-        value = extras.getString("key").toString();
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp.setCcpClickable(false);
+        ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+","")));
 
+        value = getIntent().getStringExtra("key");
 
         if (value.equals("email_verification")) {
             verifyemail.setVisibility(View.GONE);
@@ -56,8 +67,6 @@ public class ServiceDeatailActivityOne extends CustomActivity {
                 }
             });
         }
-
-
 
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override

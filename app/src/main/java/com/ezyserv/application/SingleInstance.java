@@ -1,5 +1,7 @@
 package com.ezyserv.application;
 
+import com.google.android.gms.location.places.Place;
+
 /**
  * Created by Aquad on 21-07-2017.
  */
@@ -12,5 +14,15 @@ public class SingleInstance {
     }
 
     private SingleInstance() {
+    }
+
+    private Place selectedPlace;
+
+    public Place getSelectedPlace() {
+        return selectedPlace;
+    }
+
+    public void setSelectedPlace(Place selectedPlace) {
+        this.selectedPlace = selectedPlace;
     }
 }

@@ -170,18 +170,31 @@
                        android:textSize="@dimen/dim_16" />-->
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/btn_fb_customer"
+            <!--<Button-->
+            <!--android:id="@+id/btn_fb_customer"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/dim_25"-->
+            <!--android:background="#3B51C0"-->
+            <!--android:drawableLeft="@drawable/fb_connect"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingLeft="@dimen/dim_15"-->
+            <!--android:text="@string/fb_connect"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="@dimen/dim_15" />-->
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
                 android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="@dimen/dim_30"
+                android:layout_marginRight="@dimen/dim_30"
+                android:layout_marginTop="30dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dim_25"
-                android:background="#3B51C0"
-                android:drawableLeft="@drawable/fb_connect"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dim_15"
-                android:text="@string/fb_connect"
-                android:textColor="@color/white"
-                android:textSize="@dimen/dim_15" />
+                android:paddingBottom="@dimen/dim_10"
+                android:paddingTop="@dimen/dim_10"
+                android:textSize="@dimen/dim_18" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"

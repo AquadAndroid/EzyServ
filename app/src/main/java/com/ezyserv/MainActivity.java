@@ -3,7 +3,6 @@ package com.ezyserv;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -12,22 +11,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,8 +33,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ezyserv.application.MyApp;
+import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.fragment.FragmentDrawer;
+import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.LocationProvider;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,55 +49,46 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-/*import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.BottomBarBadge;
-import com.roughike.bottombar.OnMenuTabClickListener;*/
-
-import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Locale;
 
-import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends CustomActivity implements FragmentDrawer.FragmentDrawerListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,LocationProvider.LocationCallback, LocationProvider.PermissionCallback,
-        ResultCallback<LocationSettingsResult>{
+        LocationListener, LocationProvider.LocationCallback, LocationProvider.PermissionCallback, GoogleMap.OnCameraIdleListener,
+        ResultCallback<LocationSettingsResult> {
 
     private boolean isFirstSet = false;
     private GoogleApiClient googleApiClient;
     private LatLng sourceLocation = null;
     private LocationProvider locationProvider;
     private FragmentDrawer drawerFragment;
+    private TextView txt_location;
 
-
-    ImageButton search_tab, service_tab, notification_tab, account_tab;
     private GoogleMap mMap;
     DrawerLayout drawer;
     private SupportMapFragment mapFragment;
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
-    TextView mLocationText;
     TextView Tv_search, Tv_service, Tv_notification, Tv_account;
     ImageButton navBtn;
 
     FloatingActionButton Show_all, Domestic, Construction, Events;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupUiElements();
-        locationProvider = new LocationProvider(this,this,this);
+        locationProvider = new LocationProvider(this, this, this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
@@ -118,11 +103,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         drawerFragment = (FragmentDrawer) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout),null);
+                (DrawerLayout) findViewById(R.id.drawer_layout), null);
         drawerFragment.setDrawerListener(this);
 
 
-
+        txt_location = (TextView) findViewById(R.id.txt_location);
+        txt_address = (TextView) findViewById(R.id.txt_address);
+        setTouchNClick(R.id.txt_address);
+        setTouchNClick(R.id.txt_location);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -143,13 +131,50 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         locationProvider.connect();
     }
 
+    private boolean isLocationManual = false;
+    private boolean isDialogShown = false;
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!MyApp.isLocationEnabled(this) && !isLocationManual && !isDialogShown) {
+            isDialogShown = true;
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            dialog.setContentView(R.layout.location_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            Button btn_locate = (Button) dialog.findViewById(R.id.btn_locate);
+            TextView txt_enter_manually = (TextView) dialog.findViewById(R.id.txt_enter_manually);
+            txt_enter_manually.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isDialogShown = false;
+                    isLocationManual = true;
+                    Intent intent = new Intent(getContext(), SearchActivity.class);
+                    intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
+                    MainActivity.this.startActivityForResult(intent, 122);
+                    dialog.dismiss();
+                }
+            });
+
+            btn_locate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    enableGPS();
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!MyApp.isLocationEnabled(this)) {
-            enableGPS();
-        }
+
         if (sourceLocation != null && isFirstSet) {
 //            currentLocation.distanceTo()
             // getNearbyDrivers(sourceLocation.latitude + "", sourceLocation.longitude + "");
@@ -158,29 +183,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     }
 
-    /* public static boolean isLocationEnabled(Context context) {
-         int locationMode = 0;
-         String locationProviders;
-
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-             try {
-                 locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-
-             } catch (Settings.SettingNotFoundException e) {
-                 e.printStackTrace();
-                 return false;
-             }
-
-             return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-
-         } else {
-             locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-             return !TextUtils.isEmpty(locationProviders);
-         }
-
-
-     }
- */
     public void enableGPS() {
 
         if (googleApiClient == null) {
@@ -259,8 +261,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -277,6 +277,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         getMenuInflater().inflate(R.menu.main4, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -294,68 +295,52 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     @SuppressWarnings("StatementWithEmptyBody")
 
-   /* public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
 
     public void onClick(View v) {
         super.onClick(v);
-        if (v == search_tab) {
-            search_tab.setSelected(true);
-            service_tab.setSelected(false);
-            notification_tab.setSelected(false);
-            account_tab.setSelected(false);
-            search_tab.setImageResource(R.drawable.search_active);
-            notification_tab.setImageResource(R.drawable.notifications_inactive);
-            service_tab.setImageResource(R.drawable.services_inactive);
-            account_tab.setImageResource(R.drawable.account_inactive);
+        if (v.getId() == R.id.rl_tab_1) {
+
+            Tv_search.setSelected(true);
+            Tv_service.setSelected(false);
+            Tv_notification.setSelected(false);
+            Tv_account.setSelected(false);
+
+            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_active, 0, 0);
+            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_inactive, 0, 0);
+            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
+            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_inactive, 0, 0);
 
 
             Tv_search.setTextColor(Color.parseColor("#ED365B"));
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
-        } else if (v == service_tab) {
-            search_tab.setSelected(false);
-            service_tab.setSelected(true);
-            notification_tab.setSelected(false);
-            account_tab.setSelected(false);
+        } else if (v.getId() == R.id.rl_tab_2) {
+            Tv_search.setSelected(false);
+            Tv_service.setSelected(true);
+            Tv_notification.setSelected(false);
+            Tv_account.setSelected(false);
 
-            search_tab.setImageResource(R.drawable.search_inactive);
-            notification_tab.setImageResource(R.drawable.notifications_inactive);
-            service_tab.setImageResource(R.drawable.services_active);
-            account_tab.setImageResource(R.drawable.account_inactive);
+            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_inactive, 0, 0);
+            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_inactive, 0, 0);
+            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_active, 0, 0);
+            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_inactive, 0, 0);
 
             Tv_search.setTextColor(Color.parseColor("#3949AB"));
             Tv_service.setTextColor(Color.parseColor("#ED365B"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
-            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
-        } else if (v == notification_tab) {
-            search_tab.setSelected(false);
-            service_tab.setSelected(false);
-            notification_tab.setSelected(true);
-            account_tab.setSelected(false);
 
-            search_tab.setImageResource(R.drawable.search_inactive);
-            notification_tab.setImageResource(R.drawable.notifications_active);
-            service_tab.setImageResource(R.drawable.services_inactive);
-            account_tab.setImageResource(R.drawable.account_inactive);
+        } else if (v.getId() == R.id.rl_tab_3) {
+            Tv_search.setSelected(false);
+            Tv_service.setSelected(false);
+            Tv_notification.setSelected(true);
+            Tv_account.setSelected(false);
+
+            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_inactive, 0, 0);
+            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_active, 0, 0);
+            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
+            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_inactive, 0, 0);
 
 
             Tv_search.setTextColor(Color.parseColor("#3949AB"));
@@ -363,16 +348,17 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_notification.setTextColor(Color.parseColor("#ED365B"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
 
-            startActivity(new Intent(MainActivity.this, NotificationActivity.class));
-        } else if (v == account_tab) {
-            search_tab.setSelected(false);
-            service_tab.setSelected(false);
-            notification_tab.setSelected(false);
-            account_tab.setSelected(true);
-            search_tab.setImageResource(R.drawable.search_inactive);
-            notification_tab.setImageResource(R.drawable.notifications_inactive);
-            service_tab.setImageResource(R.drawable.services_inactive);
-            account_tab.setImageResource(R.drawable.account_active);
+
+        } else if (v.getId() == R.id.rl_tab_4) {
+            Tv_search.setSelected(false);
+            Tv_service.setSelected(false);
+            Tv_notification.setSelected(false);
+            Tv_account.setSelected(true);
+
+            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_inactive, 0, 0);
+            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_inactive, 0, 0);
+            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
+            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_active, 0, 0);
 
 
             Tv_search.setTextColor(Color.parseColor("#3949AB"));
@@ -380,46 +366,71 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
             // searchRadius();
-           // openImage();
+            // openImage();
             //startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
             //startActivity(new Intent(MainActivity.this, ChatActivity.class));
-           startActivity(new Intent(MainActivity.this, WalletActivity.class));
-           // startActivity(new Intent(MainActivity.this, CancelServiceActivity.class));
-        }else if(v == navBtn){
+
+        } else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
 
+        } else if (v == txt_location) {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
+            MainActivity.this.startActivityForResult(intent, 122);
+        } else if (v == txt_address) {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
+            MainActivity.this.startActivityForResult(intent, 122);
         }
-
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Place place;
+        switch (requestCode) {
+            case 122:
+                if (resultCode == -1) {
+                    place = SingleInstance.getInstance().getSelectedPlace();
+                    this.sourceLocation = place.getLatLng();
+                    Log.i("", "Place: " + place.getName());
+                    txt_address.setText(place.getAddress().toString().replace("\n", " "));
+                    this.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(place.getLatLng()).zoom(15.5f).tilt(0.0f).build()));
+                    return;
+                } else if (resultCode != 2) {
+                    return;
+                } else {
+                    return;
+                }
+            default:
+                return;
+        }
+    }
 
-
-
+    private Context getContext() {
+        return MainActivity.this;
+    }
 
     private void setupUiElements() {
-        search_tab=(ImageButton)findViewById(R.id.btn_tab_1);
-        Tv_search=(TextView)findViewById(R.id.tv_search);
-        service_tab=(ImageButton)findViewById(R.id.btn_tab_2);
-        Tv_service=(TextView)findViewById(R.id.tv_services);
-        notification_tab=(ImageButton)findViewById(R.id.btn_tab_3);
-        Tv_notification=(TextView)findViewById(R.id.tv_notification);
-        account_tab=(ImageButton)findViewById(R.id.btn_tab_4);
-        Tv_account=(TextView)findViewById(R.id.tv_account);
-        navBtn=(ImageButton)findViewById(R.id.nav_drawer_btn) ;
+        Tv_search = (TextView) findViewById(R.id.tv_search);
+        Tv_service = (TextView) findViewById(R.id.tv_services);
+        Tv_notification = (TextView) findViewById(R.id.tv_notification);
+        Tv_account = (TextView) findViewById(R.id.tv_account);
+        navBtn = (ImageButton) findViewById(R.id.nav_drawer_btn);
 
-        setClick(R.id.btn_tab_1);
-        setClick(R.id.btn_tab_2);
-        setClick(R.id.btn_tab_3);
-        setClick(R.id.btn_tab_4);
+        setClick(R.id.rl_tab_1);
+        setClick(R.id.rl_tab_2);
+        setClick(R.id.rl_tab_3);
+        setClick(R.id.rl_tab_4);
         setClick(R.id.nav_drawer_btn);
-        search_tab.setSelected(true);
+        Tv_search.setSelected(true);
         Tv_search.setTextColor(Color.parseColor("#ED365B"));
 
-        Show_all=(FloatingActionButton)findViewById(R.id.all_category);
-        Domestic=(FloatingActionButton)findViewById(R.id.domestic);
-        Construction=(FloatingActionButton)findViewById(R.id.construction);
-        Events=(FloatingActionButton)findViewById(R.id.events);
+        Show_all = (FloatingActionButton) findViewById(R.id.all_category);
+        Domestic = (FloatingActionButton) findViewById(R.id.domestic);
+        Construction = (FloatingActionButton) findViewById(R.id.construction);
+        Events = (FloatingActionButton) findViewById(R.id.events);
 
         setClick(R.id.all_category);
         setClick(R.id.domestic);
@@ -490,7 +501,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        this.mMap.setOnCameraIdleListener(this);
 
         View mapView = mapFragment.getView();
         View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
@@ -504,11 +515,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             // position on right bottom
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 30, 90);
+            layoutParams.setMargins(0, 0, 30, 120);
         }
     }
-
-
 
 
     private void changeMap(Location location) {
@@ -544,10 +553,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     .newCameraPosition(cameraPosition));
             getCompleteAddressString(location.getLatitude(), location.getLongitude());
 
-//            mLocationMarkerText.setText("Lat : " + location.getLatitude() + "," + "Long : " + location.getLongitude());
-            //startIntentService(location);
-
-
         } else {
             Toast.makeText(getApplicationContext(),
                     "Sorry! unable to create maps", Toast.LENGTH_SHORT)
@@ -570,7 +575,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
                 strAdd = strReturnedAddress.toString();
-                mLocationText.setText(strReturnedAddress.toString());
+                txt_location.setText(addresses.get(0).getSubLocality());
+                txt_address.setText(strReturnedAddress.toString().replace("\n", " "));
                 Log.w("address", "" + strReturnedAddress.toString());
             } else {
                 Log.w("address", "No Address returned!");
@@ -604,10 +610,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
 
-
-
-
-    private void searchRadius(){
+    private void searchRadius() {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -623,7 +626,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
 
-    private void openImage(){
+    private void openImage() {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -640,32 +643,45 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
-        if(position == 0){
 
-        }
-        if (position == 1) {
+        if (position == 0) {
 
+        } else if (position == 1) {
+            MyApp.showMassage(getContext(), "will go to my service requests");
         } else if (position == 2) {
+            startActivity(new Intent(getContext(), ChatActivity.class));
+        } else if (position == 3) {
+            startActivity(new Intent(MainActivity.this, NotificationActivity.class));
+        } else if (position == 4) {
+            startActivity(new Intent(MainActivity.this, WalletActivity.class));
+        } else if (position == 5) {
+            MyApp.showMassage(getContext(), "will go to promos and offers");
+        } else if (position == 6) {
+            MyApp.showMassage(getContext(), "will switch user mode");
+        } else if (position == 8) {
+            MyApp.showMassage(getContext(), "will go to customer support");
+        } else if (position == 7) {
+            MyApp.setStatus(AppConstant.IS_LOGIN, false);
+            startActivity(new Intent(getContext(), SignUpSelection.class));
+            finishAffinity();
+        }
+    }
 
+    private LatLng mCenterLatLong;
+    private TextView txt_address;
+
+    @Override
+    public void onCameraIdle() {
+        Log.d("Camera position change", this.mMap.getCameraPosition() + "");
+        this.mCenterLatLong = this.mMap.getCameraPosition().target;
+        this.sourceLocation = this.mCenterLatLong;
+        try {
+            Location mLocation = new Location("");
+            mLocation.setLatitude(this.mCenterLatLong.latitude);
+            mLocation.setLongitude(this.mCenterLatLong.longitude);
+            getCompleteAddressString(this.mCenterLatLong.latitude, this.mCenterLatLong.longitude);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
-
-
-
-   /* protected void startIntentService(Location mLocation) {
-        // Create an intent for passing to the intent service responsible for fetching the address.
-        Intent intent = new Intent(this, FetchAddressIntentService.class);
-
-        // Pass the result receiver as an extra to the service.
-        intent.putExtra(AppUtils.LocationConstants.RECEIVER, mResultReceiver);
-
-        // Pass the location data as an extra to the service.
-        intent.putExtra(AppUtils.LocationConstants.LOCATION_DATA_EXTRA, mLocation);
-
-        // Start the service. If the service isn't already running, it is instantiated and started
-        // (creating a process for it if needed); if it is running then it remains running. The
-        // service kills itself automatically once all intents are processed.
-        startService(intent);
-    }*/
-

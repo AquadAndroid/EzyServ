@@ -1,33 +1,29 @@
 package com.ezyserv;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.os.Handler;
+import android.util.Base64;
+import android.util.Log;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.ezyserv.utills.AppConstant;
 
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class SplashActivity extends CustomActivity {
-    private static final int SPLASH_DURATION_MS = 500;
+    private static final int SPLASH_DURATION_MS = 1000;
     private Handler mHandler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-     //  getApiData();
-
-
-
+        getHashKey();
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -39,110 +35,38 @@ public class SplashActivity extends CustomActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashActivity.this, SignUpSelection.class);
-                startActivity(i);
+                if (MyApp.getStatus(AppConstant.IS_LOGIN)) {
+                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent i = new Intent(SplashActivity.this, SignUpSelection.class);
+                    startActivity(i);
+                    finish();
+                }
 
-                // close this activity
-                finish();
             }
         }, SPLASH_DURATION_MS);
 
 
     }
 
-
-
-/*    private void getApiData() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setTimeout(30000);
-       client.post("http://stubuz.com/floterapi/index.php/carapi/getratecard", new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, final JSONObject o) {
-                if (o.optString("status").equals("OK")) {
-                   // RateCard u = new Gson().fromJson(o.toString(), RateCard.class);
-                    //SingleInstance.getInstance().setRateCard(u);
-                    mHandler.postDelayed(mEndSplash, SPLASH_DURATION_MS);
-                } else {
-                    AlertDialog.Builder b = new AlertDialog.Builder(SplashActivity.this);
-                    b.setTitle("Not Connected?").setMessage("Please check your internet connection and try again");
-                    b.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface d, int i) {
-                            getApiData();
-                            d.dismiss();
-                        }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface d, int i) {
-                            d.dismiss();
-                            finish();
-                        }
-                    }).create().show();
-                }
+    private void getHashKey() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.ezyserv",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
+        } catch (PackageManager.NameNotFoundException e) {
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                AlertDialog.Builder b = new AlertDialog.Builder(SplashActivity.this);
-                b.setTitle("Not Connected?").setMessage("Please check your internet connection and try again");
-                b.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface d, int i) {
-                        getApiData();
-                        d.dismiss();
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface d, int i) {
-                        d.dismiss();
-                        finish();
-                    }
-                }).create().show();
-            }
+        } catch (NoSuchAlgorithmException e) {
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                AlertDialog.Builder b = new AlertDialog.Builder(SplashActivity.this);
-                b.setTitle("Not Connected?").setMessage("Please check your internet connection and try again");
-                b.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface d, int i) {
-                        getApiData();
-                        d.dismiss();
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface d, int i) {
-                        d.dismiss();
-                        finish();
-                    }
-                }).create().show();
-            }
-        });
-}
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-//        mEndSplash.run();
-        return super.onTouchEvent(event);
-    }
-
-    private Runnable mEndSplash = new Runnable() {
-        public void run() {
-            if (!isFinishing()) {
-                mHandler.removeCallbacks(this);
-
-                startActivity(new Intent(
-                        SplashActivity.this, MainActivity.class
-                ));
-
-                finish();
-            }
         }
-
-        ;
-    };*/
+    }
     }
 
 

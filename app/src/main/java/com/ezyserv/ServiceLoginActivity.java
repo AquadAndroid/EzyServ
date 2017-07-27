@@ -2,9 +2,8 @@ package com.ezyserv;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -16,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.hbb20.CountryCodePicker;
 
@@ -89,10 +89,10 @@ public class ServiceLoginActivity extends CustomActivity {
         dialog.setContentView(R.layout.verification_dialog);
 
 
-        String phone_no;
+        final String phone_no;
         phone_no=countryCodePicker.getSelectedCountryCodeWithPlus()+" "+ cust_mobile_no.getText().toString();
-        TextView dialog_mb_no=(TextView)dialog.findViewById(R.id.tv_mb_no);
-        dialog_mb_no.setText(phone_no);
+        TextView verification_message = (TextView) dialog.findViewById(R.id.verification_message);
+        verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
         Button dialog_send_Button = (Button) dialog.findViewById(R.id.btn_send);
         // if button is clicked, close the custom dialog
@@ -109,6 +109,7 @@ public class ServiceLoginActivity extends CustomActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ServiceLoginActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "service_login");
+                intent.putExtra("phone", phone_no);
                 startActivity(intent);
             }
         });

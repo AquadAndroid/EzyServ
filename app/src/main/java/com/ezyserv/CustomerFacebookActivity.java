@@ -2,19 +2,17 @@ package com.ezyserv;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.hbb20.CountryCodePicker;
 
@@ -51,7 +49,10 @@ public class CustomerFacebookActivity extends CustomActivity {
         cust_email = (EditText) findViewById(R.id.edt_customer_email);
         cust_phone = (EditText) findViewById(R.id.edt_customer_mobile);
 
-
+        cust_name.setText(getIntent().getStringExtra("name"));
+        cust_email.setText(getIntent().getStringExtra("email"));
+        MyApp.setSharedPrefString("name", cust_name.getText().toString());
+        MyApp.setSharedPrefString("email", cust_email.getText().toString());
         cust_signup_btn = (Button) findViewById(R.id.cust_fb_signup);
         cust_countryCodePicker=(CountryCodePicker)findViewById(R.id.ccp);
 
@@ -85,10 +86,10 @@ public class CustomerFacebookActivity extends CustomActivity {
         dialog.setContentView(R.layout.verification_dialog);
 
 
-        String phone_no;
+        final String phone_no;
         phone_no=cust_countryCodePicker.getSelectedCountryCodeWithPlus()+" "+ cust_phone.getText().toString();
-        TextView dialog_mb_no=(TextView)dialog.findViewById(R.id.tv_mb_no);
-        dialog_mb_no.setText(phone_no);
+        TextView verification_message = (TextView) dialog.findViewById(R.id.verification_message);
+        verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
         Button dialog_send_Button = (Button) dialog.findViewById(R.id.btn_send);
         // if button is clicked, close the custom dialog
@@ -105,6 +106,7 @@ public class CustomerFacebookActivity extends CustomActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CustomerFacebookActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "customer_facebook");
+                intent.putExtra("phone", phone_no);
                 startActivity(intent);
             }
         });

@@ -1,12 +1,10 @@
 package com.ezyserv.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
@@ -14,12 +12,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.ezyserv.R;
 import com.ezyserv.adapter.NavigationDrawerAdapter;
+import com.ezyserv.application.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,17 @@ public class FragmentDrawer extends Fragment {
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
     private TextView profile_name;
+    private TextView nav_item_switch_profile;
+    private TextView nav_item_home;
+    private TextView nav_item_customer_support;
+    private TextView nav_item_promo_offer;
+    private TextView nav_item_logout;
+    private TextView nav_item_service_request;
     private RelativeLayout rl_profile;
+    private RelativeLayout nav_item_chats;
+    private RelativeLayout nav_item_notification;
+    private RelativeLayout nav_item_wallet;
+    private LinearLayout ll_menu;
 
     public FragmentDrawer() {
 
@@ -73,44 +82,97 @@ public class FragmentDrawer extends Fragment {
                 container, false);
       //  recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile_name = (TextView) layout.findViewById(R.id.profile_name);
+        profile_name.setText(MyApp.getSharedPrefString("name"));
+        nav_item_home = (TextView) layout.findViewById(R.id.nav_item_home);
+        nav_item_customer_support = (TextView) layout.findViewById(R.id.nav_item_customer_support);
+        nav_item_logout = (TextView) layout.findViewById(R.id.nav_item_logout);
+        nav_item_switch_profile = (TextView) layout.findViewById(R.id.nav_item_switch_profile);
+        nav_item_promo_offer = (TextView) layout.findViewById(R.id.nav_item_promo_offer);
+        nav_item_service_request = (TextView) layout.findViewById(R.id.nav_item_service_request);
+        ll_menu = (LinearLayout) layout.findViewById(R.id.ll_menu);
+        nav_item_chats = (RelativeLayout) layout.findViewById(R.id.nav_item_chats);
         rl_profile = (RelativeLayout) layout.findViewById(R.id.rl_profile);
+        nav_item_notification = (RelativeLayout) layout.findViewById(R.id.nav_item_notification);
+        nav_item_wallet = (RelativeLayout) layout.findViewById(R.id.nav_item_wallet);
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                // startActivity(new Intent(getContext(), ProfileActivity.class));
             }
         });
-        try {
-           /* User u = MyApp.getApplication().readUser();
-            profile_name.setText(u.getU_fname() + " " + u.getU_lname());*/
-        } catch (Exception e) {
-
-        }
-//        rl_all = (RelativeLayout) layout.findViewById(R.id.rl_all);
-//        rl_all.setOnClickListener(new View.OnClickListener() {
-//            @Override
-////            public void onClick(View view) {
-//                drawerListener.onDrawerItemSelected(view, 0);
-//                mDrawerLayout.closeDrawer(containerView);
-//            }
-//        });
-
-     //   adapter = new NavigationDrawerAdapter(getActivity(), getData());
-        //recyclerView.setAdapter(adapter);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
-          /*      getActivity(), recyclerView, new ClickListener() {
+        ll_menu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view, int position) {
-                drawerListener.onDrawerItemSelected(view, position);
+            public void onClick(View v) {
+                return;
+            }
+        });
+
+        nav_item_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 0);
                 mDrawerLayout.closeDrawer(containerView);
             }
-
+        });
+        nav_item_service_request.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLongClick(View view, int position) {
-
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 1);
+                mDrawerLayout.closeDrawer(containerView);
             }
-        }));*/
+        });
+        nav_item_chats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 2);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+
+        nav_item_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 3);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+        nav_item_wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 4);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+        nav_item_promo_offer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 5);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+        nav_item_switch_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 6);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+        nav_item_customer_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 8);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+
+        nav_item_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 7);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+
 
         return layout;
     }

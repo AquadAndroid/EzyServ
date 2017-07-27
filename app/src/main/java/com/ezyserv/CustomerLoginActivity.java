@@ -2,10 +2,8 @@ package com.ezyserv;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,7 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.utills.AppConstant;
 import com.hbb20.CountryCodePicker;
 
 public class CustomerLoginActivity extends CustomActivity {
@@ -89,8 +89,9 @@ public class CustomerLoginActivity extends CustomActivity {
 
         } else if (v.getId() == R.id.custom_term_cond) {
             //Toast.makeText(this, "Terms and Condition", Toast.LENGTH_SHORT).show();
-
+            MyApp.setStatus(AppConstant.IS_LOGIN, true);
             startActivity(new Intent(CustomerLoginActivity.this, MainActivity.class));
+            finishAffinity();
         }
     }
 
@@ -101,10 +102,10 @@ public class CustomerLoginActivity extends CustomActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.verification_dialog);
 
-        String phone_no;
+        final String phone_no;
         phone_no=countryCodePicker.getSelectedCountryCodeWithPlus()+" "+ cust_mobile_no.getText().toString();
-        TextView dialog_mb_no=(TextView)dialog.findViewById(R.id.tv_mb_no);
-        dialog_mb_no.setText(phone_no);
+        TextView verification_message = (TextView) dialog.findViewById(R.id.verification_message);
+        verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
         Button dialog_send_Button = (Button) dialog.findViewById(R.id.btn_send);
         // if button is clicked, close the custom dialog
@@ -121,6 +122,7 @@ public class CustomerLoginActivity extends CustomActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(CustomerLoginActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "customer_login");
+                intent.putExtra("phone", phone_no);
                 startActivity(intent);
             }
         });
