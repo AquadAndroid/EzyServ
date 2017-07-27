@@ -144,7 +144,8 @@
             android:screenOrientation="sensorPortrait" />
         <activity android:name=".WalletActivity" />
         <activity android:name=".ServiceRequestActivity" />
-        <activity android:name=".CancelServiceActivity"></activity>
+        <activity android:name=".CancelServiceActivity" />
+        <activity android:name=".FiltersActivity"></activity>
     </application>
 
 </manifest>

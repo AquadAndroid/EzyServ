@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical"
     >
 
@@ -20,40 +21,43 @@
             app:civ_border_color="#FF000000"/>
 
         <TextView
-            android:id="@+id/label_added_wallet"
+            android:id="@+id/tv_service_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dim_10"
-
             android:layout_toRightOf="@+id/img_profile"
-            android:text="Added to wallet"
+            android:text="Paid For Service electrical Repair"
             android:textSize="@dimen/dim_15" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/label_added_wallet"
+            android:layout_below="@+id/tv_service_name"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dim_10"
+            android:id="@+id/tv_serviceman_name"
+            android:layout_marginTop="@dimen/dim_10"
             android:layout_toRightOf="@+id/img_profile"
-            android:text="From : City Bank"
+            android:text="Serviceman Name"
             android:textSize="@dimen/dim_15" />
     </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dim_46"
+        android:layout_marginLeft="@dimen/dim_60"
         android:layout_marginTop="@dimen/dim_10"
-        android:text="via Net Banking"
+        android:text="order ID #ES170623-234 "
+        android:id="@+id/tv_order_id"
         android:textSize="@dimen/dim_15" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dim_46"
+        android:layout_marginLeft="@dimen/dim_60"
         android:layout_marginTop="@dimen/dim_10"
-        android:text="+SGD(S$)200"
+        android:text="-SGD(S$)200"
+        android:id="@+id/tv_paid_money"
         android:textColor="@color/black"
         android:textSize="@dimen/dim_18"
         android:textStyle="bold" />
@@ -61,14 +65,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dim_46"
+        android:layout_marginLeft="@dimen/dim_60"
         android:layout_marginTop="@dimen/dim_5"
         android:text="21 July 2017"
+        android:id="@+id/tv_paid_date"
         android:textSize="@dimen/dim_15" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dim_1"
+        android:layout_height="@dimen/dim_2"
         android:layout_marginTop="@dimen/dim_10"
         android:background="#D8D8D8"/>
 </LinearLayout>
