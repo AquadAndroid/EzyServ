@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#E1E3F2"
+    android:orientation="vertical"
     tools:context="com.ezyserv.FiltersActivity">
+
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
@@ -23,81 +24,146 @@
             android:layout_gravity="center"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_20"
-           />
+            android:textSize="@dimen/dim_20" />
+
         <TextView
             android:id="@+id/toolbar_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="Reset"
             android:layout_marginRight="@dimen/dim_10"
+            android:text="Reset"
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_16"
-             />
+            android:textSize="@dimen/dim_16" />
 
     </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:layout_above="@+id/btn_apply">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SORT BY"
-        android:textColor="@color/black"
-        android:textSize="@dimen/dim_20"
-        android:drawableLeft="@drawable/icn_sort_by"
-        android:layout_marginLeft="@dimen/dim_10"
-        android:layout_marginTop="@dimen/dim_10"
-        android:drawablePadding="@dimen/dim_7"
-        android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_marginTop="@dimen/dim_10"
+            android:drawableLeft="@drawable/icn_sort_by"
+            android:drawablePadding="@dimen/dim_7"
+            android:text="SORT BY"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_20"
+            android:textStyle="bold" />
 
-    <RadioGroup
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_15"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/dim_15"
+            android:paddingTop="@dimen/dim_15">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:checked="true"
+                android:drawablePadding="@dimen/dim_10"
+                android:padding="@dimen/dim_10"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_18"
+                app:buttonTint="@color/blue" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:background="#D8D8D8" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:drawablePadding="@dimen/dim_10"
+                android:padding="@dimen/dim_10"
+                android:text="Distance from you"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_18"
+                app:buttonTint="@color/blue" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:background="#D8D8D8" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:drawablePadding="@dimen/dim_10"
+                android:padding="@dimen/dim_10"
+                android:text="Rating"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_18"
+                app:buttonTint="@color/blue" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_marginTop="@dimen/dim_10"
+            android:drawableLeft="@drawable/icn_filter"
+            android:drawablePadding="@dimen/dim_7"
+            android:text="FILTERS"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_20" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/dim_10"
+            android:layout_marginTop="@dimen/dim_10"
+            android:background="@color/white">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_18"
+                android:text="Filter Name1"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter"
+                android:textSize="@dimen/dim_18"
+                android:layout_marginTop="@dimen/dim_10"
+
+                />
+            <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter"
+            android:textSize="@dimen/dim_18"
+            android:layout_marginTop="@dimen/dim_10"
+                android:checked="true"
+            />
+
+            </LinearLayout>
+    </LinearLayout>
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:checked="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:padding="@dimen/dim_10"
+        android:text="APPLY"
+        android:id="@+id/btn_apply"
+        android:textColor="@color/white" />
+</RelativeLayout>
 
-            android:textColor="@color/black"
-            android:textSize="@dimen/dim_18"
-            android:drawablePadding="@dimen/dim_10"
-            android:layout_marginLeft="@dimen/dim_10"
-            android:padding="@dimen/dim_10"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dim_2"
-            android:background="#D8D8D8"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Distance from you"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dim_18"
-            android:drawablePadding="@dimen/dim_10"
-            android:layout_marginLeft="@dimen/dim_10"
-            android:padding="@dimen/dim_10"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dim_2"
-            android:background="#D8D8D8"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rating"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dim_18"
-            android:drawablePadding="@dimen/dim_10"
-            android:layout_marginLeft="@dimen/dim_10"
-            android:padding="@dimen/dim_10"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dim_2"
-            android:background="#D8D8D8"/>
-        </RadioGroup>
-</LinearLayout>

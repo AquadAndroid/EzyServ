@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dim_10">
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/img_profile"
+        android:layout_width="@dimen/dim_50"
+        android:layout_height="@dimen/dim_50"
+        android:src="@drawable/markzuckerberg"
+        app:civ_border_color="#FF000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dim_10"
+        android:layout_toRightOf="@+id/img_profile"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Jamie Doe"
+                android:id="@+id/tv_custm_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_20"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/curvey_bg_green"
+                android:drawableLeft="@drawable/rating_yellow"
+                android:drawablePadding="@dimen/dim_5"
+                android:paddingLeft="@dimen/dim_10"
+                android:id="@+id/tv_cust_rating"
+                android:paddingRight="@dimen/dim_15"
+                android:text="4"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_20" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:padding="@dimen/dim_7"
+            android:textSize="@dimen/dim_18"
+            android:id="@+id/tv_cust_review"
+            android:text="A badge on your site that helps users easily identify your site with the Google brand. The badge displays the seller rating score of 1-5 stars and can be placed on any page on your site."
+            android:maxLines="3"/>
+
+        <ImageView
+            android:layout_width="@dimen/dim_60"
+            android:layout_height="@dimen/dim_60"
+            android:id="@+id/img_review"
+            android:src="@drawable/markzuckerberg"
+            android:layout_marginTop="@dimen/dim_10"
+            android:layout_marginLeft="@dimen/dim_10"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_1"
+            android:layout_marginTop="@dimen/dim_10"
+            android:background="#D8D8D8" />
+    </LinearLayout>
+</RelativeLayout>
