@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -74,12 +75,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private TextView txt_location;
 
     private GoogleMap mMap;
-    DrawerLayout drawer;
+    private DrawerLayout drawer;
     private SupportMapFragment mapFragment;
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
-    TextView Tv_search, Tv_service, Tv_notification, Tv_account;
-    ImageButton navBtn;
+    private TextView Tv_search, Tv_service, Tv_notification, Tv_account;
+    private ImageButton navBtn, btn_search;
 
     FloatingActionButton Show_all, Domestic, Construction, Events;
 
@@ -87,6 +88,20 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (Build.VERSION.SDK_INT >= 21) {
+
+            // Set the status bar to dark-semi-transparentish
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+            // Set paddingTop of toolbar to height of status bar.
+            // Fixes statusbar covers toolbar issue
+            RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
+            lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
+//            v.setPadding(getStatusBarHeight(), getStatusBarHeight(), getStatusBarHeight(), 0);
+        }
+
         setupUiElements();
         locationProvider = new LocationProvider(this, this, this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -94,6 +109,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         mapFragment.getMapAsync(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        DrawerLayout.LayoutParams lll = (DrawerLayout.LayoutParams) drawer.getLayoutParams();
+
+//        lll.set
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -124,6 +142,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     }
 
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
     @Override
     protected void onStart() {
@@ -347,7 +373,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#ED365B"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
-
+//            openImage();
 
         } else if (v.getId() == R.id.rl_tab_4) {
             Tv_search.setSelected(false);
@@ -365,10 +391,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
-            // searchRadius();
-            // openImage();
-            //startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
-            //startActivity(new Intent(MainActivity.this, ChatActivity.class));
+            startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
 
         } else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
@@ -381,8 +404,17 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
             MainActivity.this.startActivityForResult(intent, 122);
+        } else if (v == btn_search) {
+            searchRadius();
+        } else if (v == Show_all) {
+            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (v == Domestic) {
+            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (v == Construction) {
+            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (v == Events) {
+            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         }
-
     }
 
     @Override
@@ -418,16 +450,19 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         Tv_notification = (TextView) findViewById(R.id.tv_notification);
         Tv_account = (TextView) findViewById(R.id.tv_account);
         navBtn = (ImageButton) findViewById(R.id.nav_drawer_btn);
+        btn_search = (ImageButton) findViewById(R.id.btn_search);
 
         setClick(R.id.rl_tab_1);
         setClick(R.id.rl_tab_2);
         setClick(R.id.rl_tab_3);
         setClick(R.id.rl_tab_4);
         setClick(R.id.nav_drawer_btn);
+        setClick(R.id.btn_search);
         Tv_search.setSelected(true);
         Tv_search.setTextColor(Color.parseColor("#ED365B"));
 
         Show_all = (FloatingActionButton) findViewById(R.id.all_category);
+
         Domestic = (FloatingActionButton) findViewById(R.id.domestic);
         Construction = (FloatingActionButton) findViewById(R.id.construction);
         Events = (FloatingActionButton) findViewById(R.id.events);
@@ -576,6 +611,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 }
                 strAdd = strReturnedAddress.toString();
                 txt_location.setText(addresses.get(0).getSubLocality());
+                if(txt_location.getText().toString().isEmpty()){
+                    txt_location.setText(addresses.get(0).getLocality());
+                    if(txt_location.getText().toString().isEmpty()){
+                        txt_location.setText(strAdd.replace("\n", " "));
+                    }
+                }
                 txt_address.setText(strReturnedAddress.toString().replace("\n", " "));
                 Log.w("address", "" + strReturnedAddress.toString());
             } else {
@@ -615,7 +656,25 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_search_radius);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#22000000")));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
+
+        TextView txt_cancel = (TextView) dialog.findViewById(R.id.txt_cancel);
+        txt_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button btn_search = (Button) dialog.findViewById(R.id.btn_search);
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                dialog.dismiss();
+            }
+        });
+
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = lp.MATCH_PARENT;

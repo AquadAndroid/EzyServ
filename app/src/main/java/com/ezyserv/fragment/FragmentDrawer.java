@@ -1,6 +1,7 @@
 package com.ezyserv.fragment;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,8 @@ import com.ezyserv.application.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class FragmentDrawer extends Fragment {
@@ -46,6 +49,7 @@ public class FragmentDrawer extends Fragment {
     private RelativeLayout nav_item_notification;
     private RelativeLayout nav_item_wallet;
     private LinearLayout ll_menu;
+    private CircleImageView img_profile;
 
     public FragmentDrawer() {
 
@@ -74,6 +78,14 @@ public class FragmentDrawer extends Fragment {
                 R.array.nav_drawer_labels);
     }
 
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,6 +106,15 @@ public class FragmentDrawer extends Fragment {
         rl_profile = (RelativeLayout) layout.findViewById(R.id.rl_profile);
         nav_item_notification = (RelativeLayout) layout.findViewById(R.id.nav_item_notification);
         nav_item_wallet = (RelativeLayout) layout.findViewById(R.id.nav_item_wallet);
+
+        img_profile = (CircleImageView) layout.findViewById(R.id.img_profile);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) img_profile.getLayoutParams();
+        if (Build.VERSION.SDK_INT >= 21) {
+            lp.setMargins(0, getStatusBarHeight()+5, 0, 0);
+        }else{
+            lp.setMargins(0, getStatusBarHeight(), 0, 0);
+        }
+
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

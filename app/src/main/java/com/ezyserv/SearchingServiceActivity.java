@@ -1,17 +1,14 @@
 package com.ezyserv;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
 import android.widget.ImageView;
 
 import com.ezyserv.custome.CustomActivity;
 import com.skyfishjy.library.RippleBackground;
 
 public class SearchingServiceActivity extends CustomActivity {
-    private static final int SPLASH_DURATION_MS = 5000;
+    private static final int SPLASH_DURATION_MS = 3000;
     private Handler mHandler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +29,14 @@ public class SearchingServiceActivity extends CustomActivity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 rippleBackground.stopRippleAnimation();
+                finish();
             }
         }, SPLASH_DURATION_MS);
 
+    }
 
-
-
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }

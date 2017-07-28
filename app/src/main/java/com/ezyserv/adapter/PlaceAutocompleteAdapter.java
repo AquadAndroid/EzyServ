@@ -46,7 +46,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 
     private GoogleApiClient mGoogleApiClient;
 
-    private LatLngBounds mBounds;
+//    private LatLngBounds mBounds;
 
     private int layout;
 
@@ -58,7 +58,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         this.mContext = context;
         layout = resource;
         mGoogleApiClient = googleApiClient;
-        mBounds = bounds;
+//        mBounds = bounds;
         mPlaceFilter = filter;
         this.mListener = (PlaceAutoCompleteInterface)mContext;
     }
@@ -76,9 +76,9 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     /**
      * Sets the bounds for all subsequent queries.
      */
-    public void setBounds(LatLngBounds bounds) {
-        mBounds = bounds;
-    }
+//    public void setBounds(LatLngBounds bounds) {
+//        mBounds = bounds;
+//    }
 
     @Override
     public Filter getFilter() {
@@ -122,7 +122,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
             PendingResult<AutocompletePredictionBuffer> results =
                     Places.GeoDataApi
                             .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
-                                    mBounds, mPlaceFilter);
+                                    null, mPlaceFilter);
 
             // This method should have been called off the main UI thread. Block and wait for at most 60s
             // for a result from the API.

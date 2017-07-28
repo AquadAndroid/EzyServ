@@ -1,23 +1,17 @@
 package com.ezyserv;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ezyserv.adapter.DummyCode;
-import com.ezyserv.adapter.PromoCodeAdapter;
 import com.ezyserv.custome.CustomActivity;
-
-import java.util.ArrayList;
 
 public class AddMoneyActivity extends CustomActivity {
     private Toolbar toolbar;
@@ -60,7 +54,26 @@ public class AddMoneyActivity extends CustomActivity {
         tv_five = (TextView) findViewById(R.id.money_five_hundred);
         tv_ten = (TextView) findViewById(R.id.money_thousand);
         done = (Button) findViewById(R.id.btn_done);
+        edt_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    value = 0;
+                }
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+
+        });
     }
 
 

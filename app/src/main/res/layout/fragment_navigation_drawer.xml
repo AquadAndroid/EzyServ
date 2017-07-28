@@ -14,8 +14,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_profile"
-            android:layout_width="@dimen/dim_90"
-            android:layout_height="@dimen/dim_90"
+            android:layout_width="@dimen/dim_75"
+            android:layout_height="@dimen/dim_75"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dim_15"
             android:src="@drawable/markzuckerberg"

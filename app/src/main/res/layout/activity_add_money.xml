@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,7 +50,10 @@
                 android:layout_toLeftOf="@+id/money_five_hundred"
                 android:background="@drawable/rect_bg_blue"
                 android:id="@+id/money_three_hundred"
-                android:padding="@dimen/dim_10"
+                android:paddingBottom="@dimen/dim_7"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:paddingTop="@dimen/dim_7"
                 android:text="+300"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/dim_18" />
@@ -64,7 +66,10 @@
                 android:layout_marginRight="@dimen/dim_15"
                 android:layout_toLeftOf="@+id/money_thousand"
                 android:background="@drawable/rect_bg_blue"
-                android:padding="@dimen/dim_10"
+                android:paddingBottom="@dimen/dim_7"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:paddingTop="@dimen/dim_7"
                 android:text="+500"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/dim_18" />
@@ -76,7 +81,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/rect_bg_blue"
-                android:padding="@dimen/dim_10"
+                android:paddingBottom="@dimen/dim_7"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:paddingTop="@dimen/dim_7"
                 android:text="+1000"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/dim_18" />
