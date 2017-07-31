@@ -19,7 +19,7 @@ public class DummyReviewData {
             "A badge on your site that helps users easily identify your site with the Google brand. The badge displays the seller rating score of 1-5 stars and can be placed on any page on your site.",
             "A badge on your site that helps users easily identify your site with the Google brand. The badge displays the seller rating score of 1-5 stars and can be placed on any page on your site.",
             "A badge on your site that helps users easily identify your site with the Google brand. The badge displays the seller rating score of 1-5 stars and can be placed on any page on your site."};
-    private static final Integer[] ServiceImage = {R.drawable.markzuckerberg, R.drawable.markzuckerberg, R.drawable.markzuckerberg, R.drawable.markzuckerberg, R.drawable.markzuckerberg};
+    private static final Integer[] ServiceImage = {R.drawable.paintimg, R.drawable.paintimg, R.drawable.paintimg, R.drawable.paintimg, R.drawable.paintimg};
 
 
     public static List<DummyReviewItem> getListData() {

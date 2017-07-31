@@ -42,7 +42,7 @@ public class FragmentDrawer extends Fragment {
     private TextView nav_item_home;
     private TextView nav_item_customer_support;
     private TextView nav_item_promo_offer;
-    private TextView nav_item_logout;
+   // private TextView nav_item_logout;
     private TextView nav_item_service_request;
     private RelativeLayout rl_profile;
     private RelativeLayout nav_item_chats;
@@ -97,7 +97,7 @@ public class FragmentDrawer extends Fragment {
         profile_name.setText(MyApp.getSharedPrefString("name"));
         nav_item_home = (TextView) layout.findViewById(R.id.nav_item_home);
         nav_item_customer_support = (TextView) layout.findViewById(R.id.nav_item_customer_support);
-        nav_item_logout = (TextView) layout.findViewById(R.id.nav_item_logout);
+       // nav_item_logout = (TextView) layout.findViewById(R.id.nav_item_logout);
         nav_item_switch_profile = (TextView) layout.findViewById(R.id.nav_item_switch_profile);
         nav_item_promo_offer = (TextView) layout.findViewById(R.id.nav_item_promo_offer);
         nav_item_service_request = (TextView) layout.findViewById(R.id.nav_item_service_request);
@@ -186,13 +186,13 @@ public class FragmentDrawer extends Fragment {
             }
         });
 
-        nav_item_logout.setOnClickListener(new View.OnClickListener() {
+      /*  nav_item_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerListener.onDrawerItemSelected(v, 7);
                 mDrawerLayout.closeDrawer(containerView);
             }
-        });
+        });*/
 
 
         return layout;

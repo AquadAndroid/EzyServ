@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:drawableLeft="@drawable/household"
+            android:drawableLeft="@drawable/home_inactive"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
             android:padding="@dimen/dim_10"
@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:drawableLeft="@drawable/household"
+            android:drawableLeft="@drawable/service_req_inactive"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
             android:padding="@dimen/dim_10"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/household"
+                android:drawableLeft="@drawable/chats_inactive"
                 android:drawablePadding="@dimen/dim_10"
                 android:gravity="center_vertical"
                 android:text="Chats"
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/household"
+                android:drawableLeft="@drawable/notifications_inactive"
                 android:drawablePadding="@dimen/dim_10"
                 android:gravity="center_vertical"
                 android:text="Notifications"
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/household"
+                android:drawableLeft="@drawable/wallet_inactive"
                 android:drawablePadding="@dimen/dim_10"
 
                 android:gravity="center_vertical"
@@ -179,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:drawableLeft="@drawable/household"
+            android:drawableLeft="@drawable/offers_"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
             android:padding="@dimen/dim_10"
@@ -192,7 +192,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:drawableLeft="@drawable/household"
+            android:drawableLeft="@drawable/switch_user"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
             android:padding="@dimen/dim_10"
@@ -200,7 +200,7 @@
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
-        <TextView
+     <!--   <TextView
             android:id="@+id/nav_item_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
             android:padding="@dimen/dim_10"
             android:text="Logout"
             android:textColor="@color/blue"
-            android:textSize="@dimen/dim_18" />
+            android:textSize="@dimen/dim_18" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackground"
-                    android:drawableLeft="@drawable/household"
+                    android:drawableLeft="@drawable/support"
                     android:drawablePadding="@dimen/dim_10"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dim_10"

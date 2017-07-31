@@ -155,7 +155,9 @@
         <activity
             android:name=".SavedAddressActivity"
             android:screenOrientation="sensorPortrait" />
-        <activity android:name=".WalletActivity" />
+        <activity
+            android:name=".WalletActivity"
+            android:screenOrientation="sensorPortrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -177,10 +179,23 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ServiceRequestActivity" />
-        <activity android:name=".CancelServiceActivity" />
-        <activity android:name=".FiltersActivity" />
-        <activity android:name=".ServicemanProfileActivity"></activity>
+        <activity
+            android:name=".ServiceRequestActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".CancelServiceActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".FiltersActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".ServicemanProfileActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".AllServicesActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity android:name=".DomesticActivity"
+            android:screenOrientation="sensorPortrait"></activity>
     </application>
 
 </manifest>

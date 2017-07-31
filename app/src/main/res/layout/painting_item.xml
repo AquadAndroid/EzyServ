@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="@dimen/dim_10">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/serviceman_img"
+                android:layout_width="@dimen/dim_100"
+                android:layout_height="@dimen/dim_110"
+                android:background="@null"
+                android:src="@drawable/paintimg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/serviceman_img"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dim_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/serviceman_img"
+                    android:maxLines="1"
+                    android:id="@+id/serviceman_name"
+                    android:text="Serviceman Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_16" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="127 Trywhitt Rd, Singapore 207551"
+                    android:textSize="@dimen/dim_12" />
+
+                <TextView
+                    android:id="@+id/tv_service_offered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:maxLines="2"
+                    android:text="Wall Painting | texture painting | waterproofing |\nInterior Works |Service Name"
+                    android:textSize="@dimen/dim_12" />
+
+              <RelativeLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/dim_10">
+                <TextView
+                    android:id="@+id/tv_avg_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
+                    android:drawableLeft="@drawable/rating_green"
+                    android:drawablePadding="@dimen/dim_5"
+                    android:text="4.5"
+                    android:textSize="@dimen/dim_15" />
+
+
+                <TextView
+                    android:id="@+id/tv_availability_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableLeft="@drawable/green_dot"
+                    android:drawablePadding="@dimen/dim_5"
+                    android:text="Available"
+                    android:textSize="@dimen/dim_15" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

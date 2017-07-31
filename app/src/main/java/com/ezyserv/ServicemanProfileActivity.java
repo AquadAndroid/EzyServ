@@ -49,13 +49,16 @@ public class ServicemanProfileActivity extends CustomActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        actionBar.setTitle("");
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle("");
+        collapsingToolbarLayout.setTitle("Serviceman Name");
 
 //        dynamicToolbarColor();
         toolbarTextAppearance();
+
+
         setupuiElement();
+
     }
 
 

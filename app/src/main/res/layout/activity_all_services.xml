@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.ezyserv.AllServicesActivity">
+    <include
+        layout="@layout/side_toolbar"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dim_10"
+            android:id="@+id/rel_domestic"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/domestic"
+                android:id="@+id/icn_domestic"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Domestic"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_20"
+                android:id="@+id/tv_serv_domestic"
+                android:layout_marginLeft="@dimen/dim_10"
+               android:layout_toRightOf="@+id/icn_domestic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_serv_domestic"
+                android:layout_toRightOf="@+id/icn_domestic"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:id="@+id/counter_domestic"
+                android:text="36 services"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_details"
+                    android:background="@null"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_1"
+
+            android:background="#D8D8D8" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel_construction"
+            android:padding="@dimen/dim_10"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/construction"
+                android:id="@+id/icn_construction"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Construction"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_20"
+                android:id="@+id/tv_serv_construction"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:layout_toRightOf="@+id/icn_construction"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_serv_construction"
+                android:layout_toRightOf="@+id/icn_construction"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:id="@+id/counter_construction"
+                android:text="12 services"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/view_details"
+                android:background="@null"
+
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_1"
+
+            android:background="#D8D8D8" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel_events"
+            android:padding="@dimen/dim_10"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/events"
+                android:id="@+id/icn_events"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Events"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_20"
+                android:id="@+id/tv_serv_events"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:layout_toRightOf="@+id/icn_events"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_serv_events"
+                android:layout_toRightOf="@+id/icn_events"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:id="@+id/counter_events"
+                android:text="20 services"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/view_details"
+                android:background="@null"
+
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_1"
+
+            android:background="#D8D8D8" />
+</LinearLayout>
+</LinearLayout>

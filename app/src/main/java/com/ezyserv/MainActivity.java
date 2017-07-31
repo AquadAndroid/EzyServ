@@ -357,6 +357,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
 
+            startActivity(new Intent(MainActivity.this, AllServicesActivity.class));
+
         } else if (v.getId() == R.id.rl_tab_3) {
             Tv_search.setSelected(false);
             Tv_service.setSelected(false);
@@ -391,7 +393,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
-            startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
+          //  startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
+            startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));
 
         } else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
