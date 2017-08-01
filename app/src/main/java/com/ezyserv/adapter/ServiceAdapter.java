@@ -1,14 +1,17 @@
 package com.ezyserv.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ezyserv.Painting;
 import com.ezyserv.R;
 
 import java.util.ArrayList;
@@ -24,13 +27,19 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.DataHold
     private LayoutInflater inflater;
     private ItemClickCallback itemclickcallback;
     private int count = 0;
-
+    private Context context;
     public interface ItemClickCallback {
         void onItemClick(int p);
 
         void onSecondaryIconClick(int p);
 
     }
+
+
+
+
+
+
 
     public void SetItemClickCallback(final ItemClickCallback itemClickCallback) {
         this.itemclickcallback = itemClickCallback;
@@ -40,6 +49,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.DataHold
     public ServiceAdapter(List<DummyServiceItem> listdata, Context c) {
         this.inflater = LayoutInflater.from(c);
         this.listdata = listdata;
+        this.context = c;
     }
 
     @Override
@@ -64,6 +74,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.DataHold
 
 
     class DataHolder extends RecyclerView.ViewHolder {
+        RelativeLayout Domestic_item;
         TextView ServiceName;
         ImageView ServiceIcon;
 
@@ -72,7 +83,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.DataHold
             super(itemView);
             ServiceIcon=(ImageView)itemView.findViewById(R.id.service_icon);
             ServiceName=(TextView)itemView.findViewById(R.id.service_name);
-
+            Domestic_item=(RelativeLayout)itemView.findViewById(R.id.rel_domestic_item);
+            Domestic_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(new Intent(context, Painting.class));
+                }
+            });
 
 
         }

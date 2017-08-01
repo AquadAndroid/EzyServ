@@ -194,8 +194,10 @@
         <activity
             android:name=".AllServicesActivity"
             android:screenOrientation="sensorPortrait" />
-        <activity android:name=".DomesticActivity"
-            android:screenOrientation="sensorPortrait"></activity>
+        <activity
+            android:name=".DomesticActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity android:name=".ScheduleServiceActivity"></activity>
     </application>
 
 </manifest>

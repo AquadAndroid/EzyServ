@@ -28,7 +28,7 @@ public class DummyPaintingData {
             "Wall Painting | texture painting | waterproofing | Interior Works |Service Name",
             "Wall Painting | texture painting | waterproofing | Interior Works |Service Name"};
     private static final String[] ServiceRating = {"4.5","4.5","4.5","4.5","4.5","4.5","4.5"};
-    private static final String[] AvailabilityMode = {"Available","Busy","Available","Busy","Available","Available"};
+    private static final String[] AvailabilityMode = {"Available","Busy","Available","Busy","Available","Available","Available"};
 
 
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E1E3F2"
+    tools:context="com.ezyserv.ScheduleServiceActivity">
+
+    <include layout="@layout/side_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_continue"
+        android:layout_below="@+id/side_toolbar"
+        android:paddingTop="@dimen/dim_10"
+        android:background="#E1E3F2"
+        android:orientation="vertical">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="13 April'17"
+    android:textSize="@dimen/dim_18"
+    android:textColor="@color/black"
+    android:id="@+id/tv_current_date"
+    android:layout_gravity="center_horizontal"
+    />
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@color/white"
+           android:padding="@dimen/dim_20"
+           android:layout_marginTop="@dimen/dim_10"
+           >
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rect_bg_cal"
+    android:layout_centerInParent="true"
+    android:padding="@dimen/dim_10"
+    android:text="SELECT DATE"
+    android:textColor="@color/black"
+    />
+           </RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:padding="@dimen/dim_10"
+        android:text="CONTINUE"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dim_20" />
+</RelativeLayout>

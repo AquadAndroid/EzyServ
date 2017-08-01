@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ECE9D8"
     tools:context="com.ezyserv.Painting">
 
     <include layout="@layout/side_toolbar" />
@@ -12,23 +13,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/overlay_on_map"
+        android:background="#ECE9D8"
         android:orientation="vertical"
-        android:padding="@dimen/dim_10">
+        android:layout_below="@+id/side_toolbar"
+        android:paddingLeft="@dimen/dim_10"
+        android:paddingRight="@dimen/dim_10"
+        >
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_painting"
             android:layout_width="match_parent"
+            android:background="#ECE9D8"
+
             android:layout_height="wrap_content" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/float_sort_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="@dimen/dim_10"
-            android:src="@drawable/sort_filter" />
-    </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/float_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dim_18"
+        android:src="@drawable/sort_filter" />
+</RelativeLayout>

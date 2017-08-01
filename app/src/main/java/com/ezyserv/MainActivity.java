@@ -27,12 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ezyserv.adapter.SpinnerAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
@@ -83,7 +86,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private ImageButton navBtn, btn_search;
 
     FloatingActionButton Show_all, Domestic, Construction, Events;
-
+    String[] SpinnerText={"Wallet","Cash"};
+    int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
+    private Spinner wallet_cash_spiner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +106,21 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
 //            v.setPadding(getStatusBarHeight(), getStatusBarHeight(), getStatusBarHeight(), 0);
         }
+        wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
+         wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+             @Override
+             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                 Toast.makeText(getApplicationContext(), SpinnerText[position], Toast.LENGTH_LONG).show();
+             }
 
+             @Override
+             public void onNothingSelected(AdapterView<?> parent) {
+
+             }
+         });
+
+        SpinnerAdapter customAdapter=new SpinnerAdapter(getApplicationContext(),SpinnerIcons,SpinnerText);
+        wallet_cash_spiner.setAdapter(customAdapter);
         setupUiElements();
         locationProvider = new LocationProvider(this, this, this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -469,6 +488,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         Domestic = (FloatingActionButton) findViewById(R.id.domestic);
         Construction = (FloatingActionButton) findViewById(R.id.construction);
         Events = (FloatingActionButton) findViewById(R.id.events);
+
+
+       /* wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
+       // wallet_cash_spiner.setOnItemSelectedListener(this);*/
+
+
 
         setClick(R.id.all_category);
         setClick(R.id.domestic);
