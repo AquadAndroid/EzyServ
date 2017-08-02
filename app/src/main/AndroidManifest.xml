@@ -125,7 +125,8 @@
             android:name=".PaymentSelectionActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".SearchingServiceActivity" />
+        <activity android:name=".SearchingServiceActivity"
+            android:screenOrientation="sensorPortrait"/>
 
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
@@ -197,7 +198,8 @@
         <activity
             android:name=".DomesticActivity"
             android:screenOrientation="sensorPortrait" />
-        <activity android:name=".ScheduleServiceActivity"></activity>
+        <activity android:name=".ScheduleServiceActivity"
+            android:screenOrientation="sensorPortrait"></activity>
     </application>
 
 </manifest>

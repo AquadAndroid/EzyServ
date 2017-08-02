@@ -182,7 +182,7 @@
                                 android:layout_below="@+id/construction"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/dim_20"
-                                android:text="Construction"
+                                android:text="My Care"
                                 android:textColor="@color/text_color_volet"
                                 android:textSize="@dimen/dim_12" />
                         </RelativeLayout>
@@ -266,6 +266,7 @@
         android:layout_weight=".7"
         android:textColor="@color/white"
         android:text="BOOK NOW"
+        android:id="@+id/tv_book_now"
         android:textStyle="bold"
         android:gravity="center"
         android:textSize="@dimen/dim_18"

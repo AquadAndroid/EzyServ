@@ -14,35 +14,138 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_continue"
         android:layout_below="@+id/side_toolbar"
-        android:paddingTop="@dimen/dim_10"
         android:background="#E1E3F2"
-        android:orientation="vertical">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="13 April'17"
-    android:textSize="@dimen/dim_18"
-    android:textColor="@color/black"
-    android:id="@+id/tv_current_date"
-    android:layout_gravity="center_horizontal"
-    />
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:background="@color/white"
-           android:padding="@dimen/dim_20"
-           android:layout_marginTop="@dimen/dim_10"
-           >
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rect_bg_cal"
-    android:layout_centerInParent="true"
-    android:padding="@dimen/dim_10"
-    android:text="SELECT DATE"
-    android:textColor="@color/black"
-    />
-           </RelativeLayout>
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dim_10">
+
+        <TextView
+            android:id="@+id/tv_selected_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="13 April'17"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_18" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_15"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/dim_25"
+            android:paddingTop="@dimen/dim_25">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/rect_bg_cal"
+                android:drawableLeft="@drawable/icn_select_date_black"
+                android:drawablePadding="@dimen/dim_10"
+                android:gravity="center"
+                android:id="@+id/tv_select_date"
+                android:paddingBottom="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_18"
+                android:paddingRight="@dimen/dim_18"
+                android:paddingTop="@dimen/dim_10"
+                android:text="SELECT DATE"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_18" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_20"
+            android:layout_marginTop="@dimen/dim_15"
+            android:drawableLeft="@drawable/icn_time_slot_black"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center"
+            android:text="TIME SLOT"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_18" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:scrollbars="none">
+
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dim_20"
+                android:paddingLeft="@dimen/dim_10"
+                android:paddingRight="@dimen/dim_10"
+                android:paddingTop="@dimen/dim_20">
+
+                <RadioButton
+                    android:id="@+id/time_slot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+
+                    android:text="09:00 AM - 12:00 PM" />
+
+                <RadioButton
+                    android:id="@+id/time_slot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:layout_gravity="center_vertical"
+                    android:text="12:00 PM - 03:00 PM" />
+
+                <RadioButton
+                    android:id="@+id/time_slot3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:text="03:00 PM - 06:00 PM" />
+
+                <RadioButton
+                    android:id="@+id/time_slot4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10"
+                    android:layout_gravity="center_vertical"
+                    android:text="06:00 PM - 09:00 PM" />
+            </RadioGroup>
+        </HorizontalScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_20"
+            android:layout_marginTop="@dimen/dim_15"
+            android:drawableLeft="@drawable/icn_address_black"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center"
+            android:text="ADDRESS "
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_18" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/dim_15"
+            android:padding="@dimen/dim_10"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Address"
+            android:textColor="@color/pink"
+            android:textStyle="bold"
+            android:id="@+id/tv_add_new_add"
+            android:drawablePadding="@dimen/dim_10"
+            android:textSize="@dimen/dim_20"
+            android:drawableLeft="@drawable/add_new"
+            />
+            </LinearLayout>
     </LinearLayout>
 
     <Button

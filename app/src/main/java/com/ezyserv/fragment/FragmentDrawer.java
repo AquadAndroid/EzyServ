@@ -39,10 +39,11 @@ public class FragmentDrawer extends Fragment {
     private FragmentDrawerListener drawerListener;
     private TextView profile_name;
     private TextView nav_item_switch_profile;
-    private TextView nav_item_home;
-    private TextView nav_item_customer_support;
+    private TextView nav_item_scheduled;
+    //private TextView nav_item_customer_support;
+    private TextView nav_item_invite_friends;
     private TextView nav_item_promo_offer;
-   // private TextView nav_item_logout;
+    private TextView nav_item_fav;
     private TextView nav_item_service_request;
     private RelativeLayout rl_profile;
     private RelativeLayout nav_item_chats;
@@ -95,9 +96,9 @@ public class FragmentDrawer extends Fragment {
       //  recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile_name = (TextView) layout.findViewById(R.id.profile_name);
         profile_name.setText(MyApp.getSharedPrefString("name"));
-        nav_item_home = (TextView) layout.findViewById(R.id.nav_item_home);
-        nav_item_customer_support = (TextView) layout.findViewById(R.id.nav_item_customer_support);
-       // nav_item_logout = (TextView) layout.findViewById(R.id.nav_item_logout);
+        nav_item_scheduled = (TextView) layout.findViewById(R.id.nav_item_scheduled);
+        nav_item_invite_friends = (TextView) layout.findViewById(R.id.nav_item_invite_friends);
+        nav_item_fav = (TextView) layout.findViewById(R.id.nav_item_fav);
         nav_item_switch_profile = (TextView) layout.findViewById(R.id.nav_item_switch_profile);
         nav_item_promo_offer = (TextView) layout.findViewById(R.id.nav_item_promo_offer);
         nav_item_service_request = (TextView) layout.findViewById(R.id.nav_item_service_request);
@@ -128,7 +129,7 @@ public class FragmentDrawer extends Fragment {
             }
         });
 
-        nav_item_home.setOnClickListener(new View.OnClickListener() {
+        nav_item_scheduled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerListener.onDrawerItemSelected(v, 0);
@@ -174,25 +175,25 @@ public class FragmentDrawer extends Fragment {
         nav_item_switch_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerListener.onDrawerItemSelected(v, 6);
-                mDrawerLayout.closeDrawer(containerView);
-            }
-        });
-        nav_item_customer_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 drawerListener.onDrawerItemSelected(v, 8);
                 mDrawerLayout.closeDrawer(containerView);
             }
         });
-
-      /*  nav_item_logout.setOnClickListener(new View.OnClickListener() {
+       nav_item_invite_friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerListener.onDrawerItemSelected(v, 7);
                 mDrawerLayout.closeDrawer(containerView);
             }
-        });*/
+        });
+
+        nav_item_fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerListener.onDrawerItemSelected(v, 6);
+                mDrawerLayout.closeDrawer(containerView);
+            }
+        });
 
 
         return layout;

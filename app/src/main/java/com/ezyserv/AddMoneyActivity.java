@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -90,6 +91,7 @@ public class AddMoneyActivity extends CustomActivity {
             edt_amount.setText("" + value);
         } else if (v.getId() == R.id.btn_done) {
             Toast.makeText(this, "Money Added Successfully", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(AddMoneyActivity.this, MainActivity.class));
         }
     }
 

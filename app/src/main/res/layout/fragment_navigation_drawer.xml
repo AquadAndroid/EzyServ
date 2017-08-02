@@ -41,21 +41,16 @@
         android:layout_height="match_parent"
         android:background="@null"
         android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/nav_item_home"
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/nav_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:drawableLeft="@drawable/home_inactive"
-            android:drawablePadding="@dimen/dim_10"
-            android:gravity="center_vertical"
-            android:padding="@dimen/dim_10"
-            android:text="Home"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/dim_18" />
+            android:background="@null"
 
+            android:orientation="vertical">
         <TextView
             android:id="@+id/nav_item_service_request"
             android:layout_width="match_parent"
@@ -66,6 +61,19 @@
             android:gravity="center_vertical"
             android:padding="@dimen/dim_10"
             android:text="My Service Request"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
+
+        <TextView
+            android:id="@+id/nav_item_scheduled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableLeft="@drawable/ic_action_schedule"
+            android:drawablePadding="@dimen/dim_10"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dim_10"
+            android:text="Scheduled"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
@@ -117,14 +125,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/notifications_inactive"
+                android:drawableLeft="@drawable/ic_action_history"
                 android:drawablePadding="@dimen/dim_10"
                 android:gravity="center_vertical"
-                android:text="Notifications"
+                android:text="History"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/dim_18" />
 
-            <TextView
+        <!--    <TextView
                 android:id="@+id/count_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -137,7 +145,7 @@
                 android:paddingTop="@dimen/dim_3"
                 android:text="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dim_15" />
+                android:textSize="@dimen/dim_15" />-->
         </RelativeLayout>
 
         <RelativeLayout
@@ -186,20 +194,34 @@
             android:text="Promos &amp; Offer"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
-
+            <TextView
+                android:id="@+id/nav_item_fav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:drawableLeft="@drawable/ic_action_fav"
+                android:drawablePadding="@dimen/dim_10"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dim_10"
+                android:text="Favourites"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dim_18" />
         <TextView
-            android:id="@+id/nav_item_switch_profile"
+            android:id="@+id/nav_item_invite_friends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:drawableLeft="@drawable/switch_user"
+            android:drawableLeft="@drawable/ic_action_invite"
             android:drawablePadding="@dimen/dim_10"
             android:gravity="center_vertical"
             android:padding="@dimen/dim_10"
-            android:text="Switch to Service Provider"
+            android:text="Invite Friends"
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
+
+</LinearLayout>
+        </ScrollView>
      <!--   <TextView
             android:id="@+id/nav_item_logout"
             android:layout_width="match_parent"
@@ -224,15 +246,15 @@
                 android:background="#C0CFF5">
 
                 <TextView
-                    android:id="@+id/nav_item_customer_support"
+                    android:id="@+id/nav_item_switch_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackground"
-                    android:drawableLeft="@drawable/support"
+                    android:drawableLeft="@drawable/switch_user"
                     android:drawablePadding="@dimen/dim_10"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dim_10"
-                    android:text="Contact Customer support"
+                    android:text="Switch to Service Provider"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/dim_18" />
             </RelativeLayout>

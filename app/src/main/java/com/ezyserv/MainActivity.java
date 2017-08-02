@@ -89,6 +89,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     String[] SpinnerText={"Wallet","Cash"};
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
     private Spinner wallet_cash_spiner;
+    private TextView tv_book_now;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -395,7 +396,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_notification.setTextColor(Color.parseColor("#ED365B"));
             Tv_account.setTextColor(Color.parseColor("#3949AB"));
 //            openImage();
-
+            startActivity(new Intent(MainActivity.this, NotificationActivity.class));
         } else if (v.getId() == R.id.rl_tab_4) {
             Tv_search.setSelected(false);
             Tv_service.setSelected(false);
@@ -414,8 +415,15 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
           //  startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
             startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));
+           // startActivity(new Intent(MainActivity.this, ScheduleServiceActivity.class));
 
-        } else if (v == navBtn) {
+        }else if(v.getId() == R.id.tv_book_now) {
+
+        startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
+
+
+        }
+        else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
 
         } else if (v == txt_location) {
@@ -488,12 +496,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         Domestic = (FloatingActionButton) findViewById(R.id.domestic);
         Construction = (FloatingActionButton) findViewById(R.id.construction);
         Events = (FloatingActionButton) findViewById(R.id.events);
-
+        tv_book_now=(TextView)findViewById(R.id.tv_book_now);
 
        /* wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
        // wallet_cash_spiner.setOnItemSelectedListener(this);*/
 
 
+        setClick(R.id.tv_book_now);
 
         setClick(R.id.all_category);
         setClick(R.id.domestic);
@@ -732,25 +741,36 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public void onDrawerItemSelected(View view, int position) {
 
         if (position == 0) {
-
+          //  MyApp.showMassage(getContext(), "will go to my service requests");
+            startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
         } else if (position == 1) {
             MyApp.showMassage(getContext(), "will go to my service requests");
         } else if (position == 2) {
             startActivity(new Intent(getContext(), ChatActivity.class));
         } else if (position == 3) {
-            startActivity(new Intent(MainActivity.this, NotificationActivity.class));
+            MyApp.showMassage(getContext(), "will go to History");
         } else if (position == 4) {
             startActivity(new Intent(MainActivity.this, WalletActivity.class));
         } else if (position == 5) {
             MyApp.showMassage(getContext(), "will go to promos and offers");
         } else if (position == 6) {
-            MyApp.showMassage(getContext(), "will switch user mode");
-        } else if (position == 8) {
-            MyApp.showMassage(getContext(), "will go to customer support");
+            MyApp.showMassage(getContext(), "will go to Favourites");
         } else if (position == 7) {
-            MyApp.setStatus(AppConstant.IS_LOGIN, false);
-            startActivity(new Intent(getContext(), SignUpSelection.class));
-            finishAffinity();
+
+            String shareBody = "https://play.google.com/store/apps/details?" + "id=************************";
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "APP NAME (Open it in Google Play Store to Download the Application)");
+
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+
+
+
+            //  MyApp.showMassage(getContext(), "will invite your friends");
+        } else if (position == 8) {
+            MyApp.showMassage(getContext(), "will switch to service mode");
         }
     }
 

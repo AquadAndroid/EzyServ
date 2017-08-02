@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/blue"
-            android:checked="true"
+
             android:paddingLeft="@dimen/dim_10"
             android:text="Cash"
             android:textSize="@dimen/dim_18" />
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:buttonTint="@color/blue"
-                android:checked="true"
+
                 android:paddingLeft="@dimen/dim_10"
                 android:text="Wallet"
                 android:textSize="@dimen/dim_18" />

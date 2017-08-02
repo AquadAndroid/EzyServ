@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -36,8 +37,8 @@ public class PaymentSelectionActivity extends CustomActivity {
     private RecyclerView coupons_recy;
     private RadioButton cash, wallet;
     private EditText promocode;
-    private TextView wallet_money,recharge_wallet, remove_coupon;
-    private Button  done;
+    private TextView wallet_money, recharge_wallet, remove_coupon;
+    private Button done;
 
     private PromoCodeAdapter adapter;
     private ArrayList listdata;
@@ -59,6 +60,26 @@ public class PaymentSelectionActivity extends CustomActivity {
         actionBar.setTitle("");
 
         setupuiElement();
+        cash.setChecked(true);
+
+
+        cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (cash.isChecked()) {
+                    wallet.setChecked(false);
+                }
+            }
+        });
+
+        wallet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(wallet.isChecked()){
+                    cash.setChecked(false);
+                }
+            }
+        });
     }
 
 
@@ -67,8 +88,6 @@ public class PaymentSelectionActivity extends CustomActivity {
         setTouchNClick(R.id.btn_rec_wallet);
         setTouchNClick(R.id.btn_remove_coupon);
         setTouchNClick(R.id.btn_done);
-
-
 
 
         cash = (RadioButton) findViewById(R.id.rb_cash);
@@ -89,6 +108,7 @@ public class PaymentSelectionActivity extends CustomActivity {
 
         adapter = new PromoCodeAdapter(listdata, this);
         coupons_recy.setAdapter(adapter);
+
 
     }
 
@@ -119,7 +139,8 @@ public class PaymentSelectionActivity extends CustomActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(PaymentSelectionActivity.this, SearchingServiceActivity.class));
+                startActivity(new Intent(PaymentSelectionActivity.this, AddMoneyActivity.class));
+                finish();
             }
         });
 
@@ -130,7 +151,6 @@ public class PaymentSelectionActivity extends CustomActivity {
         lp.height = lp.WRAP_CONTENT;
 
         dialog.getWindow().setAttributes(lp);
-
 
 
         dialog.show();
