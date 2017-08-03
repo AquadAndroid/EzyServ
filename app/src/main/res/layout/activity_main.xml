@@ -232,7 +232,19 @@
                         android:hint="Enter YOur Loction"
                         android:padding="@dimen/dim_10" />
                 </android.support.v7.widget.CardView>
-
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/card_book"
+                    android:layout_marginLeft="@dimen/dim_15"
+                    android:layout_marginRight="@dimen/dim_15"
+                    android:layout_marginBottom="@dimen/dim_18"
+                    android:background="@color/pink"
+                    app:cardCornerRadius="@dimen/dim_2"
+                    app:cardElevation="@dimen/dim_5">
+                    <include
+                        layout="@layout/available_services"/>
+                    </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -240,9 +252,14 @@
                     android:layout_marginLeft="@dimen/dim_10"
                     android:layout_marginRight="@dimen/dim_10"
                     android:layout_marginBottom="@dimen/dim_18"
+                    android:id="@+id/card_book"
                     android:background="@color/pink"
                     app:cardCornerRadius="@dimen/dim_2"
                     app:cardElevation="@dimen/dim_5">
+
+
+
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
