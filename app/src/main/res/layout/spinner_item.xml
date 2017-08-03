@@ -26,6 +26,7 @@
         android:layout_gravity="center"
         android:padding="@dimen/activity_horizontal_margin"
         android:text=""
+        android:textSize="@dimen/dim_14"
         android:textColor="@color/white" />
     </LinearLayout>
     <View

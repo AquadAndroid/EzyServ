@@ -1,253 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.ezyserv.ServicemanProfileActivity">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_bottom"
-        android:fitsSystemWindows="true">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        android:orientation="vertical">
 
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp">
-
-                    <ImageView
-                        android:id="@+id/img_service"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:scaleType="centerCrop"
-                        app:layout_collapseMode="parallax"
-                        app:layout_collapseParallaxMultiplier="0.7" />
-
-                 <!--   <TextView
-                        android:id="@+id/tv_serviceman_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="@dimen/dim_10"
-                        android:padding="@dimen/dim_10"
-                        android:text="Serviceman Name"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/dim_20"
-                        android:textStyle="bold" />-->
-
-                    <TextView
-                        android:id="@+id/tv_avg_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|right"
-                        android:layout_marginBottom="@dimen/dim_25"
-                        android:layout_marginRight="@dimen/dim_15"
-                        android:background="@drawable/curvey_bg_green"
-                        android:drawableLeft="@drawable/rating_yellow"
-                        android:drawablePadding="@dimen/dim_5"
-                        android:paddingLeft="@dimen/dim_10"
-                        android:paddingRight="@dimen/dim_10"
-                        android:text="4.3"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/dim_15" />
-
-                    <TextView
-                        android:id="@+id/tv_availability_mode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|right"
-                        android:layout_marginBottom="@dimen/dim_10"
-                        android:layout_marginRight="@dimen/dim_15"
-                        android:layout_marginTop="@dimen/dim_20"
-                        android:background="@drawable/curvey_bg_white"
-                        android:drawableLeft="@drawable/green_dot"
-                        android:drawablePadding="@dimen/dim_5"
-                        android:paddingLeft="@dimen/dim_10"
-                        android:paddingRight="@dimen/dim_10"
-                        android:text="Available"
-                        android:textSize="@dimen/dim_15" />
-                </FrameLayout>
-
-                <!--<include layout="@layout/toolbar" />-->
-                  <android.support.v7.widget.Toolbar
-                      android:id="@+id/toolbar"
-                      android:layout_width="match_parent"
-                      android:layout_height="?attr/actionBarSize"
-                      app:layout_collapseMode="pin"
-                      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-
-                  </android.support.v7.widget.Toolbar>
-
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:padding="@dimen/dim_10"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_above="@+id/ll_bottom"
+            android:fitsSystemWindows="true">
 
-            <LinearLayout
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_230"
+                android:fitsSystemWindows="true">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dim_230"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="@color/colorPrimary"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dim_230">
+
+                        <ImageView
+                            android:id="@+id/img_service"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dim_230"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/profile_bg"
+                            app:layout_collapseMode="parallax"
+                            app:layout_collapseParallaxMultiplier="0.7" />
+                        <!--   <TextView
+                            android:id="@+id/tv_serviceman_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginBottom="@dimen/dim_10"
+                            android:padding="@dimen/dim_10"
+                            android:text="Serviceman Name"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dim_20"
+                            android:textStyle="bold" />-->
+
+                        <TextView
+                            android:id="@+id/tv_avg_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dim_50"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginRight="@dimen/dim_15"
+                            android:background="@drawable/curvey_bg_green"
+                            android:drawableLeft="@drawable/rating_yellow"
+                            android:drawablePadding="@dimen/dim_5"
+                            android:paddingLeft="@dimen/dim_10"
+                            android:paddingRight="@dimen/dim_10"
+                            android:text="4.3"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dim_15" />
+
+                        <TextView
+                            android:id="@+id/tv_availability_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="top|right"
+                            android:layout_marginBottom="@dimen/dim_10"
+                            android:layout_marginRight="@dimen/dim_15"
+                            android:layout_marginTop="@dimen/dim_20"
+                            android:background="@drawable/curvey_bg_white"
+                            android:drawableLeft="@drawable/green_dot"
+                            android:drawablePadding="@dimen/dim_5"
+                            android:paddingLeft="@dimen/dim_10"
+                            android:paddingRight="@dimen/dim_10"
+                            android:text="Available"
+                            android:textSize="@dimen/dim_15" />
+
+
+                    </RelativeLayout>
+
+                    <!--<include layout="@layout/toolbar" />-->
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+
+                    </android.support.v7.widget.Toolbar>
+
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/services_offered"
-                    android:drawablePadding="@dimen/dim_10"
-                    android:text="Services Offered"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/dim_20"
-                     />
-
-                <TextView
-                    android:id="@+id/tv_service_offered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dim_30"
-                    android:layout_marginTop="@dimen/dim_8"
-                    android:text="Wall Painting | texture painting | waterproofing |\nInterior Works |Service Name"
-                    android:textSize="@dimen/dim_12" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dim_10">
-
-                    <TextView
-                        android:id="@+id/tv_address_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/icn_address"
-                        android:drawablePadding="@dimen/dim_10"
-                        android:text="Address"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dim_20"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_distance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="3 Miles from you"
-                        android:textSize="@dimen/dim_12" />
-
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_address_label"
-                        android:layout_marginLeft="@dimen/dim_30"
-                        android:layout_marginTop="@dimen/dim_10"
-                        android:text="23 Santa Cruz Street, Toa Payoh -232998"
-                        android:textSize="@dimen/dim_15" />
-                </RelativeLayout>
-
-                <Button
-                    android:id="@+id/btn_book_services"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dim_15"
-                    android:background="@drawable/rect_pink"
-                    android:padding="@dimen/dim_10"
-                    android:text="BOOK SERVICE"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dim_20" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/dim_10">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dim_10"
-                    android:drawableLeft="@drawable/icn_additional_info"
-                    android:drawablePadding="@dimen/dim_10"
-                    android:text="Additional Information "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/dim_20"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/services_offered"
+                        android:drawablePadding="@dimen/dim_10"
+                        android:text="Services Offered"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dim_16"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_additional_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dim_30"
-                    android:layout_marginTop="@dimen/dim_7"
-                    android:text="www.servicesonline.com"
-                    android:textSize="@dimen/dim_15" />
+                    <TextView
+                        android:id="@+id/tv_service_offered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_30"
+                        android:layout_marginTop="@dimen/dim_8"
+                        android:text="Wall Painting | texture painting | waterproofing |\nInterior Works |Service Name"
+                        android:textSize="@dimen/dim_12" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dim_2"
-                    android:layout_marginTop="@dimen/dim_10"
-                    android:background="#D8D8D8" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dim_10">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dim_10"
-                    android:text="Service Gallery"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/dim_20"
-                    />
+                        <TextView
+                            android:id="@+id/tv_address_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/icn_address"
+                            android:drawablePadding="@dimen/dim_10"
+                            android:text="Address"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dim_16"
+                            android:textStyle="bold" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/service_gallery_img"
-                    android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/tv_distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="3 Miles from you"
+                            android:textSize="@dimen/dim_12" />
 
-                    android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_address_label"
+                            android:layout_marginLeft="@dimen/dim_30"
+                            android:layout_marginTop="@dimen/dim_10"
+                            android:text="23 Santa Cruz Street, Toa Payoh -232998"
+                            android:textSize="@dimen/dim_15" />
+                    </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dim_2"
-                    android:layout_marginTop="@dimen/dim_10"
-                    android:background="#D8D8D8" />
+                    <Button
+                        android:id="@+id/btn_book_services"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dim_15"
+                        android:background="@drawable/rect_pink"
+                        android:padding="@dimen/dim_10"
+                        android:text="BOOK SERVICE"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dim_20" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dim_10"
-                    android:text="Customer Reviews"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/dim_20"
-                     />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:drawableLeft="@drawable/icn_additional_info"
+                        android:drawablePadding="@dimen/dim_10"
+                        android:text="Additional Information "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dim_16"
+                        android:textStyle="bold" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recy_cust_review"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dim_10" />
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+                    <TextView
+                        android:id="@+id/tv_additional_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_30"
+                        android:layout_marginTop="@dimen/dim_7"
+                        android:text="www.servicesonline.com"
+                        android:textSize="@dimen/dim_15" />
 
-    </android.support.design.widget.CoordinatorLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dim_2"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:background="#D8D8D8" />
 
-</LinearLayout>
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:text="Service Gallery"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dim_18" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/service_gallery_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dim_2"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:background="#D8D8D8" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:text="Customer Reviews"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dim_18" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recy_cust_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dim_10" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
+
+    <br.com.jeancsanchez.photoviewslider.PhotosViewSlider
+        android:id="@+id/photosViewSlider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_300"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

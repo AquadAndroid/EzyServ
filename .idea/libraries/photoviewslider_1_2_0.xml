@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="photoviewslider-1.2.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/64e44fe07f051f5dcb7e5705ca3921c40db367e2/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/64e44fe07f051f5dcb7e5705ca3921c40db367e2/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.jeancsanchez.photoviewslider/photoviewslider/1.2.0/5fe6746d5bf1a90c35aa8f958c47e2a0d75e0d97/photoviewslider-1.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -35,7 +35,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daprlabs.cardstack.SwipeDeck;
 import com.ezyserv.adapter.SpinnerAdapter;
+import com.ezyserv.adapter.SwipeDeckAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
@@ -54,13 +56,19 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -111,7 +119,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
          wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 Toast.makeText(getApplicationContext(), SpinnerText[position], Toast.LENGTH_LONG).show();
+//                 Toast.makeText(getApplicationContext(), SpinnerText[position], Toast.LENGTH_LONG).show();
              }
 
              @Override
@@ -144,7 +152,37 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 (DrawerLayout) findViewById(R.id.drawer_layout), null);
         drawerFragment.setDrawerListener(this);
 
+        SwipeDeck cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+        cardStack.setHardwareAccelerationEnabled(true);
+        List<String> dataList = new ArrayList<>();
+        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(dataList, this);
+        cardStack.setAdapter(adapter);
+        cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
+            @Override
+            public void cardSwipedLeft(int position) {
+                Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+            }
 
+            @Override
+            public void cardSwipedRight(int position) {
+                Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+            }
+
+            @Override
+            public void cardsDepleted() {
+                Log.i("MainActivity", "no more cards");
+            }
+
+            @Override
+            public void cardActionDown() {
+
+            }
+
+            @Override
+            public void cardActionUp() {
+
+            }
+        });
         txt_location = (TextView) findViewById(R.id.txt_location);
         txt_address = (TextView) findViewById(R.id.txt_address);
         setTouchNClick(R.id.txt_address);
@@ -414,7 +452,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
           //  startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
-            startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));
+
            // startActivity(new Intent(MainActivity.this, ScheduleServiceActivity.class));
 
         }else if(v.getId() == R.id.tv_book_now) {
@@ -587,7 +625,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             // position on right bottom
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 30, 120);
+            layoutParams.setMargins(0, 0, 30, 300);
         }
     }
 
@@ -595,7 +633,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private void changeMap(Location location) {
 
         Log.d(TAG, "Reaching map" + mMap);
-
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -633,10 +670,69 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     }
 
+    private List<Marker> markers = new ArrayList<>();
 
+    private LatLngBounds adjustBoundsForMaxZoomLevel(LatLngBounds bounds) {
+        LatLng sw = bounds.southwest;
+        LatLng ne = bounds.northeast;
+        double deltaLat = Math.abs((sw.latitude - this.sourceLocation.latitude) - (ne.latitude - this.sourceLocation.latitude));
+        double deltaLon = Math.abs((sw.longitude - this.sourceLocation.longitude) - (ne.longitude - this.sourceLocation.longitude));
+        LatLng latLng;
+        LatLng ne2;
+        LatLngBounds latLngBounds;
+        if (deltaLat < 0.005d) {
+            latLng = new LatLng(sw.latitude - (0.005d - (deltaLat / 2.0d)), sw.longitude);
+            ne2 = new LatLng(ne.latitude + (0.005d - (deltaLat / 2.0d)), ne.longitude);
+            latLngBounds = new LatLngBounds(latLng, ne2);
+            ne = ne2;
+            sw = latLng;
+        } else if (deltaLon < 0.005d) {
+            latLng = new LatLng(sw.latitude, sw.longitude - (0.005d - (deltaLon / 2.0d)));
+            ne2 = new LatLng(ne.latitude, ne.longitude + (0.005d - (deltaLon / 2.0d)));
+            latLngBounds = new LatLngBounds(latLng, ne2);
+            ne = ne2;
+            sw = latLng;
+        }
+        LatLngBounds.Builder displayBuilder = new LatLngBounds.Builder();
+        displayBuilder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
+        displayBuilder.include(new LatLng(this.sourceLocation.latitude + deltaLat, this.sourceLocation.longitude + deltaLon));
+        displayBuilder.include(new LatLng(this.sourceLocation.latitude - deltaLat, this.sourceLocation.longitude - deltaLon));
+        this.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(displayBuilder.build(), 100));
+        this.mMap.setMaxZoomPreference(15.5f);
+        return bounds;
+    }
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        mMap.clear();
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
+        Marker m1 = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(LATITUDE + 0.2001, LONGITUDE - 0.0901))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+        builder.include(m1.getPosition());
+        Marker m2 = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(LATITUDE + 0.05315, LONGITUDE - 0.1551))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+        builder.include(m2.getPosition());
+        Marker m3 = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(LATITUDE - 0.0971, LONGITUDE + 0.4091))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+        builder.include(m3.getPosition());
+        Marker m4 = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(LATITUDE - 0.00914, LONGITUDE + 0.0241))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+        builder.include(m4.getPosition());
+        Marker m5 = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(LATITUDE - 0.0001, LONGITUDE + 0.1501))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+        builder.include(m5.getPosition());
+        Marker m6 = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(LATITUDE + 0.1001, LONGITUDE - 0.0231))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+        builder.include(m6.getPosition());
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
+
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null) {
@@ -791,4 +887,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             e.printStackTrace();
         }
     }
+
+    public void serviceMenDetails() {
+        startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));    }
 }

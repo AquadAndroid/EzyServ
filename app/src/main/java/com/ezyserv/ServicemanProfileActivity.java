@@ -1,31 +1,37 @@
 package com.ezyserv;
 
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ezyserv.adapter.AddServiceAdapter;
 import com.ezyserv.adapter.CustomerReviewAdapter;
-import com.ezyserv.adapter.DummyData;
 import com.ezyserv.adapter.DummyGallaryData;
 import com.ezyserv.adapter.DummyReviewData;
 import com.ezyserv.adapter.ServiceGallaryAdapter;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.utills.PicassoImageLoader;
+import com.veinhorn.scrollgalleryview.MediaInfo;
+import com.veinhorn.scrollgalleryview.ScrollGalleryView;
+import com.veinhorn.scrollgalleryview.loader.DefaultImageLoader;
+import com.veinhorn.scrollgalleryview.loader.DefaultVideoLoader;
+import com.veinhorn.scrollgalleryview.loader.MediaLoader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import br.com.jeancsanchez.photoviewslider.PhotosViewSlider;
 
 public class ServicemanProfileActivity extends CustomActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
@@ -34,11 +40,19 @@ public class ServicemanProfileActivity extends CustomActivity {
     private TextView serviceOffered, distance, address, additional_info;
     private RecyclerView gallery_recyclerView, reviews_recyclerView;
     private Button bookService;
-   private CustomerReviewAdapter customerReviewAdapter;
+    private CustomerReviewAdapter customerReviewAdapter;
     private LinearLayoutManager linearLayoutManagerHorizontal;
     private ServiceGallaryAdapter adapter;
     private ArrayList listdata;
     private ArrayList customerReviewAdapterlistdata;
+    private static final ArrayList<String> images = new ArrayList<>(Arrays.asList(
+            "http://img1.goodfon.ru/original/1920x1080/d/f5/aircraft-jet-su-47-berkut.jpg",
+            "http://www.dishmodels.ru/picture/glr/13/13312/g13312_7657277.jpg",
+            "http://img2.goodfon.ru/original/1920x1080/b/c9/su-47-berkut-c-37-firkin.jpg"
+    ));
+    PhotosViewSlider photoViewSlider;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +74,8 @@ public class ServicemanProfileActivity extends CustomActivity {
         setupuiElement();
 
     }
+
+    private boolean isGalleryShown = false;
 
 
     private void setupuiElement() {
@@ -89,9 +105,21 @@ public class ServicemanProfileActivity extends CustomActivity {
         adapter = new ServiceGallaryAdapter(listdata, this);
         gallery_recyclerView.setAdapter(adapter);
 
+        photoViewSlider = (PhotosViewSlider) findViewById(R.id.photosViewSlider);
 
 
+        adapter.SetItemClickCallback(new ServiceGallaryAdapter.ItemClickCallback() {
+            @Override
+            public void onItemClick(int p) {
+//                isGalleryShown = true;
+//                photoViewSlider.initializePhotosUrls(images);
+            }
 
+            @Override
+            public void onSecondaryIconClick(int p) {
+
+            }
+        });
 
         customerReviewAdapterlistdata = (ArrayList) DummyReviewData.getListData();
 
@@ -99,6 +127,22 @@ public class ServicemanProfileActivity extends CustomActivity {
 
         customerReviewAdapter = new CustomerReviewAdapter(customerReviewAdapterlistdata, this);
         reviews_recyclerView.setAdapter(customerReviewAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (isGalleryShown) {
+            isGalleryShown = false;
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private static final String movieUrl = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4";
+
+    private Bitmap toBitmap(int image) {
+        return ((BitmapDrawable) getResources().getDrawable(image)).getBitmap();
     }
 
     public void onClick(View v) {
