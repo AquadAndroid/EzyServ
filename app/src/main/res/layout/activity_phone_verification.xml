@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.ezyserv.PhoneVerificationActivity">
 
     <RelativeLayout
@@ -73,6 +73,7 @@
                         android:textSize="@dimen/dim_15" />
 
                     <TextView
+                        android:id="@+id/txt_change"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dim_5"
@@ -100,8 +101,7 @@
                         android:inputType="number"
                         android:maxLength="6"
                         android:maxLines="1"
-                        android:paddingBottom="@dimen/dim_15"
-                        android:paddingTop="@dimen/dim_15" />
+                        android:padding="@dimen/dim_15" />
 
                     <ProgressBar
                         android:id="@+id/progress_bar"
@@ -136,6 +136,16 @@
                         android:textSize="@dimen/dim_15" />
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/txt_enter_manually"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="Enter Manually"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/dim_18"
+                    android:textStyle="bold" />
             </LinearLayout>
         </ScrollView>
 

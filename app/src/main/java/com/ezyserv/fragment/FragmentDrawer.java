@@ -1,6 +1,7 @@
 package com.ezyserv.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ezyserv.R;
+import com.ezyserv.SignUpSelection;
 import com.ezyserv.adapter.NavigationDrawerAdapter;
 import com.ezyserv.application.MyApp;
+import com.ezyserv.utills.AppConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,7 @@ public class FragmentDrawer extends Fragment {
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
     private TextView profile_name;
+    private TextView txt_logout;
     private TextView nav_item_switch_profile;
     private TextView nav_item_scheduled;
     //private TextView nav_item_customer_support;
@@ -87,14 +91,16 @@ public class FragmentDrawer extends Fragment {
         }
         return result;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer,
                 container, false);
-      //  recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
+        //  recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile_name = (TextView) layout.findViewById(R.id.profile_name);
+        txt_logout = (TextView) layout.findViewById(R.id.txt_logout);
         profile_name.setText(MyApp.getSharedPrefString("name"));
         nav_item_scheduled = (TextView) layout.findViewById(R.id.nav_item_scheduled);
         nav_item_invite_friends = (TextView) layout.findViewById(R.id.nav_item_invite_friends);
@@ -111,15 +117,15 @@ public class FragmentDrawer extends Fragment {
         img_profile = (CircleImageView) layout.findViewById(R.id.img_profile);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) img_profile.getLayoutParams();
         if (Build.VERSION.SDK_INT >= 21) {
-            lp.setMargins(0, getStatusBarHeight()+5, 0, 0);
-        }else{
+            lp.setMargins(0, getStatusBarHeight() + 5, 0, 0);
+        } else {
             lp.setMargins(0, getStatusBarHeight(), 0, 0);
         }
 
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // startActivity(new Intent(getContext(), ProfileActivity.class));
+                // startActivity(new Intent(getContext(), ProfileActivity.class));
             }
         });
         ll_menu.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +185,7 @@ public class FragmentDrawer extends Fragment {
                 mDrawerLayout.closeDrawer(containerView);
             }
         });
-       nav_item_invite_friends.setOnClickListener(new View.OnClickListener() {
+        nav_item_invite_friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerListener.onDrawerItemSelected(v, 7);
@@ -192,6 +198,15 @@ public class FragmentDrawer extends Fragment {
             public void onClick(View v) {
                 drawerListener.onDrawerItemSelected(v, 6);
                 mDrawerLayout.closeDrawer(containerView);
+            }
+        });
+
+        txt_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApp.setStatus(AppConstant.IS_LOGIN, false);
+                startActivity(new Intent(getActivity(), SignUpSelection.class));
+                getActivity().finishAffinity();
             }
         });
 

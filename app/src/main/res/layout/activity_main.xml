@@ -106,7 +106,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:background="@android:color/transparent"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -130,6 +129,10 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/dim_20"
                                 android:text="Show All"
+                                android:shadowColor="@color/white"
+                                android:shadowDx="-2"
+                                android:shadowDy="-2"
+                                android:shadowRadius="1"
                                 android:textColor="@color/text_color_volet"
                                 android:textSize="@dimen/dim_15" />
                         </RelativeLayout>
@@ -157,6 +160,10 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/dim_20"
                                 android:text="Domestic"
+                                android:shadowColor="@color/white"
+                                android:shadowDx="-2"
+                                android:shadowDy="-2"
+                                android:shadowRadius="1"
                                 android:textColor="@color/text_color_volet"
                                 android:textSize="@dimen/dim_15" />
                         </RelativeLayout>
@@ -173,6 +180,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:background="@null"
+                                android:shadowColor="@color/black"
+                                android:shadowDx="-2"
+                                android:shadowDy="-2"
+                                android:shadowRadius="1"
                                 android:src="@drawable/construction"
                                 app:backgroundTint="@color/white" />
 
@@ -183,6 +194,10 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/dim_20"
                                 android:text="My Care"
+                                android:shadowColor="@color/white"
+                                android:shadowDx="-2"
+                                android:shadowDy="-2"
+                                android:shadowRadius="1"
                                 android:textColor="@color/text_color_volet"
                                 android:textSize="@dimen/dim_15" />
                         </RelativeLayout>
@@ -208,6 +223,10 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/dim_20"
                                 android:text="Events"
+                                android:shadowColor="@color/white"
+                                android:shadowDx="-2"
+                                android:shadowDy="-2"
+                                android:shadowRadius="1"
                                 android:textColor="@color/text_color_volet"
                                 android:textSize="@dimen/dim_15" />
                         </RelativeLayout>

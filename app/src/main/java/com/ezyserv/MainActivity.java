@@ -553,18 +553,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
-            changeMap(mLastLocation);
+//            changeMap(mLastLocation);
             Log.d(TAG, "ON connected");
 
         } else
@@ -636,12 +631,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
@@ -770,7 +759,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 sourceLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 changeMap(location);
                 isFirstSet = true;
-
             }
 
         } catch (Exception e) {
@@ -853,10 +841,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             MyApp.showMassage(getContext(), "will go to Favourites");
         } else if (position == 7) {
 
-            String shareBody = "https://play.google.com/store/apps/details?" + "id=************************";
+            String shareBody = "https://play.google.com/store/apps/details?" + "id=com.ezyserv";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "APP NAME (Open it in Google Play Store to Download the Application)");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "EzyServ (Open it in Google Play Store to Download the Application)");
 
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));

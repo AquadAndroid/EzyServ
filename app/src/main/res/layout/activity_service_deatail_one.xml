@@ -118,11 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        app:contentColor="@color/black"
-                        app:countryPreference="country"
-                        app:keyboardAutoPopOnSearch="false"
-                        app:selectionDialogShowSearch="false"
-                        app:textSize="@dimen/dim_15" />
+                         />
 
 
                     <android.support.design.widget.TextInputLayout

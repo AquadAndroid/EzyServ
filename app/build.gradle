@@ -35,31 +35,25 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.github.jeancsanchez.photoviewslider:photoviewslider:1.2.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile 'com.hbb20:ccp:1.8'
+    compile 'com.hbb20:ccp:2.0.3'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.google.android.gms:play-services-auth:10.0.1'
-    compile 'com.google.android.gms:play-services-location:10.0.1'
-    compile 'com.google.android.gms:play-services-maps:10.0.1'
-    compile 'com.google.android.gms:play-services-places:10.0.1'
+    compile 'com.google.android.gms:play-services-auth:11.0.2'
+    compile 'com.google.android.gms:play-services-location:11.0.2'
+    compile 'com.google.android.gms:play-services-maps:11.0.2'
+    compile 'com.google.android.gms:play-services-places:11.0.2'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
     compile 'org.adw.library:discrete-seekbar:1.0.1'
-    compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.google.firebase:firebase-crash:11.0.2'
+    compile 'com.google.firebase:firebase-messaging:11.0.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.google.firebase:firebase-auth:11.0.2'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-
-
-
-
 
 
 apply plugin: 'com.google.gms.google-services'
