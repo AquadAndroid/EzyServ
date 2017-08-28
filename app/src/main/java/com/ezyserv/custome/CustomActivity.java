@@ -1,18 +1,32 @@
 package com.ezyserv.custome;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.WindowManager;
+
+import com.ezyserv.R;
+import com.ezyserv.application.MyApp;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 import com.ezyserv.utills.ExceptionHandler;
 import com.ezyserv.utills.TouchEffect;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -55,9 +69,11 @@ public class CustomActivity extends AppCompatActivity implements
 //        }
     }
 
-//    public void setResponseListener(ResponseCallback responseCallback) {
-//        this.responseCallback = responseCallback;
-//    }
+    ResponseCallback responseCallback;
+
+    public void setResponseListener(ResponseCallback responseCallback) {
+        this.responseCallback = responseCallback;
+    }
 
     /*
      * (non-Jav-adoc)
@@ -131,89 +147,89 @@ public class CustomActivity extends AppCompatActivity implements
         return v;
     }
 
-//
-//    public void postCallJsonObject(Context c, String url, JSONObject params, String loadingMsg, final int callNumber) {
-//        if (!TextUtils.isEmpty(loadingMsg))
-//            MyApp.spinnerStart(c, loadingMsg);
-//        Log.d("URl:", url);
-//        Log.d("Request:", params.toString());
-//        StringEntity entity = null;
-//        try {
-//            entity = new StringEntity(params.toString(), "UTF-8");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        client.setTimeout(30000);
-//        client.post(c, url, entity, "application/json", new JsonHttpResponseHandler() {
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
-//                MyApp.spinnerStop();
-//                responseCallback.onJsonObjectResponseReceived(response, callNumber);
-//                Log.d("Response:", response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
-//                MyApp.spinnerStop();
-//
-//                Log.d("error message:", throwable.getMessage());
-//                if (statusCode == 0)
-//                    responseCallback.onErrorReceived(getString(R.string.timeout));
-//                else
-//                    responseCallback.onErrorReceived(getString(R.string.something_wrong) + "_" + statusCode);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                MyApp.spinnerStop();
-//                Log.d("error message:", throwable.getMessage());
-//                responseCallback.onErrorReceived(getString(R.string.something_wrong) + "_" + statusCode);
-//            }
-//        });
-//    }
-//
-//    public void postCall(Context c, String url, String loadingMsg, final int callNumber) {
-//        if (!TextUtils.isEmpty(loadingMsg))
-//            MyApp.spinnerStart(c, loadingMsg);
-//        Log.d("URl:", url);
-//        Log.d("Request:", "no Params");
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        client.setTimeout(30000);
-//        client.post(url, new JsonHttpResponseHandler() {
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
-//                MyApp.spinnerStop();
-//                responseCallback.onJsonObjectResponseReceived(response, callNumber);
-//                Log.d("Response:", response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
-//                MyApp.spinnerStop();
-//                Log.d("error message:", throwable.getMessage());
-//                responseCallback.onErrorReceived(getString(R.string.something_wrong));
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                MyApp.spinnerStop();
-//                Log.d("error message:", throwable.getMessage());
-//                responseCallback.onErrorReceived(getString(R.string.something_wrong));
-//            }
-//        });
-//    }
-//
-//    public interface ResponseCallback {
-//        void onJsonObjectResponseReceived(JSONObject o, int callNumber);
-//
-//        void onJsonArrayResponseReceived(JSONArray a, int callNumber);
-//
-//        void onErrorReceived(String error);
-//
-//    }
+    //
+    public void postCallJsonObject(Context c, String url, JSONObject params, String loadingMsg, final int callNumber) {
+        if (!TextUtils.isEmpty(loadingMsg))
+            MyApp.spinnerStart(c, loadingMsg);
+        Log.d("URl:", url);
+        Log.d("Request:", params.toString());
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(params.toString(), "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(30000);
+        client.post(c, url, entity, "application/json", new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
+                MyApp.spinnerStop();
+                responseCallback.onJsonObjectResponseReceived(response, callNumber);
+                Log.d("Response:", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                MyApp.spinnerStop();
+
+                Log.d("error message:", throwable.getMessage());
+                if (statusCode == 0)
+                    responseCallback.onErrorReceived(getString(R.string.timeout));
+                else
+                    responseCallback.onErrorReceived(getString(R.string.something_wrong) + "_" + statusCode);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                MyApp.spinnerStop();
+                Log.d("error message:", throwable.getMessage());
+                responseCallback.onErrorReceived(getString(R.string.something_wrong) + "_" + statusCode);
+            }
+        });
+    }
+
+    public void postCall(Context c, String url, RequestParams p, String loadingMsg, final int callNumber) {
+        if (!TextUtils.isEmpty(loadingMsg))
+            MyApp.spinnerStart(c, loadingMsg);
+        Log.d("URl:", url);
+        Log.d("Request:", p.toString());
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(30000);
+        client.post(c, url, p, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
+                MyApp.spinnerStop();
+                responseCallback.onJsonObjectResponseReceived(response, callNumber);
+                Log.d("Response:", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                MyApp.spinnerStop();
+                Log.d("error message:", throwable.getMessage());
+                responseCallback.onErrorReceived(getString(R.string.something_wrong));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                MyApp.spinnerStop();
+                Log.d("error message:", throwable.getMessage());
+                responseCallback.onErrorReceived(getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    public interface ResponseCallback {
+        void onJsonObjectResponseReceived(JSONObject o, int callNumber);
+
+        void onJsonArrayResponseReceived(JSONArray a, int callNumber);
+
+        void onErrorReceived(String error);
+
+    }
 
 }

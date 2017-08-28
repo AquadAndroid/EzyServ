@@ -1,6 +1,7 @@
 package com.ezyserv;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -19,12 +20,16 @@ import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.AppConstant;
 import com.hbb20.CountryCodePicker;
+import com.loopj.android.http.RequestParams;
 
-public class CustomerLoginActivity extends CustomActivity {
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class CustomerLoginActivity extends CustomActivity implements CustomActivity.ResponseCallback {
 
     private Toolbar toolbar;
     private EditText cust_mobile_no;
-    private Button cust_login;
+    private Button btn_login;
     private CheckBox checkBox;
     private CountryCodePicker countryCodePicker;
     private TextView cust_term_cond;
@@ -34,6 +39,7 @@ public class CustomerLoginActivity extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_login);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setResponseListener(this);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -42,50 +48,35 @@ public class CustomerLoginActivity extends CustomActivity {
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         mTitle.setText("Log In as Customer");
         actionBar.setTitle("");
-        setupuiElement();
-
-       /* cust_mobile_no = (EditText)findViewById(R.id.custom_mb_no);
-        cust_login=(Button)findViewById(R.id.custom_login);
-        checkBox=(CheckBox)findViewById(R.id.terms_condition_checkbox);
-        countryCodePicker=(CountryCodePicker)findViewById(R.id.ccp);
-        cust_term_cond=(TextView)findViewById(R.id.custom_term_cond);*/
-
-      /*  cust_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if(TextUtils.isEmpty(cust_mobile_no).cus)
-                startActivity(new Intent(CustomerLoginActivity.this, PhoneVerificationActivity.class));
-            }
-        });*/
+        setupUiElement();
 
     }
 
-    private void setupuiElement() {
+    private void setupUiElement() {
 
-        setTouchNClick(R.id.custom_login);
+        setTouchNClick(R.id.btn_login);
         setTouchNClick(R.id.custom_term_cond);
 
         cust_mobile_no = (EditText) findViewById(R.id.custom_mb_no);
-        cust_login = (Button) findViewById(R.id.custom_login);
+        btn_login = (Button) findViewById(R.id.btn_login);
         checkBox = (CheckBox) findViewById(R.id.terms_condition_checkbox);
         countryCodePicker = (CountryCodePicker) findViewById(R.id.ccp);
         cust_term_cond = (TextView) findViewById(R.id.custom_term_cond);
-        String htmlString="<u>terms and condition</u>";
+        String htmlString = "<u>Terms and condition</u>";
         cust_term_cond.setText(Html.fromHtml(htmlString));
     }
 
     public void onClick(View v) {
         super.onClick(v);
-        if (v.getId() == R.id.custom_login) {
+        if (v == btn_login) {
             if (TextUtils.isEmpty(cust_mobile_no.getText().toString())) {
                 cust_mobile_no.setError("Enter Mobile No");
                 return;
             } else if (!checkBox.isChecked()) {
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
+                return;
             }
-            phVerification();
+            callLogin();
 
         } else if (v.getId() == R.id.custom_term_cond) {
             //Toast.makeText(this, "Terms and Condition", Toast.LENGTH_SHORT).show();
@@ -95,15 +86,21 @@ public class CustomerLoginActivity extends CustomActivity {
         }
     }
 
+    private void callLogin() {
+        RequestParams p = new RequestParams();
+        postCall(getContext(), AppConstant.BASE_URL + "login", p, "Loging you in...", 1);
 
-    private void phVerification(){
+    }
+
+
+    private void phVerification() {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.verification_dialog);
 
         final String phone_no;
-        phone_no=countryCodePicker.getSelectedCountryCodeWithPlus()+" "+ cust_mobile_no.getText().toString();
+        phone_no = countryCodePicker.getSelectedCountryCodeWithPlus() + " " + cust_mobile_no.getText().toString();
         TextView verification_message = (TextView) dialog.findViewById(R.id.verification_message);
         verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
@@ -120,7 +117,7 @@ public class CustomerLoginActivity extends CustomActivity {
         dialog_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(CustomerLoginActivity.this, PhoneVerificationActivity.class);
+                Intent intent = new Intent(CustomerLoginActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "customer_login");
                 intent.putExtra("phone", phone_no);
                 startActivity(intent);
@@ -130,4 +127,26 @@ public class CustomerLoginActivity extends CustomActivity {
 
     }
 
+    @Override
+    public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
+        if (o.optString("status").equals("True")) {
+            phVerification();
+        } else {
+            MyApp.popMessage("Error", o.optString("Message"), getContext());
+        }
+    }
+
+    @Override
+    public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
+
+    }
+
+    @Override
+    public void onErrorReceived(String error) {
+        MyApp.popMessage("Error", error, getContext());
+    }
+
+    private Context getContext() {
+        return CustomerLoginActivity.this;
+    }
 }

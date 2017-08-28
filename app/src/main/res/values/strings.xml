@@ -48,5 +48,7 @@
     <string name="loading">Please wait...</string>
     <string name="alert">Alert</string>
     <string name="connect_working_internet">Please Connect to a working internet connection.</string>
+    <string name="timeout">Time out occurred, make sure that you have a valid internet connection.</string>
+    <string name="something_wrong">Something went wrong</string>
 
 </resources>

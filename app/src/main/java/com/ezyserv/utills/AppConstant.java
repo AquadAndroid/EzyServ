@@ -11,4 +11,5 @@ public class AppConstant {
     public static final String EXTRA_1 = "extra1";
     public static final String EXTRA_2 = "extra2";
     public static final String IS_LOGIN = "isLogin";
+    public static final String BASE_URL = "http://stubuz.com/EzyServ/Webservices/";
 }
