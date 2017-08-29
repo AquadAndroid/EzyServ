@@ -849,9 +849,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
-
-
-
             //  MyApp.showMassage(getContext(), "will invite your friends");
         } else if (position == 8) {
             MyApp.showMassage(getContext(), "will switch to service mode");

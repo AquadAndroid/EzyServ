@@ -53,7 +53,7 @@ public class CustomActivity extends AppCompatActivity implements
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setupActionBar();
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -198,6 +198,38 @@ public class CustomActivity extends AppCompatActivity implements
         AsyncHttpClient client = new AsyncHttpClient();
         client.setTimeout(30000);
         client.post(c, url, p, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
+                MyApp.spinnerStop();
+                responseCallback.onJsonObjectResponseReceived(response, callNumber);
+                Log.d("Response:", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                MyApp.spinnerStop();
+                Log.d("error message:", throwable.getMessage());
+                responseCallback.onErrorReceived(getString(R.string.something_wrong));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                MyApp.spinnerStop();
+                Log.d("error message:", throwable.getMessage());
+                responseCallback.onErrorReceived(getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    public void getCall(Context c, String url, String loadingMsg, final int callNumber) {
+        if (!TextUtils.isEmpty(loadingMsg))
+            MyApp.spinnerStart(c, loadingMsg);
+        Log.d("URl:", url);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(30000);
+        client.get(c, url, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {

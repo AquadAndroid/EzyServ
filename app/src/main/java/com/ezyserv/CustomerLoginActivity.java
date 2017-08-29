@@ -18,11 +18,14 @@ import android.widget.Toast;
 
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CustomerLoginActivity extends CustomActivity implements CustomActivity.ResponseCallback {
@@ -88,13 +91,12 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
 
     private void callLogin() {
         RequestParams p = new RequestParams();
-        postCall(getContext(), AppConstant.BASE_URL + "login", p, "Loging you in...", 1);
-
+        p.put("phone", cust_mobile_no.getText().toString());
+        postCall(getContext(), AppConstant.BASE_URL + "login", p, "Logging you in...", 1);
     }
 
 
     private void phVerification() {
-
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.verification_dialog);
@@ -105,14 +107,12 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
         verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
         Button dialog_send_Button = (Button) dialog.findViewById(R.id.btn_send);
-        // if button is clicked, close the custom dialog
         dialog_cancel_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-
 
         dialog_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,13 +124,21 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
             }
         });
         dialog.show();
-
     }
 
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
-        if (o.optString("status").equals("True")) {
-            phVerification();
+        if (o.optString("status").equals("true")) {
+            try {
+                User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
+                MyApp.getApplication().writeUser(u);
+                if (u.getId().length() > 1) {
+                    phVerification();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         } else {
             MyApp.popMessage("Error", o.optString("Message"), getContext());
         }

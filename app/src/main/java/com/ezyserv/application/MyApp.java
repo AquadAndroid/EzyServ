@@ -26,6 +26,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 
+import com.ezyserv.model.Country;
+import com.ezyserv.model.User;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,8 +41,10 @@ import java.io.StreamCorruptedException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,7 +68,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-       // Fabric.with(this, new Crashlytics());
+        // Fabric.with(this, new Crashlytics());
         ctx = getApplicationContext();
         myApplication = this;
         //FacebookSdk.sdkInitialize(ctx);
@@ -78,9 +82,11 @@ public class MyApp extends Application {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
     }
+
     public static MyApp getApplication() {
         return myApplication;
     }
+
     public static void spinnerStop() {
         if (dialog != null) {
             if (dialog.isShowing()) {
@@ -458,6 +464,7 @@ public class MyApp extends Application {
             return formatter.format(calendar.getTime()).split("-")[0];
         }
     }
+
     private static final int _A_SECOND = 1000;
     private static final int _A_MINUTE = 60 * _A_SECOND;
     /**
@@ -529,7 +536,55 @@ public class MyApp extends Application {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
-    /*public void writeUser(User user) {
+
+    public void writeCountry(List<Country> country) {
+        try {
+            String path = "/data/data/" + ctx.getPackageName()
+                    + "/country.ser";
+            File f = new File(path);
+            if (f.exists()) {
+                f.delete();
+            }
+            FileOutputStream fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(country);
+            out.close();
+            fileOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Country> readCountry() {
+        String path = "/data/data/" + ctx.getPackageName() + "/country.ser";
+        File f = new File(path);
+        List<Country> user = new ArrayList<>();
+        if (f.exists()) {
+            try {
+                System.gc();
+                FileInputStream fileIn = new FileInputStream(path);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                user = (List<Country>) in.readObject();
+                in.close();
+                fileIn.close();
+            } catch (StreamCorruptedException e) {
+                e.printStackTrace();
+            } catch (OptionalDataException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
+    public void writeUser(User user) {
         try {
             String path = "/data/data/" + ctx.getPackageName()
                     + "/user.ser";
@@ -547,12 +602,12 @@ public class MyApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
-   /* public User readUser() {
+    public User readUser() {
         String path = "/data/data/" + ctx.getPackageName() + "/user.ser";
         File f = new File(path);
-        User user = null;
+        User user = new User();
         if (f.exists()) {
             try {
                 System.gc();
@@ -574,5 +629,5 @@ public class MyApp extends Application {
             }
         }
         return user;
-    }*/
+    }
 }

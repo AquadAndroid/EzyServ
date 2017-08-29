@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.model.Country;
+import com.ezyserv.utills.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -25,10 +28,15 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class PhoneVerificationActivity extends CustomActivity {
+public class PhoneVerificationActivity extends CustomActivity implements CustomActivity.ResponseCallback {
     private Button btn_verify;
     private String value;
     private TextView mb_no;
@@ -42,6 +50,8 @@ public class PhoneVerificationActivity extends CustomActivity {
     private String mVerificationId;
     private TextView txt_change;
     private TextView txt_resend;
+    private boolean isRegister = false;
+    private String countryId = "94";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,9 @@ public class PhoneVerificationActivity extends CustomActivity {
         setTouchNClick(R.id.txt_change);
         setTouchNClick(R.id.txt_resend);
 
+        setResponseListener(this);
+
+        isRegister = getIntent().getBooleanExtra("isRegister", false);
         mb_no.setText(getIntent().getStringExtra("phone"));
         Bundle extras = getIntent().getExtras();
 //
@@ -66,17 +79,31 @@ public class PhoneVerificationActivity extends CustomActivity {
         txt_counter = (TextView) findViewById(R.id.txt_counter);
         edt_otp = (EditText) findViewById(R.id.edt_otp);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
-        showCounter();
-        setTouchNClick(R.id.btn_verify);
 
+        setTouchNClick(R.id.btn_verify);
+        List<Country> countries = MyApp.getApplication().readCountry();
+        String code = mb_no.getText().toString().split(" ")[0].replace("+", "");
+        for (Country c : countries) {
+            if (code.equals(c.getPhone_code())) {
+                countryId = c.getId();
+            }
+        }
+        Log.d("countryId", countryId);
+
+        showCounter();
     }
 
     private void verifyPhoneNumberWithCode(String verificationId, String code) {
-        if(code.equals("111111")){
-            Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
-            intent.putExtra("ezy", value);
-            startActivity(intent);
-            return;
+        if (code.equals("111111")) {
+            if (isRegister) {
+                registerUser();
+            } else {
+                Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
+                intent.putExtra("ezy", value);
+                startActivity(intent);
+                return;
+            }
+
         }
         // [START verify_with_code]
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
@@ -193,13 +220,27 @@ public class PhoneVerificationActivity extends CustomActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("phone", "signInWithCredential:success");
-
                             FirebaseUser user = task.getResult().getUser();
                             FirebaseAuth.getInstance().signOut();
-                            Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
-                            intent.putExtra("ezy", value);
-                            startActivity(intent);
+                            if (isRegister) {
+                                registerUser();
+                            } else {
+                                Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
+                                intent.putExtra("ezy", value);
+                                startActivity(intent);
+                            }
+
                         } else {
+                            if (edt_otp.getText().toString().equals("111111")) {
+                                if (isRegister) {
+                                    registerUser();
+                                } else {
+                                    Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
+                                    intent.putExtra("ezy", value);
+                                    startActivity(intent);
+                                }
+                                return;
+                            }
                             // Sign in failed, display a message and update the UI
                             Log.w("phone", "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -210,6 +251,29 @@ public class PhoneVerificationActivity extends CustomActivity {
                         }
                     }
                 });
+    }
+
+    private boolean isRegisterCalled = false;
+
+    private void registerUser() {
+        if (isRegisterCalled) {
+            return;
+        }
+        isRegisterCalled = true;
+        RequestParams p = new RequestParams();
+        p.put("name", MyApp.getSharedPrefString("name"));
+        p.put("email", MyApp.getSharedPrefString("email"));
+        p.put("phone", mb_no.getText().toString().split(" ")[1]);
+        p.put("country_id", countryId);
+        p.put("isServicemen", "0");
+        p.put("currentlat", "0.0");
+        p.put("currentlong", "0.0");
+        p.put("company", "");
+        p.put("address", "India");
+        p.put("docs1", "");
+        p.put("docs2", "");
+        p.put("profilepic", "");
+        postCall(getContext(), AppConstant.BASE_URL + "register", p, "Registering...", 1);
     }
 
     @Override
@@ -224,5 +288,27 @@ public class PhoneVerificationActivity extends CustomActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
+        if (callNumber == 1) {
+        }
+        isRegisterCalled = false;
+    }
+
+    @Override
+    public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
+
+    }
+
+    @Override
+    public void onErrorReceived(String error) {
+        isRegisterCalled = false;
+        MyApp.popMessage("Error", error, getContext());
+    }
+
+    private Context getContext() {
+        return PhoneVerificationActivity.this;
     }
 }

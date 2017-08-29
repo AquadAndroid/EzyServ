@@ -11,28 +11,27 @@ import com.ezyserv.utills.AppConstant;
 
 public class SucessfullLoginActivity extends CustomActivity {
     private static final int SPLASH_DURATION_MS = 1000;
-    private Handler mHandler = new Handler();
     private TextView tv_sucessfull, tv_sucessfull_label;
     private String value;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sucessfull_login);
-        tv_sucessfull=(TextView)findViewById(R.id.label_sucessfull);
-        tv_sucessfull_label=(TextView)findViewById(R.id.sucessfull_label);
+        tv_sucessfull = (TextView) findViewById(R.id.label_sucessfull);
+        tv_sucessfull_label = (TextView) findViewById(R.id.sucessfull_label);
 
         Bundle extras = getIntent().getExtras();
 
         value = extras.getString("ezy").toString();
 
 
-        if(value.equals("customer_login") ){
+        if (value.equals("customer_login")) {
             tv_sucessfull.setText("Log In successful !");
             tv_sucessfull_label.setText("Taking you to Home");
             new Handler().postDelayed(new Runnable() {
 
 
-
                 @Override
                 public void run() {
                     MyApp.setStatus(AppConstant.IS_LOGIN, true);
@@ -42,14 +41,13 @@ public class SucessfullLoginActivity extends CustomActivity {
                 }
             }, SPLASH_DURATION_MS);
 
-        }else if(value.equals("customer_facebook")){
+        } else if (value.equals("customer_facebook")) {
             tv_sucessfull.setText("Successfully Verified !");
             tv_sucessfull_label.setText("Taking you to Home");
 
             new Handler().postDelayed(new Runnable() {
 
 
-
                 @Override
                 public void run() {
                     MyApp.setStatus(AppConstant.IS_LOGIN, true);
@@ -58,14 +56,13 @@ public class SucessfullLoginActivity extends CustomActivity {
                     finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
-        }else if(value.equals("customer_signup")){
+        } else if (value.equals("customer_signup")) {
             tv_sucessfull.setText("Successfully Verified !");
             tv_sucessfull_label.setText("Taking you to Home");
 
             new Handler().postDelayed(new Runnable() {
 
 
-
                 @Override
                 public void run() {
                     MyApp.setStatus(AppConstant.IS_LOGIN, true);
@@ -74,12 +71,11 @@ public class SucessfullLoginActivity extends CustomActivity {
                     finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
-        }else if(value.equals("service_facebook")){
+        } else if (value.equals("service_facebook")) {
             tv_sucessfull.setText("Sign Up Successful !");
             tv_sucessfull_label.setText("Taking you to Home");
 
             new Handler().postDelayed(new Runnable() {
-
 
 
                 @Override
@@ -91,12 +87,11 @@ public class SucessfullLoginActivity extends CustomActivity {
                     finish();
                 }
             }, SPLASH_DURATION_MS);
-        }else if(value.equals("service_login")){
+        } else if (value.equals("service_login")) {
             tv_sucessfull.setText("Log In successful");
             tv_sucessfull_label.setText("Taking you to Home");
 
             new Handler().postDelayed(new Runnable() {
-
 
 
                 @Override
@@ -107,7 +102,7 @@ public class SucessfullLoginActivity extends CustomActivity {
                     finishAffinity();
                 }
             }, SPLASH_DURATION_MS);
-        }else if(value.equals("service_signup")){
+        } else if (value.equals("service_signup")) {
             tv_sucessfull.setText("Successfully Verified !");
             tv_sucessfull_label.setText("Taking you to next steps");
             new Handler().postDelayed(new Runnable() {
@@ -124,7 +119,6 @@ public class SucessfullLoginActivity extends CustomActivity {
 
 
         }
-
 
 
     }
