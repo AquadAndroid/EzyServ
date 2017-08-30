@@ -1,6 +1,7 @@
 package com.ezyserv.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by SONI on 8/28/2017.
@@ -12,7 +13,15 @@ public class Services implements Serializable {
     private String name;
     private String description;
     private String image;
-    private Data services;
+    private List<Data> services;
+
+    public List<Data> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Data> services) {
+        this.services = services;
+    }
 
     public String getId() {
         return id;
@@ -44,14 +53,6 @@ public class Services implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public Data getServices() {
-        return services;
-    }
-
-    public void setServices(Data services) {
-        this.services = services;
     }
 
     public class Data implements Serializable {

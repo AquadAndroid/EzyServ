@@ -132,7 +132,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
             try {
                 User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
                 MyApp.getApplication().writeUser(u);
-                if (u.getId().length() > 1) {
+                if (u.getId().length() > 0) {
                     phVerification();
                 }
             } catch (JSONException e) {

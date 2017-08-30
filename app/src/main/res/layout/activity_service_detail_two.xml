@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10"
-                    android:text="12 services added" />
+                    android:text="0 services added" />
 
 
                 <View
@@ -87,7 +87,7 @@
                     android:drawableRight="@drawable/view_details"
                     android:paddingBottom="@dimen/dim_5"
                     android:paddingTop="@dimen/dim_5"
-                    android:text="Construction Services"
+                    android:text="My Care Services"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_18"
                     android:textStyle="bold" />
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10"
-                    android:text="12 services added" />
+                    android:text="0 services added" />
 
 
                 <View
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10"
-                    android:text="12 services added" />
+                    android:text="0 services added" />
 
 
                 <View

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ezyserv.R;
+import com.ezyserv.model.Services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import static android.support.design.R.id.start;
 
 public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.DataHolder> {
 
-    private List<DummyListItem> listdata;
+    private Services data;
     private LayoutInflater inflater;
     private ItemClickCallback itemclickcallback;
     private int count = 0;
@@ -40,9 +41,9 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
     }
 
 
-    public AddServiceAdapter(List<DummyListItem> listdata, Context c) {
+    public AddServiceAdapter(Services data, Context c) {
         this.inflater = LayoutInflater.from(c);
-        this.listdata = listdata;
+        this.data = data;
     }
 
     @Override
@@ -55,14 +56,14 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
 
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
-        DummyListItem item = listdata.get(position);
-        holder.Sname.setText(item.getService());
+        Services.Data item = data.getServices().get(position);
+        holder.Sname.setText(item.getName());
         holder.Sadd_remove.setText(item.getAction());
     }
 
     @Override
     public int getItemCount() {
-        return listdata.size();
+        return data.getServices().size();
     }
 
 
@@ -83,7 +84,7 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
                         Sadd_remove.setTextColor(Color.parseColor("#3949AB"));
                         Sname.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shape, 0, 0, 0);
                         count++;
-                    } else if(Sadd_remove.getText().equals("Remove")) {
+                    } else if (Sadd_remove.getText().equals("Remove")) {
                         Sadd_remove.setText("Add");
                         Sadd_remove.setTextColor(Color.parseColor("#ED365B"));
                         Sname.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -99,9 +100,9 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
 
     }
 
-    public void setListData(ArrayList<DummyListItem> exerciseList) {
-        this.listdata.clear();
-        this.listdata.addAll(exerciseList);
-
-    }
+//    public void setListData(ArrayList<DummyListItem> exerciseList) {
+//        this.data.clear();
+//        this.data.addAll(exerciseList);
+//
+//    }
 }

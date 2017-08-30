@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -14,12 +15,23 @@ import android.widget.TextView;
 import com.ezyserv.adapter.DummyLocation;
 import com.ezyserv.adapter.ServiceLocationAdapter;
 import com.ezyserv.application.MyApp;
+import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.model.Services;
 import com.ezyserv.utills.AppConstant;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-public class ServiceDetailActivityTwo extends CustomActivity {
+public class ServiceDetailActivityTwo extends CustomActivity implements CustomActivity.ResponseCallback {
     private Toolbar Dtoolbar;
     private TextView tvDomestic, tvConstruction, tvEvents, tvAddLocation;
     private TextView countDomestic, countConstruction, countEvents;
@@ -28,6 +40,7 @@ public class ServiceDetailActivityTwo extends CustomActivity {
     private ArrayList listdata;
     private ServiceLocationAdapter adapter;
     private ScrollView scrollView;
+    private List<Services> allServices = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +57,19 @@ public class ServiceDetailActivityTwo extends CustomActivity {
         mTitle.setText("Add your details");
         mCount.setText("2/2");
         actionBar.setTitle("");
-        setupuiElement();
+        setupUiElement();
+        getAllServices();
     }
 
-    private void setupuiElement() {
+    private void getAllServices() {
+        getCall(getContext(), AppConstant.BASE_URL, "Loading services...", 1);
+    }
+
+    private Context getContext() {
+        return ServiceDetailActivityTwo.this;
+    }
+
+    private void setupUiElement() {
 
         setTouchNClick(R.id.tv_domestic);
         setTouchNClick(R.id.tv_construction);
@@ -85,16 +107,43 @@ public class ServiceDetailActivityTwo extends CustomActivity {
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.tv_domestic) {
+            if (allServices == null) {
+                getAllServices();
+                return;
+            }
+            if (allServices.size() == 0) {
+                MyApp.popMessage("Message", "No data available for this category", getContext());
+                return;
+            }
             Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
             intent.putExtra("key", "domestic");
+            SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(0));
             startActivity(intent);
         } else if (v.getId() == R.id.tv_construction) {
+            if (allServices == null) {
+                getAllServices();
+                return;
+            }
+            if (allServices.size() == 1) {
+                MyApp.popMessage("Message", "No data available for this category", getContext());
+                return;
+            }
             Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
             intent.putExtra("key", "construction");
+            SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(1));
             startActivity(intent);
         } else if (v.getId() == R.id.tv_events) {
+            if (allServices == null) {
+                getAllServices();
+                return;
+            }
+            if (allServices.size() == 2) {
+                MyApp.popMessage("Message", "No data available for this category", getContext());
+                return;
+            }
             Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
             intent.putExtra("key", "events");
+            SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(2));
             startActivity(intent);
         } else if (v.getId() == R.id.btn_continue) {
             //Toast.makeText(this, "The Project is under Process will be updated soon", Toast.LENGTH_LONG).show();
@@ -117,5 +166,31 @@ public class ServiceDetailActivityTwo extends CustomActivity {
         startActivity(new Intent(ServiceDetailActivityTwo.this, MainActivity.class));
         finishAffinity();
 
+    }
+
+    @Override
+    public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
+        if (o.optString("status").equals("true")) {
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Services>>() {
+            }.getType();
+            try {
+                allServices = gson.fromJson(o.getJSONArray("data").toString(), listType);
+            } catch (JSONException e) {
+                MyApp.showMassage(getContext(), "Data parsing error.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
+
+    }
+
+    @Override
+    public void onErrorReceived(String error) {
+        MyApp.popMessage("Error", error, getContext());
     }
 }

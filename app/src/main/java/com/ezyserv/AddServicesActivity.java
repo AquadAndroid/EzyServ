@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ezyserv.adapter.AddServiceAdapter;
 import com.ezyserv.adapter.DummyData;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.model.Services;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class AddServicesActivity extends CustomActivity {
     private RecyclerView ServiceList;
     private Button Save;
     private AddServiceAdapter adapter;
-    private ArrayList listdata;
+    private Services services;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,6 @@ public class AddServicesActivity extends CustomActivity {
             mTitle.setText("Add Events services");
         }
 
-        listdata = (ArrayList) DummyData.getListData();
         ServiceList = (RecyclerView) findViewById(R.id.service_recycle);
         ServiceList.setLayoutManager(new LinearLayoutManager(this));
 
