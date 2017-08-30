@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ezyserv.adapter.DummyLocation;
 import com.ezyserv.adapter.ServiceLocationAdapter;
@@ -41,10 +43,13 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
     private ServiceLocationAdapter adapter;
     private ScrollView scrollView;
     private List<Services> allServices = null;
+    String strEditText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setResponseListener(this);
         setContentView(R.layout.activity_service_detail_two);
         Dtoolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(Dtoolbar);
@@ -57,16 +62,29 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         mTitle.setText("Add your details");
         mCount.setText("2/2");
         actionBar.setTitle("");
+
         setupUiElement();
+        countDomestic.setText(strEditText+"services added");
         getAllServices();
     }
 
+
     private void getAllServices() {
-        getCall(getContext(), AppConstant.BASE_URL, "Loading services...", 1);
+        getCall(getContext(), AppConstant.BASE_URL + "getAllServices", "Loading services...", 1);
     }
 
     private Context getContext() {
         return ServiceDetailActivityTwo.this;
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+               strEditText = data.getStringExtra("editTextValue");
+                Toast.makeText(this, ""+strEditText, Toast.LENGTH_SHORT).show();
+               // countDomestic.setText(strEditText+"services added");
+            }
+        }
     }
 
     private void setupUiElement() {
@@ -84,6 +102,7 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
 
 
         countDomestic = (TextView) findViewById(R.id.tv_domestic_label);
+       // countDomestic.setText(returnValue+"services added");
         countConstruction = (TextView) findViewById(R.id.tv_construction_label);
         countEvents = (TextView) findViewById(R.id.tv_events_label);
         listdata = (ArrayList) DummyLocation.getListData();
@@ -109,6 +128,8 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         if (v.getId() == R.id.tv_domestic) {
             if (allServices == null) {
                 getAllServices();
+                //countDomestic.setText(allServices.size());
+                //allServices.size();
                 return;
             }
             if (allServices.size() == 0) {

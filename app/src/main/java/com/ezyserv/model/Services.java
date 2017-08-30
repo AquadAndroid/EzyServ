@@ -62,6 +62,15 @@ public class Services implements Serializable {
         private String name;
         private String description;
         private String image;
+        private String action="Add";
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
+        }
 
         public String getId() {
             return id;

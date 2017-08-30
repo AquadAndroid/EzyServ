@@ -3,12 +3,14 @@ package com.ezyserv.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ezyserv.R;
 import com.ezyserv.model.Services;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.design.R.id.start;
+import static com.ezyserv.application.MyApp.getApplication;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by DJ-PC on 7/6/2017.
@@ -28,6 +32,7 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
     private LayoutInflater inflater;
     private ItemClickCallback itemclickcallback;
     private int count = 0;
+    public String value;
 
     public interface ItemClickCallback {
         void onItemClick(int p);
@@ -58,12 +63,16 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
     public void onBindViewHolder(DataHolder holder, int position) {
         Services.Data item = data.getServices().get(position);
         holder.Sname.setText(item.getName());
-        holder.Sadd_remove.setText(item.getAction());
+       // holder.Sadd_remove.setText(item.getAction());
     }
 
     @Override
     public int getItemCount() {
-        return data.getServices().size();
+
+
+            return data.getServices().size();
+
+
     }
 
 
@@ -75,7 +84,7 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
             super(itemView);
             Sname = (TextView) itemView.findViewById(R.id.tv_serv_name);
             Sadd_remove = (TextView) itemView.findViewById(R.id.tv_add_remove);
-
+            Sname.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             Sadd_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,12 +99,18 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
                         Sname.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         count--;
                     }
-
+                    value=String.valueOf(count);
+                   //
+                   /* Intent intent = new Intent("custom-message");
+                    intent.putExtra("quantity",value);
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);*/
+                    Toast.makeText(v.getContext(), "Count "+value, Toast.LENGTH_SHORT).show();
                 }
 
             });
 
         }
+
 
 
     }

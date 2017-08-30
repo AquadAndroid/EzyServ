@@ -17,6 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="Service Name"
+            android:drawableLeft="@drawable/shape"
+            android:drawablePadding="@dimen/dim_10"
+            android:paddingLeft="@dimen/dim_10"
             android:textColor="@color/black"
             android:textSize="@dimen/dim_15" />
 
@@ -26,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="Add"
+            android:layout_marginRight="@dimen/dim_10"
             android:textColor="@color/pink"
             android:textSize="@dimen/dim_15"
             android:textStyle="bold" />
