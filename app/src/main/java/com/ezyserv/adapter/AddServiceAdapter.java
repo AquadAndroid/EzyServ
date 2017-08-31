@@ -1,26 +1,20 @@
 package com.ezyserv.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ezyserv.R;
 import com.ezyserv.model.Services;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.support.design.R.id.start;
-import static com.ezyserv.application.MyApp.getApplication;
-import static com.facebook.FacebookSdk.getApplicationContext;
+import java.util.HashMap;
 
 /**
  * Created by DJ-PC on 7/6/2017.
@@ -30,25 +24,19 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
 
     private Services data;
     private LayoutInflater inflater;
-    private ItemClickCallback itemclickcallback;
-    private int count = 0;
-    public String value;
+    public int count = 0;
+    private Context c;
 
     public interface ItemClickCallback {
         void onItemClick(int p);
 
         void onSecondaryIconClick(int p);
-
     }
-
-    public void SetItemClickCallback(final ItemClickCallback itemClickCallback) {
-        this.itemclickcallback = itemClickCallback;
-    }
-
 
     public AddServiceAdapter(Services data, Context c) {
         this.inflater = LayoutInflater.from(c);
         this.data = data;
+        this.c = c;
     }
 
     @Override
@@ -63,61 +51,53 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
     public void onBindViewHolder(DataHolder holder, int position) {
         Services.Data item = data.getServices().get(position);
         holder.Sname.setText(item.getName());
-       // holder.Sadd_remove.setText(item.getAction());
+        holder.Sadd_remove.setText(item.getAction());
+        if (TextUtils.isEmpty(item.getAction())) {
+            holder.Sadd_remove.setText("Add");
+        }
+
+        Picasso.with(c)
+                .load(item.getImage())
+//                .placeholder(R.drawable.ic_not_loaded) // optional
+//                .error(R.drawable.ic_not_loaded)         // optional
+                .into(holder.img_service);
     }
 
     @Override
     public int getItemCount() {
-
-
-            return data.getServices().size();
-
-
+        return data.getServices().size();
     }
 
+    public HashMap<String, String> idMap = new HashMap<>();
 
     class DataHolder extends RecyclerView.ViewHolder {
         TextView Sname, Sadd_remove;
-
+        ImageView img_service;
 
         public DataHolder(final View itemView) {
             super(itemView);
             Sname = (TextView) itemView.findViewById(R.id.tv_serv_name);
             Sadd_remove = (TextView) itemView.findViewById(R.id.tv_add_remove);
-            Sname.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            img_service = (ImageView) itemView.findViewById(R.id.img_service);
+
             Sadd_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (Sadd_remove.getText().equals("Add")) {
                         Sadd_remove.setText("Remove");
                         Sadd_remove.setTextColor(Color.parseColor("#3949AB"));
-                        Sname.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shape, 0, 0, 0);
+                        idMap.put(data.getServices().get(getLayoutPosition()).getId(), "");
                         count++;
                     } else if (Sadd_remove.getText().equals("Remove")) {
                         Sadd_remove.setText("Add");
                         Sadd_remove.setTextColor(Color.parseColor("#ED365B"));
-                        Sname.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        idMap.remove(data.getServices().get(getLayoutPosition()).getId());
                         count--;
                     }
-                    value=String.valueOf(count);
-                   //
-                   /* Intent intent = new Intent("custom-message");
-                    intent.putExtra("quantity",value);
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);*/
-                    Toast.makeText(v.getContext(), "Count "+value, Toast.LENGTH_SHORT).show();
                 }
 
             });
 
         }
-
-
-
     }
-
-//    public void setListData(ArrayList<DummyListItem> exerciseList) {
-//        this.data.clear();
-//        this.data.addAll(exerciseList);
-//
-//    }
 }

@@ -21,6 +21,33 @@ public class SingleInstance {
     }
 
     private Place selectedPlace;
+    private int domesticCount = 0;
+    private int myCareCount = 0;
+    private int eventsCount = 0;
+
+    public int getDomesticCount() {
+        return domesticCount;
+    }
+
+    public void setDomesticCount(int domesticCount) {
+        this.domesticCount = domesticCount;
+    }
+
+    public int getMyCareCount() {
+        return myCareCount;
+    }
+
+    public void setMyCareCount(int myCareCount) {
+        this.myCareCount = myCareCount;
+    }
+
+    public int getEventsCount() {
+        return eventsCount;
+    }
+
+    public void setEventsCount(int eventsCount) {
+        this.eventsCount = eventsCount;
+    }
 
     public Place getSelectedPlace() {
         return selectedPlace;

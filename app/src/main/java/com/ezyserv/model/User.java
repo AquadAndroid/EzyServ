@@ -25,12 +25,12 @@ public class User implements Serializable {
     private String currentlong;
     private String active;
     private String device_token;
-    private List<Country> country;
+//    private List<Country> country;
     private List<Location> location;
 
-    public void setCountry(List<Country> country) {
-        this.country = country;
-    }
+//    public void setCountry(List<Country> country) {
+//        this.country = country;
+//    }
 
     public List<Location> getLocation() {
         return location;

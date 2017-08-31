@@ -181,6 +181,9 @@ public class ServiceSignUpActivity extends CustomActivity {
             } else if (TextUtils.isEmpty(Semail.getText().toString())) {
                 Semail.setError("Enter Your email address");
                 return;
+            } else if (MyApp.isEmailValid(Semail.getText().toString())) {
+                Semail.setError("Enter a valid email address");
+                return;
             } else if (TextUtils.isEmpty(Sphone.getText().toString())) {
                 Sphone.setError("Enter mobile number");
                 return;
@@ -224,6 +227,8 @@ public class ServiceSignUpActivity extends CustomActivity {
                 Intent intent = new Intent(ServiceSignUpActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "service_signup");
                 intent.putExtra("phone", phone_no);
+                intent.putExtra("isRegister", true);
+                intent.putExtra("isProvider", true);
                 startActivity(intent);
             }
         });

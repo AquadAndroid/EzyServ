@@ -128,6 +128,24 @@ public class MyApp extends Application {
         alert.show();
     }
 
+    public static void popMessageWithFinish(String titleMsg, String errorMsg,
+                                            final Activity context) {
+        // pop error message
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(titleMsg).setMessage(errorMsg)
+                .setPositiveButton("OK", new OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        context.finish();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     public static void showMassage(Context ctx, String msg) {
         Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
     }

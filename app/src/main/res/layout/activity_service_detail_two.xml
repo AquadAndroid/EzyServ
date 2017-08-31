@@ -19,14 +19,13 @@
             android:layout_height="match_parent"
             android:id="@+id/scrollView"
             android:scrollbars="none"
-            android:layout_marginBottom="@dimen/dim_55"
+            android:layout_above="@+id/btn_continue"
             android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dim_25"
-                android:layout_marginTop="@dimen/dim_15"
+                android:layout_marginBottom="@dimen/dim_4"
                 android:orientation="vertical">
 
                 <TextView
@@ -93,7 +92,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_construction_label"
+                    android:id="@+id/txt_mycare_counts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10"

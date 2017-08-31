@@ -68,14 +68,14 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         if (MyApp.getApplication().readCountry().size() == 0) {
             collectCountryData();
         }
-        setupuiElement();
+        setupUiElement();
     }
 
     private void collectCountryData() {
         getCall(getContext(), AppConstant.BASE_URL + "getAllCountry", "Collecting Country data...", 1);
     }
 
-    private void setupuiElement() {
+    private void setupUiElement() {
 
         setTouchNClick(R.id.customer_login);
         setTouchNClick(R.id.tv_term_con);
@@ -125,6 +125,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
                                         Log.d("Fb_info", object.getString("email") + "\n" + object.getString("name"));
 //                                        registerUser(object.getString("email"), object.getString("name").split(" ")[0], object.getString("name").split(" ")[1]);
                                         LoginManager.getInstance().logOut();
+
                                         startActivity(new Intent(CustomerSignUpActivity.this, CustomerFacebookActivity.class)
                                                 .putExtra("name", object.optString("name"))
                                                 .putExtra("email", object.optString("email")));
@@ -168,6 +169,14 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         });
     }
 
+
+//    private void callLogin() {
+//        RequestParams p = new RequestParams();
+//        p.put("phone", cust_mobile_no.getText().toString());
+//        postCall(getContext(), AppConstant.BASE_URL + "login", p, "Logging you in...", 1);
+//    }
+
+
     private Context getContext() {
         return CustomerSignUpActivity.this;
     }
@@ -198,6 +207,9 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
             } else if (TextUtils.isEmpty(cust_phone.getText().toString())) {
                 cust_phone.setError("Enter mobile number");
                 return;
+            } else if (MyApp.isEmailValid(cust_email.getText().toString())) {
+                cust_email.setError("Enter a valid email address");
+                return;
             } else if (!cust_checkBox.isChecked()) {
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
                 return;
@@ -206,7 +218,6 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
             MyApp.setSharedPrefString("name", cust_name.getText().toString());
             MyApp.setSharedPrefString("email", cust_email.getText().toString());
             registerUser();
-
         }
 
     }
@@ -239,6 +250,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         dialog_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(CustomerSignUpActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "customer_signup");
                 intent.putExtra("phone", phone_no);

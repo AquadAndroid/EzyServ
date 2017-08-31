@@ -101,7 +101,7 @@ public class FragmentDrawer extends Fragment {
         //  recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile_name = (TextView) layout.findViewById(R.id.profile_name);
         txt_logout = (TextView) layout.findViewById(R.id.txt_logout);
-        profile_name.setText(MyApp.getSharedPrefString("name"));
+        profile_name.setText(MyApp.getApplication().readUser().getName());
         nav_item_scheduled = (TextView) layout.findViewById(R.id.nav_item_scheduled);
         nav_item_invite_friends = (TextView) layout.findViewById(R.id.nav_item_invite_friends);
         nav_item_fav = (TextView) layout.findViewById(R.id.nav_item_fav);

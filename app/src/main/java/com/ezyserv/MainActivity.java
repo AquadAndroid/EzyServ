@@ -94,10 +94,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private ImageButton navBtn, btn_search;
 
     FloatingActionButton Show_all, Domestic, Construction, Events;
-    String[] SpinnerText={"Wallet","Cash"};
+    String[] SpinnerText = {"Wallet", "Cash"};
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
     private Spinner wallet_cash_spiner;
     private TextView tv_book_now;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,19 +117,25 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 //            v.setPadding(getStatusBarHeight(), getStatusBarHeight(), getStatusBarHeight(), 0);
         }
         wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
-         wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-             @Override
-             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                 Toast.makeText(getApplicationContext(), SpinnerText[position], Toast.LENGTH_LONG).show();
-             }
+            }
 
-             @Override
-             public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-             }
-         });
+            }
+        });
 
-        SpinnerAdapter customAdapter=new SpinnerAdapter(getApplicationContext(),SpinnerIcons,SpinnerText);
+        if (getIntent().getBooleanExtra("showAlert", false)) {
+            MyApp.popMessage("Message", "You are redirected to this activity even the verification of the " +
+                    "provider is under development." +
+                    " You will find this work in next update, Sorry for the inconvenience.", getContext());
+        }
+
+        SpinnerAdapter customAdapter = new SpinnerAdapter(getApplicationContext(), SpinnerIcons, SpinnerText);
         wallet_cash_spiner.setAdapter(customAdapter);
         setupUiElements();
         locationProvider = new LocationProvider(this, this, this);
@@ -451,17 +458,16 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));
             Tv_account.setTextColor(Color.parseColor("#ED365B"));
-          //  startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
+            //  startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
 
-           // startActivity(new Intent(MainActivity.this, ScheduleServiceActivity.class));
+            // startActivity(new Intent(MainActivity.this, ScheduleServiceActivity.class));
 
-        }else if(v.getId() == R.id.tv_book_now) {
+        } else if (v.getId() == R.id.tv_book_now) {
 
-        startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
+            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
 
 
-        }
-        else if (v == navBtn) {
+        } else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
 
         } else if (v == txt_location) {
@@ -534,7 +540,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         Domestic = (FloatingActionButton) findViewById(R.id.domestic);
         Construction = (FloatingActionButton) findViewById(R.id.construction);
         Events = (FloatingActionButton) findViewById(R.id.events);
-        tv_book_now=(TextView)findViewById(R.id.tv_book_now);
+        tv_book_now = (TextView) findViewById(R.id.tv_book_now);
 
        /* wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
        // wallet_cash_spiner.setOnItemSelectedListener(this);*/
@@ -690,6 +696,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         this.mMap.setMaxZoomPreference(15.5f);
         return bounds;
     }
+
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -733,9 +740,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 }
                 strAdd = strReturnedAddress.toString();
                 txt_location.setText(addresses.get(0).getSubLocality());
-                if(txt_location.getText().toString().isEmpty()){
+                if (txt_location.getText().toString().isEmpty()) {
                     txt_location.setText(addresses.get(0).getLocality());
-                    if(txt_location.getText().toString().isEmpty()){
+                    if (txt_location.getText().toString().isEmpty()) {
                         txt_location.setText(strAdd.replace("\n", " "));
                     }
                 }
@@ -825,7 +832,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public void onDrawerItemSelected(View view, int position) {
 
         if (position == 0) {
-          //  MyApp.showMassage(getContext(), "will go to my service requests");
+            //  MyApp.showMassage(getContext(), "will go to my service requests");
             startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
         } else if (position == 1) {
             MyApp.showMassage(getContext(), "will go to my service requests");
@@ -874,5 +881,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
     public void serviceMenDetails() {
-        startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));    }
+        startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));
+    }
 }

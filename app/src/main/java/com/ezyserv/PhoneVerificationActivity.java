@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.model.Country;
+import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,9 +29,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -52,6 +56,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     private TextView txt_resend;
     private boolean isRegister = false;
     private String countryId = "94";
+    private boolean isProvider = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
         setResponseListener(this);
 
         isRegister = getIntent().getBooleanExtra("isRegister", false);
+        isProvider = getIntent().getBooleanExtra("isProvider", false);
         mb_no.setText(getIntent().getStringExtra("phone"));
         Bundle extras = getIntent().getExtras();
 //
@@ -265,7 +271,13 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
         p.put("email", MyApp.getSharedPrefString("email"));
         p.put("phone", mb_no.getText().toString().split(" ")[1]);
         p.put("country_id", countryId);
-        p.put("isServicemen", "0");
+        if (isProvider) {
+            p.put("isServicemen", "1");
+//            p.put("service_categories_id", "7");
+            p.put("services", "2,3");
+        } else {
+            p.put("isServicemen", "0");
+        }
         p.put("currentlat", "0.0");
         p.put("currentlong", "0.0");
         p.put("company", "");
@@ -293,6 +305,24 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
         if (callNumber == 1) {
+            if (o.optString("status").equals("true")) {
+                try {
+                    User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
+                    MyApp.getApplication().writeUser(u);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    MyApp.popMessage("Alert!", "Parsing error.", PhoneVerificationActivity.this);
+                    return;
+                } catch (JsonSyntaxException ee){
+
+                }
+            } else {
+                MyApp.popMessageWithFinish("Alert!", o.optString("Message"), PhoneVerificationActivity.this);
+                return;
+            }
+            Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
+            intent.putExtra("ezy", value);
+            startActivity(intent);
         }
         isRegisterCalled = false;
     }

@@ -36,14 +36,14 @@ import java.util.List;
 public class ServiceDetailActivityTwo extends CustomActivity implements CustomActivity.ResponseCallback {
     private Toolbar Dtoolbar;
     private TextView tvDomestic, tvConstruction, tvEvents, tvAddLocation;
-    private TextView countDomestic, countConstruction, countEvents;
+    private TextView tv_domestic_label, txt_mycare_counts, tv_events_label;
     private RecyclerView listLocations;
     private Button Continue;
     private ArrayList listdata;
     private ServiceLocationAdapter adapter;
     private ScrollView scrollView;
     private List<Services> allServices = null;
-    String strEditText;
+//    private String strEditText;
 
 
     @Override
@@ -64,10 +64,21 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         actionBar.setTitle("");
 
         setupUiElement();
-        countDomestic.setText(strEditText+"services added");
+        tv_domestic_label.setText("0 services added");
         getAllServices();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int domesticCounter = SingleInstance.getInstance().getDomesticCount();
+        int myCareCounter = SingleInstance.getInstance().getMyCareCount();
+        int eventsCounter = SingleInstance.getInstance().getEventsCount();
+
+        tv_domestic_label.setText(domesticCounter + " services added");
+        txt_mycare_counts.setText(myCareCounter + " services added");
+        tv_events_label.setText(eventsCounter + " services added");
+    }
 
     private void getAllServices() {
         getCall(getContext(), AppConstant.BASE_URL + "getAllServices", "Loading services...", 1);
@@ -76,16 +87,16 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
     private Context getContext() {
         return ServiceDetailActivityTwo.this;
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
-               strEditText = data.getStringExtra("editTextValue");
-                Toast.makeText(this, ""+strEditText, Toast.LENGTH_SHORT).show();
-               // countDomestic.setText(strEditText+"services added");
-            }
-        }
-    }
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1) {
+//            if(resultCode == RESULT_OK) {
+//               strEditText = data.getStringExtra("editTextValue");
+//                Toast.makeText(this, ""+strEditText, Toast.LENGTH_SHORT).show();
+//               // countDomestic.setText(strEditText+"services added");
+//            }
+//        }
+//    }
 
     private void setupUiElement() {
 
@@ -94,17 +105,15 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         setTouchNClick(R.id.tv_events);
         setTouchNClick(R.id.btn_continue);
 
-
         tvDomestic = (TextView) findViewById(R.id.tv_domestic);
         tvConstruction = (TextView) findViewById(R.id.tv_construction);
         tvEvents = (TextView) findViewById(R.id.tv_events);
         tvAddLocation = (TextView) findViewById(R.id.edt_add_loaction);
 
 
-        countDomestic = (TextView) findViewById(R.id.tv_domestic_label);
-       // countDomestic.setText(returnValue+"services added");
-        countConstruction = (TextView) findViewById(R.id.tv_construction_label);
-        countEvents = (TextView) findViewById(R.id.tv_events_label);
+        tv_domestic_label = (TextView) findViewById(R.id.tv_domestic_label);
+        txt_mycare_counts = (TextView) findViewById(R.id.txt_mycare_counts);
+        tv_events_label = (TextView) findViewById(R.id.tv_events_label);
         listdata = (ArrayList) DummyLocation.getListData();
         listLocations = (RecyclerView) findViewById(R.id.location_list);
 

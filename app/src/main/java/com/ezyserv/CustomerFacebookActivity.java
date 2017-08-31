@@ -54,7 +54,7 @@ public class CustomerFacebookActivity extends CustomActivity {
         MyApp.setSharedPrefString("name", cust_name.getText().toString());
         MyApp.setSharedPrefString("email", cust_email.getText().toString());
         cust_signup_btn = (Button) findViewById(R.id.cust_fb_signup);
-        cust_countryCodePicker=(CountryCodePicker)findViewById(R.id.ccp);
+        cust_countryCodePicker = (CountryCodePicker) findViewById(R.id.ccp);
 
     }
 
@@ -70,16 +70,14 @@ public class CustomerFacebookActivity extends CustomActivity {
                 cust_phone.setError("Enter mobile number");
             }
 
+            MyApp.setSharedPrefString("name", cust_name.getText().toString());
+            MyApp.setSharedPrefString("email", cust_email.getText().toString());
             phVerification();
-
         }
     }
 
 
-
-
-
-    private void phVerification(){
+    private void phVerification() {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -87,7 +85,7 @@ public class CustomerFacebookActivity extends CustomActivity {
 
 
         final String phone_no;
-        phone_no=cust_countryCodePicker.getSelectedCountryCodeWithPlus()+" "+ cust_phone.getText().toString();
+        phone_no = cust_countryCodePicker.getSelectedCountryCodeWithPlus() + " " + cust_phone.getText().toString();
         TextView verification_message = (TextView) dialog.findViewById(R.id.verification_message);
         verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
@@ -104,9 +102,11 @@ public class CustomerFacebookActivity extends CustomActivity {
         dialog_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(CustomerFacebookActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "customer_facebook");
                 intent.putExtra("phone", phone_no);
+                intent.putExtra("isRegister", true);
                 startActivity(intent);
             }
         });

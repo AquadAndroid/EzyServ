@@ -38,7 +38,7 @@ private Toolbar toolbar;
         service_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent( SignUpSelection.this, ServiceSignUpActivity.class));
+                startActivity(new Intent( SignUpSelection.this, ServiceDeatailActivityOne.class));
             }
         });
     }

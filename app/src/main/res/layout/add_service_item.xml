@@ -8,18 +8,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dim_10"
-        android:paddingTop="@dimen/dim_10">
+        android:paddingBottom="@dimen/dim_5"
+        android:paddingTop="@dimen/dim_5">
+
+        <ImageView
+            android:id="@+id/img_service"
+            android:layout_width="@dimen/dim_50"
+            android:layout_height="@dimen/dim_50"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/tv_serv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="Service Name"
-            android:drawableLeft="@drawable/shape"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/img_service"
             android:drawablePadding="@dimen/dim_10"
             android:paddingLeft="@dimen/dim_10"
+            android:text="Service Name"
             android:textColor="@color/black"
             android:textSize="@dimen/dim_15" />
 
@@ -28,8 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Add"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dim_10"
+            android:padding="@dimen/dim_10"
+            android:text="Add"
             android:textColor="@color/pink"
             android:textSize="@dimen/dim_15"
             android:textStyle="bold" />

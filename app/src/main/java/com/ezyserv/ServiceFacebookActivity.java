@@ -76,6 +76,8 @@ public class ServiceFacebookActivity extends CustomActivity {
                 edt_service_mobile.setError("Enter mobile number");
                 return;
             }
+            MyApp.setSharedPrefString("name", edt_service_name.getText().toString());
+            MyApp.setSharedPrefString("email", edt_service_email.getText().toString());
             phVerification();
 
         }
@@ -106,9 +108,12 @@ public class ServiceFacebookActivity extends CustomActivity {
         dialog_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(ServiceFacebookActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "service_facebook");
                 intent.putExtra("phone", phone_no);
+                intent.putExtra("isRegister", true);
+                intent.putExtra("isProvider", true);
                 startActivity(intent);
             }
         });

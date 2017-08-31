@@ -117,6 +117,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
         dialog_send_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(CustomerLoginActivity.this, PhoneVerificationActivity.class);
                 intent.putExtra("key", "customer_login");
                 intent.putExtra("phone", phone_no);

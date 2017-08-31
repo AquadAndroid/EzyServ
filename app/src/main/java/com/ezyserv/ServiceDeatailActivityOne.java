@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -20,12 +21,15 @@ public class ServiceDeatailActivityOne extends CustomActivity {
     private EditText demail;
     private EditText edt_service_name;
     private EditText edt_service_mobile;
-    private String value="";
+    private String value = "";
     private CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        startActivity(new Intent(getContext(), MainActivity.class).putExtra("showAlert", true));
+
         setContentView(R.layout.activity_service_deatail_one);
         Dtoolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(Dtoolbar);
@@ -50,16 +54,17 @@ public class ServiceDeatailActivityOne extends CustomActivity {
 
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
         ccp.setCcpClickable(false);
-        ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+","")));
+        ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+", "")));
 
         value = getIntent().getStringExtra("key");
+        value = "email_verification";
 
         if (value.equals("email_verification")) {
             verifyemail.setVisibility(View.GONE);
             demail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.shape, 0);
-        } else if(value.equals("phone_verified")) {
+        } else if (value.equals("phone_verified")) {
             verifyemail.setVisibility(View.VISIBLE);
-            demail.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+            demail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             verifyemail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,5 +80,9 @@ public class ServiceDeatailActivityOne extends CustomActivity {
             }
         });
 
+    }
+
+    private Context getContext() {
+        return ServiceDeatailActivityOne.this;
     }
 }
