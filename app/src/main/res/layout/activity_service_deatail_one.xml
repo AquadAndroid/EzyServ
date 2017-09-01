@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.ezyserv.ServiceDeatailActivityOne">
 
     <include layout="@layout/detail_toolbar" />
@@ -117,8 +117,7 @@
                         android:id="@+id/ccp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                         />
+                        android:layout_centerVertical="true" />
 
 
                     <android.support.design.widget.TextInputLayout
@@ -132,9 +131,9 @@
                             android:id="@+id/edt_service_mobile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/shape"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            android:drawableRight="@drawable/shape"
                             android:hint="Phone Number"
                             android:imeOptions="actionUnspecified"
                             android:inputType="number"
@@ -152,7 +151,6 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dim_5"
                     android:theme="@style/MyTextInputLayout">
 
                     <EditText
@@ -177,59 +175,93 @@
 
 
                     <TextView
-                        android:id="@+id/edt_doc_one"
+                        android:id="@+id/txt1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:paddingLeft="@dimen/dim_10"
+                        android:text="Document 1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dim_12" />
+
+                    <TextView
+                        android:id="@+id/txt_doc1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/txt1"
+                        android:layout_marginTop="-5dp"
                         android:padding="@dimen/dim_10"
-                        android:text="taxcard.pdf"
+                        android:text="Upload Document"
                         android:textColorHint="@color/blue"
                         android:textSize="@dimen/dim_18" />
 
 
                     <TextView
+                        android:id="@+id/txt_upload1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="CHANGE"
+                        android:padding="@dimen/dim_10"
+                        android:text="Upload"
                         android:textColor="@color/pink" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:layout_marginLeft="@dimen/dim_5"
-                        android:layout_below="@+id/edt_doc_one"
-                        android:background="#959595" />
 
                 </RelativeLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dim_60"
-                    android:layout_marginTop="@dimen/dim_5"
-                    android:theme="@style/MyTextInputLayout">
+                    android:layout_height="3px"
+                    android:layout_below="@+id/edt_doc_one"
+                    android:layout_marginLeft="@dimen/dim_5"
 
-                    <EditText
-                        android:id="@+id/edt_doc_two"
+                    android:background="#959595" />
+
+                <TextView
+                    android:id="@+id/txt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="@dimen/dim_10"
+                    android:paddingTop="@dimen/dim_10"
+                    android:text="Document 2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dim_12" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txt_doc2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Document 2"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textEmailAddress"
+                        android:layout_marginTop="-5dp"
                         android:maxLines="1"
-                        android:singleLine="true"
-                        android:text="licenso.png"
+                        android:padding="@dimen/dim_10"
+                        android:text="Upload Document"
                         android:textColor="#959595"
-                        android:textColorHint="@color/blue"
-                        android:textSize="@dimen/dim_20" />
+                        android:textSize="@dimen/dim_18" />
+
+                    <TextView
+                        android:id="@+id/txt_upload2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:text="Upload"
+                        android:textColor="@color/pink" />
+
+                </RelativeLayout>
 
 
-                </android.support.design.widget.TextInputLayout>
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:layout_below="@+id/edt_doc_one"
+                    android:layout_marginLeft="@dimen/dim_5"
+                    android:background="#959595" />
 
             </LinearLayout>
         </ScrollView>

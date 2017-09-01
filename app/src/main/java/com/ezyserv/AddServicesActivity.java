@@ -67,10 +67,12 @@ public class AddServicesActivity extends CustomActivity {
                 } else if (value.equals("events")) {
                     SingleInstance.getInstance().setEventsCount(adapter.count);
                 }
-//                finish();
+//7, 6, 5]16, 15, 14]18, 22]
                 String ids = adapter.idMap.keySet().toString();
-                ids = ids.substring(1,ids.length()-1);
-                MyApp.popMessage("selected ids are",ids , getContext());
+                ids = ids.substring(1, ids.length());
+                ids = SingleInstance.getInstance().getServicesId() + ids;
+                SingleInstance.getInstance().setServicesId(ids.replace("]", ","));
+                finish();
             }
         });
 

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.ezyserv.ServiceDetailActivityTwo">
 
     <include layout="@layout/detail_toolbar" />
@@ -15,12 +15,12 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView"
-            android:scrollbars="none"
             android:layout_above="@+id/btn_continue"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/edt_add_loaction"
+                    android:id="@+id/txt_add_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -160,16 +160,26 @@
                     android:paddingLeft="@dimen/dim_25"
                     android:paddingRight="@dimen/dim_25"
                     android:paddingTop="@dimen/dim_10"
-                    android:text="Add another location"
+                    android:text="Change location"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/dim_20" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/location_list"
+                <TextView
+                    android:id="@+id/txt_current_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dim_15"
-                    android:layout_marginTop="@dimen/dim_15" />
+                    android:layout_margin="@dimen/dim_10"
+                    android:gravity="center"
+                    android:padding="@dimen/dim_10"
+                    android:text="Detecting current location..."
+                    android:textColor="@color/bel_grey_text"
+                    android:textSize="@dimen/dim_18" />
+                <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/location_list"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="@dimen/dim_15"-->
+                <!--android:layout_marginTop="@dimen/dim_15" />-->
             </LinearLayout>
         </ScrollView>
 

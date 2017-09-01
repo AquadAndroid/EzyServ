@@ -12,6 +12,7 @@ import java.util.List;
 
 public class SingleInstance {
     private static final SingleInstance ourInstance = new SingleInstance();
+    private String servicesId = "";
 
     public static SingleInstance getInstance() {
         return ourInstance;
@@ -65,5 +66,13 @@ public class SingleInstance {
 
     public void setSelectedServiceCategory(Services selectedServiceCategory) {
         this.selectedServiceCategory = selectedServiceCategory;
+    }
+
+    public String getServicesId() {
+        return servicesId;
+    }
+
+    public void setServicesId(String servicesId) {
+        this.servicesId = servicesId;
     }
 }
