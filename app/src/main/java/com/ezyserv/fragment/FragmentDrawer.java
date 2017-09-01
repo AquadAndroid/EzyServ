@@ -18,11 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ezyserv.ProfileActivity;
 import com.ezyserv.R;
 import com.ezyserv.SignUpSelection;
 import com.ezyserv.adapter.NavigationDrawerAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.utills.AppConstant;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +104,14 @@ public class FragmentDrawer extends Fragment {
         profile_name = (TextView) layout.findViewById(R.id.profile_name);
         txt_logout = (TextView) layout.findViewById(R.id.txt_logout);
         profile_name.setText(MyApp.getApplication().readUser().getName());
+        profile_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ProfileActivity.class));
+            }
+        });
+
+
         nav_item_scheduled = (TextView) layout.findViewById(R.id.nav_item_scheduled);
         nav_item_invite_friends = (TextView) layout.findViewById(R.id.nav_item_invite_friends);
         nav_item_fav = (TextView) layout.findViewById(R.id.nav_item_fav);
@@ -121,7 +131,7 @@ public class FragmentDrawer extends Fragment {
         } else {
             lp.setMargins(0, getStatusBarHeight(), 0, 0);
         }
-
+        Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,6 +314,12 @@ public class FragmentDrawer extends Fragment {
 
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
     }
 
     public interface FragmentDrawerListener {

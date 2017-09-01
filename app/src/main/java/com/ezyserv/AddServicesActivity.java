@@ -16,6 +16,8 @@ import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.model.Services;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AddServicesActivity extends CustomActivity {
     private Toolbar toolbar;
     private String value;
@@ -23,6 +25,7 @@ public class AddServicesActivity extends CustomActivity {
     private Button Save;
     private AddServiceAdapter adapter;
     private Services services;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
