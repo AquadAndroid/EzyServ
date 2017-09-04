@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dim_10"
+    android:paddingTop="@dimen/dim_15">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dim_15">
+
+        <TextView
+            android:id="@+id/tv_service_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Electrical Repair"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/location_blue"
+            android:drawablePadding="@dimen/dim_10"
+            android:text="Location"
+            android:textSize="@dimen/dim_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boom Keng Road" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_2"
+        android:layout_marginTop="@dimen/dim_10"
+        android:background="#D8D8D8" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_10">
+        </RelativeLayout>
+</LinearLayout>

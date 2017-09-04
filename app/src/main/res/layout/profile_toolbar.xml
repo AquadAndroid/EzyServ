@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/profile_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_20" />
+
+        <TextView
+
+            android:id="@+id/tv_edit_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dim_10"
+            android:background="@drawable/curvey_bg_white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dim_10"
+
+            android:paddingRight="@dimen/dim_10"
+            android:text=""
+            android:textColor="@color/pink"
+            android:textSize="@dimen/dim_14"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>

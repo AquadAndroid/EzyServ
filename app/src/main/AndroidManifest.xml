@@ -13,8 +13,10 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -127,8 +129,9 @@
             android:name=".PaymentSelectionActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".SearchingServiceActivity"
-            android:screenOrientation="sensorPortrait"/>
+        <activity
+            android:name=".SearchingServiceActivity"
+            android:screenOrientation="sensorPortrait" />
 
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
@@ -197,14 +200,19 @@
         <activity
             android:name=".AllServicesActivity"
             android:screenOrientation="sensorPortrait" />
-         <activity
+        <activity
             android:name=".ProfileActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".DomesticActivity"
             android:screenOrientation="sensorPortrait" />
-        <activity android:name=".ScheduleServiceActivity"
-            android:screenOrientation="sensorPortrait"></activity>
+        <activity
+            android:name=".ServiceHomeActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".ScheduleServiceActivity"
+            android:screenOrientation="sensorPortrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.ezyserv.provider"
@@ -212,8 +220,11 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".ProfileUpdateActivity" />
+        <activity android:name=".AddMoneyServicesActivity"></activity>
     </application>
 
 </manifest>

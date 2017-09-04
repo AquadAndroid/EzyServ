@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ezyserv.ProfileUpdateActivity">
+<include
+    layout="@layout/profile_toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dim_25"
+            android:layout_marginTop="@dimen/dim_15"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dim_15"
+            android:paddingRight="@dimen/dim_15">
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_12"
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_service_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Name of the person company is under"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/blue" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_5"
+                    android:theme="@style/MyTextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_service_detail_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/blue"
+                        android:hint="Email"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_5">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/ccp"
+                    android:theme="@style/MyTextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_service_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:textColorHint="@color/blue"
+                        android:hint="Phone Number"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="number"
+                        android:maxLength="12"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                         />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_5"
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/blue"
+                    android:hint="Compnay Name"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    />
+
+
+            </android.support.design.widget.TextInputLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/dim_15"
+    android:layout_height="wrap_content">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_doc_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/blue"
+                    android:hint="Document 1"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    />
+
+
+            </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CHANGE"
+        android:id="@+id/tv_doc1_change"
+        android:textColor="@color/pink"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/dim_16"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_5">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_doc_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Document 2"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColorHint="@color/blue"
+                    android:textColor="#959595"
+
+                    android:textSize="@dimen/dim_20" />
+
+
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHANGE"
+                android:id="@+id/tv_doc2_change"
+                android:textColor="@color/pink"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/dim_16"
+                android:layout_alignParentRight="true"
+                />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dim_60"
+                android:layout_marginTop="@dimen/dim_5"
+                >
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:theme="@style/MyTextInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_doc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Document 2"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+
+                    android:textColor="#959595"
+                    android:textColorHint="@color/blue"
+                    android:textSize="@dimen/dim_20" />
+
+
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UPLOAD"
+                android:id="@+id/tv_upload"
+                android:textColor="@color/pink"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/dim_16"
+                android:layout_alignParentRight="true"
+                />
+</RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rl_serv_tab_1"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:background="?attr/selectableItemBackground"
+        android:layout_weight="1">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/btn_tab_1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="-15dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:background="@null"-->
+            <!--android:padding="@dimen/dim_10"-->
+            <!--android:src="@drawable/search_active" />-->
+
+        <TextView
+            android:id="@+id/tv_account"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/account_active"
+            android:text="Account"
+            android:textColor="#ED365B" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_serv_tab_2"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:background="?attr/selectableItemBackground"
+        android:layout_weight="1">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/btn_tab_3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="-15dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:background="@null"-->
+            <!--android:padding="@dimen/dim_10"-->
+            <!--android:src="@drawable/notifications_inactive" />-->
+
+        <TextView
+            android:id="@+id/tv_serv_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/menu_requests_inactive"
+            android:layout_centerInParent="true"
+            android:text="Service Requests"
+            android:textColor="@color/text_color_volet" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_serv_tab_3"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:background="?attr/selectableItemBackground"
+        android:layout_weight="1">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/btn_tab_4"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="-15dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:padding="@dimen/dim_10"-->
+            <!--android:background="@null"-->
+            <!--android:src="@drawable/account_inactive" />-->
+
+        <TextView
+            android:id="@+id/tv_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/chats_inactive"
+           android:layout_centerInParent="true"
+            android:text="Chats"
+            android:textColor="@color/text_color_volet" />
+    </RelativeLayout>
+
+</LinearLayout>

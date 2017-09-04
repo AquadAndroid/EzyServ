@@ -1,0 +1,360 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDEEFC"
+    android:orientation="vertical"
+    tools:context="com.ezyserv.fragment.ServiceHomeFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/img_company_logo"
+            android:layout_width="@dimen/dim_50"
+            android:layout_height="@dimen/dim_50"
+            android:layout_margin="@dimen/dim_10"
+            android:src="@drawable/markzuckerberg"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="1dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img_company_logo"
+            android:orientation="vertical"
+            android:padding="@dimen/dim_10">
+
+            <TextView
+                android:id="@+id/tv_company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excel Services"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_18"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/status_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set your status"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dim_16" />
+
+                <Spinner
+                    android:id="@+id/avialbility_spiner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dim_25"
+                    android:layout_marginLeft="@dimen/dim_10"
+
+                    android:layout_toRightOf="@+id/status_label"
+                    android:backgroundTint="@color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_100"
+                android:layout_marginBottom="@dimen/dim_10"
+                android:layout_marginLeft="@dimen/dim_10"
+                android:layout_marginRight="@dimen/dim_10"
+                android:layout_marginTop="@dimen/dim_20"
+                android:background="@color/white"
+                android:padding="@dimen/dim_10"
+                app:cardCornerRadius="@dimen/dim_5">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_profile_incomplete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="@dimen/dim_10"
+                        android:background="@drawable/curvey_bg_ping"
+
+                        android:paddingLeft="@dimen/dim_5"
+                        android:paddingRight="@dimen/dim_5"
+                        android:text="Profile Incomplete"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/img_profile_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:background="@null"
+                        android:src="@drawable/serviceman_profile" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:layout_toRightOf="@+id/img_profile_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Profile"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dim_18"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Your business details"
+                            android:id="@+id/tv_business_details"
+                            android:textSize="@dimen/dim_16" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_edit_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/dim_5"
+                        android:layout_marginRight="@dimen/dim_8"
+                        android:text="EDIT YOUR PROFILE"
+                        android:textColor="@color/pink"
+                        android:textSize="@dimen/dim_14"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_100"
+                android:layout_margin="@dimen/dim_10"
+                android:background="@color/white"
+                android:padding="@dimen/dim_10"
+                app:cardCornerRadius="@dimen/dim_5">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_provided_service_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:background="@null"
+                        android:src="@drawable/serviceman_services_you_provide" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:layout_toRightOf="@+id/img_provided_service_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Services you provide"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dim_18"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_service_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12 services"
+                            android:textSize="@dimen/dim_16" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_view_add_services"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/dim_5"
+                        android:layout_marginRight="@dimen/dim_8"
+                        android:text="VIEW &amp; ADD MORE SERVICES"
+                        android:textColor="@color/pink"
+                        android:textSize="@dimen/dim_14"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_100"
+                android:layout_margin="@dimen/dim_10"
+                android:background="@color/white"
+                android:padding="@dimen/dim_10"
+                app:cardCornerRadius="@dimen/dim_5">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_lcoation_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:background="@null"
+                        android:src="@drawable/serviceman_location_you_serve" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:layout_toRightOf="@+id/img_lcoation_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Locations you serve"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dim_18"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_location_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="08 Locations"
+                            android:textSize="@dimen/dim_16" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_add_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/dim_5"
+                        android:layout_marginRight="@dimen/dim_8"
+                        android:text="VIEW &amp; ADD MORE LOCATIONS"
+                        android:textColor="@color/pink"
+                        android:textSize="@dimen/dim_14"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_100"
+                android:layout_margin="@dimen/dim_10"
+                android:background="@color/white"
+                android:padding="@dimen/dim_10"
+                app:cardCornerRadius="@dimen/dim_5">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_low_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="@dimen/dim_10"
+                        android:background="@drawable/curvey_bg_ping"
+
+                        android:paddingLeft="@dimen/dim_5"
+                        android:paddingRight="@dimen/dim_5"
+                        android:text="Low Balance"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/img_wallet_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:background="@null"
+                        android:src="@drawable/serviceman_wallet" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_10"
+                        android:layout_toRightOf="@+id/img_wallet_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wallet"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dim_18"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wallet Balance"
+                            android:textSize="@dimen/dim_14" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SGD (S$) 12"
+                            android:id="@+id/tv_wallet_bal"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dim_14" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_recharge_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/dim_5"
+                        android:layout_marginRight="@dimen/dim_8"
+                        android:text="RECHARGE WALLET TO GET SERVICE"
+                        android:textColor="@color/pink"
+                        android:textSize="@dimen/dim_14"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

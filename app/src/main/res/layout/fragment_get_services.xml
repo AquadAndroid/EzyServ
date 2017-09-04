@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8E9FB"
+    tools:context="com.ezyserv.fragment.GetServicesFragment">
+
+ <ImageView
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:background="@null"
+     android:id="@+id/search_icon"
+     android:src="@drawable/icn_finding_services"
+     android:layout_centerInParent="true"
+     />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/search_icon"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="@dimen/dim_10"
+    android:gravity="center_horizontal"
+    android:text="Looking for service requests\nnear you......"
+    android:textSize="@dimen/dim_16"
+    />
+</RelativeLayout>

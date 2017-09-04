@@ -73,7 +73,7 @@ public class ServiceDeatailActivityOne extends CustomActivity implements CustomA
 
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
         ccp.setCcpClickable(false);
-        ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+", "")));
+     //   ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+", "")));
 
         value = getIntent().getStringExtra("key");
         value = "email_verification";

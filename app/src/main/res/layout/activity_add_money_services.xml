@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ezyserv.AddMoneyServicesActivity">
+
+    <include layout="@layout/side_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_continue_add_money"
+        android:layout_below="@+id/side_toolbar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dim_10"
+            android:paddingLeft="@dimen/dim_15"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wallet Balance"
+                android:textSize="@dimen/dim_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SGD (S$) 12"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16"
+                android:layout_marginTop="@dimen/dim_5"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_10"
+                android:text="Minimum balance required : SGD(S$) 100"
+                android:textSize="@dimen/dim_14" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_5"
+            android:background="#E8E8E8"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10"
+            android:layout_marginLeft="@dimen/dim_15"
+            android:layout_marginRight="@dimen/dim_15"
+            android:theme="@style/MyTextInputLayout">
+
+            <EditText
+                android:id="@+id/edt_service_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:hint="Add amount to wallet"
+                android:imeOptions="actionUnspecified"
+                android:inputType="number"
+                android:maxLength="12"
+                android:maxLines="1"
+                android:textSize="@dimen/dim_16"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                />
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_15"
+            android:layout_marginLeft="@dimen/dim_15"
+            android:text="Select payment method "
+            android:textSize="@dimen/dim_14" />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_12">
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:text="Net Banking"
+                android:id="@+id/rb_net_banking"
+                android:paddingLeft="@dimen/dim_10"
+                android:textSize="@dimen/dim_16"
+                android:textColor="@color/black"
+                android:drawablePadding="@dimen/dim_10"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:layout_marginTop="@dimen/dim_5"
+                android:background="#E8E8E8"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:text="Credit/Debit cards"
+                android:layout_marginTop="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_10"
+                android:id="@+id/rb_debit_credit"
+                android:textSize="@dimen/dim_16"
+                android:textColor="@color/black"
+                android:drawablePadding="@dimen/dim_10"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:layout_marginTop="@dimen/dim_5"
+                android:background="#E8E8E8"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:text="Other Method"
+                android:id="@+id/rb_other_method"
+                android:layout_marginTop="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_10"
+                android:textSize="@dimen/dim_16"
+                android:textColor="@color/black"
+                android:drawablePadding="@dimen/dim_10"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:layout_marginTop="@dimen/dim_5"
+                android:background="#E8E8E8"/>
+
+            </RadioGroup>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_continue_add_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/pink"
+        android:gravity="center"
+        android:padding="@dimen/dim_10"
+        android:text="CONTINUE"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dim_18" />
+
+</RelativeLayout>
