@@ -110,7 +110,7 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         int domesticCounter = SingleInstance.getInstance().getDomesticCount();
         int myCareCounter = SingleInstance.getInstance().getMyCareCount();
         int eventsCounter = SingleInstance.getInstance().getEventsCount();
-
+// code push test
         tv_domestic_label.setText(domesticCounter + " services added");
         txt_mycare_counts.setText(myCareCounter + " services added");
         tv_events_label.setText(eventsCounter + " services added");
