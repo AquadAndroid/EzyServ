@@ -35,10 +35,6 @@
         <item name="android:shadowRadius">2</item>
         <item name="android:shadowDx">-2</item>
         <item name="android:shadowDy">-2</item>
-        <!--android:shadowColor="@color/text_shadow"-->
-        <!--android:shadowDx="1"-->
-        <!--android:shadowDy="1"-->
-        <!--android:shadowRadius="2"-->
     </style>
 
     <style name="collapsedappbar" parent="@android:style/TextAppearance.Medium">
