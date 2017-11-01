@@ -453,7 +453,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
             Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_active, 0, 0);
 
-
+//// pullllllllllllll
             Tv_search.setTextColor(Color.parseColor("#3949AB"));
             Tv_service.setTextColor(Color.parseColor("#3949AB"));
             Tv_notification.setTextColor(Color.parseColor("#3949AB"));

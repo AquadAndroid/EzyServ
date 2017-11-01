@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="play-services-maps-11.0.2">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/3b47268b629a0b5a051023bcd7e74d680dc45712/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/3b47268b629a0b5a051023bcd7e74d680dc45712/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/85c79579c88250d4a150be422492834dd671e562/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/85c79579c88250d4a150be422492834dd671e562/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
