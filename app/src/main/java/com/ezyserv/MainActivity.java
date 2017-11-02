@@ -16,10 +16,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -36,12 +39,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.ezyserv.adapter.CustomAdapterTwo;
 import com.ezyserv.adapter.SpinnerAdapter;
 import com.ezyserv.adapter.SwipeDeckAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.fragment.FragmentDrawer;
+import com.ezyserv.model.Services;
 import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.LocationProvider;
 import com.google.android.gms.common.ConnectionResult;
@@ -85,6 +90,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private FragmentDrawer drawerFragment;
     private TextView txt_location;
 
+    private NestedScrollView bottom_sheet;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private GridView service_gridview;
+
+    private List<Services> allProducts=new ArrayList<>();
+
     private GoogleMap mMap;
     private DrawerLayout drawer;
     private SupportMapFragment mapFragment;
@@ -116,6 +127,28 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
 //            v.setPadding(getStatusBarHeight(), getStatusBarHeight(), getStatusBarHeight(), 0);
         }
+
+
+        bottom_sheet = (NestedScrollView) findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        service_gridview=(GridView)findViewById(R.id.service_gridview);
+        allProducts = MyApp.getApplication().readService();
+        CustomAdapterTwo customAdaptertwo = new CustomAdapterTwo(getContext(), allProducts);
+        service_gridview.setAdapter(customAdaptertwo);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    Toast.makeText(MainActivity.this, "expanded", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+        bottomSheetBehavior.setPeekHeight(0);
         wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
         wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -159,7 +192,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 (DrawerLayout) findViewById(R.id.drawer_layout), null);
         drawerFragment.setDrawerListener(this);
 
-        SwipeDeck cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+     /* //  SwipeDeck cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         cardStack.setHardwareAccelerationEnabled(true);
         List<String> dataList = new ArrayList<>();
         final SwipeDeckAdapter adapter = new SwipeDeckAdapter(dataList, this);
@@ -189,7 +222,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             public void cardActionUp() {
 
             }
-        });
+        });*/
         txt_location = (TextView) findViewById(R.id.txt_location);
         txt_address = (TextView) findViewById(R.id.txt_address);
         setTouchNClick(R.id.txt_address);
@@ -481,7 +514,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (v == btn_search) {
             searchRadius();
         } else if (v == Show_all) {
-            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            // startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (v == Domestic) {
             startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (v == Construction) {
@@ -491,7 +529,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         }
     }
 
+
     @Override
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Place place;
