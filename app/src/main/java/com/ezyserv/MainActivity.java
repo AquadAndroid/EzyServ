@@ -17,14 +17,12 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -34,19 +32,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daprlabs.cardstack.SwipeDeck;
-import com.ezyserv.adapter.AddServiceAdapter;
 import com.ezyserv.adapter.BottomServiceAdapter;
-import com.ezyserv.adapter.CustomAdapterTwo;
 import com.ezyserv.adapter.SpinnerAdapter;
-import com.ezyserv.adapter.SwipeDeckAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
@@ -54,6 +47,8 @@ import com.ezyserv.fragment.FragmentDrawer;
 import com.ezyserv.model.Services;
 import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.LocationProvider;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -66,17 +61,14 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,10 +89,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     private NestedScrollView bottom_sheet;
     private BottomSheetBehavior bottomSheetBehavior;
-    //  private GridView service_gridview;
     private RecyclerView bottom_sheet_recycler;
     private BottomServiceAdapter adapter;
-    // private Services services;
     private List<Services> services = new ArrayList<>();
     private TextView tv_serv_catg;
     private GoogleMap mMap;
@@ -108,10 +98,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private SupportMapFragment mapFragment;
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
-    private TextView Tv_search, Tv_service, Tv_notification, Tv_account;
     private ImageButton navBtn, btn_search;
-
-    FloatingActionButton Show_all, Domestic, Construction, Events;
+    private FloatingActionsMenu fab_menu;
+    private FloatingActionButton fab_events, fab_construction, fab_domestic, fab_all;
     String[] SpinnerText = {"Wallet", "Cash"};
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
     private Spinner wallet_cash_spiner;
@@ -124,44 +113,24 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         setContentView(R.layout.activity_main);
         if (Build.VERSION.SDK_INT >= 21) {
 
-            // Set the status bar to dark-semi-transparentish
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-            // Set paddingTop of toolbar to height of status bar.
-            // Fixes statusbar covers toolbar issue
             RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
             lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
-//            v.setPadding(getStatusBarHeight(), getStatusBarHeight(), getStatusBarHeight(), 0);
         }
-/*SplashActivity splash= new SplashActivity();
-        splash.getServices();*/
 
-        bottom_sheet = (NestedScrollView) findViewById(R.id.bottom_sheet);
+
+        bottom_sheet =  findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        tv_serv_catg=(TextView)findViewById(R.id.tv_serv_catg);
-        bottom_sheet_recycler = (RecyclerView) findViewById(R.id.bottom_sheet_recycler);
+        bottom_sheet_recycler =  findViewById(R.id.bottom_sheet_recycler);
+        tv_serv_catg =  findViewById(R.id.tv_serv_catg);
         bottom_sheet_recycler.setLayoutManager(new GridLayoutManager(this, 4));
         services = MyApp.getApplication().readService();
-      /*  adapter = new BottomServiceAdapter(services, this, pos);
-        bottom_sheet_recycler.setAdapter(adapter);*/
-
-        /*ServiceList = (RecyclerView) findViewById(R.id.service_recycle);
-        ServiceList.setLayoutManager(new LinearLayoutManager(this));
-        services = SingleInstance.getInstance().getSelectedServiceCategory();
-        adapter = new AddServiceAdapter(services, this);
-        ServiceList.setAdapter(adapter);*/
-
-       /* service_gridview = (GridView) findViewById(R.id.service_gridview);
-        allProducts = MyApp.getApplication().readService();
-        CustomAdapterTwo customAdaptertwo = new CustomAdapterTwo(getContext(), allProducts);
-        service_gridview.setAdapter(customAdaptertwo);*/
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    Toast.makeText(MainActivity.this, "expanded", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -176,7 +145,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                 Toast.makeText(getApplicationContext(), SpinnerText[position], Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -200,9 +168,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         mapFragment.getMapAsync(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        DrawerLayout.LayoutParams lll = (DrawerLayout.LayoutParams) drawer.getLayoutParams();
-
-//        lll.set
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -215,41 +180,21 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 (DrawerLayout) findViewById(R.id.drawer_layout), null);
         drawerFragment.setDrawerListener(this);
 
-     /* //  SwipeDeck cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
-        cardStack.setHardwareAccelerationEnabled(true);
-        List<String> dataList = new ArrayList<>();
-        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(dataList, this);
-        cardStack.setAdapter(adapter);
-        cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
-            @Override
-            public void cardSwipedLeft(int position) {
-                Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
-            }
+        txt_location = findViewById(R.id.txt_location);
+        txt_address = findViewById(R.id.txt_address);
+        fab_menu = findViewById(R.id.fab_menu);
+        fab_events = findViewById(R.id.fab_events);
+        fab_construction = findViewById(R.id.fab_construction);
+        fab_domestic = findViewById(R.id.fab_domestic);
+        fab_all = findViewById(R.id.fab_all);
 
-            @Override
-            public void cardSwipedRight(int position) {
-                Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
-            }
 
-            @Override
-            public void cardsDepleted() {
-                Log.i("MainActivity", "no more cards");
-            }
-
-            @Override
-            public void cardActionDown() {
-
-            }
-
-            @Override
-            public void cardActionUp() {
-
-            }
-        });*/
-        txt_location = (TextView) findViewById(R.id.txt_location);
-        txt_address = (TextView) findViewById(R.id.txt_address);
         setTouchNClick(R.id.txt_address);
         setTouchNClick(R.id.txt_location);
+        setTouchNClick(R.id.fab_all);
+        setTouchNClick(R.id.fab_domestic);
+        setTouchNClick(R.id.fab_construction);
+        setTouchNClick(R.id.fab_events);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -445,87 +390,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     public void onClick(View v) {
         super.onClick(v);
-        if (v.getId() == R.id.rl_tab_1) {
-
-            Tv_search.setSelected(true);
-            Tv_service.setSelected(false);
-            Tv_notification.setSelected(false);
-            Tv_account.setSelected(false);
-
-            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_active, 0, 0);
-            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_inactive, 0, 0);
-            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
-            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_inactive, 0, 0);
-
-
-            Tv_search.setTextColor(Color.parseColor("#ED365B"));
-            Tv_service.setTextColor(Color.parseColor("#3949AB"));
-            Tv_notification.setTextColor(Color.parseColor("#3949AB"));
-            Tv_account.setTextColor(Color.parseColor("#3949AB"));
-        } else if (v.getId() == R.id.rl_tab_2) {
-            Tv_search.setSelected(false);
-            Tv_service.setSelected(true);
-            Tv_notification.setSelected(false);
-            Tv_account.setSelected(false);
-
-            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_inactive, 0, 0);
-            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_inactive, 0, 0);
-            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_active, 0, 0);
-            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_inactive, 0, 0);
-
-            Tv_search.setTextColor(Color.parseColor("#3949AB"));
-            Tv_service.setTextColor(Color.parseColor("#ED365B"));
-            Tv_notification.setTextColor(Color.parseColor("#3949AB"));
-            Tv_account.setTextColor(Color.parseColor("#3949AB"));
-
-            startActivity(new Intent(MainActivity.this, AllServicesActivity.class));
-
-        } else if (v.getId() == R.id.rl_tab_3) {
-            Tv_search.setSelected(false);
-            Tv_service.setSelected(false);
-            Tv_notification.setSelected(true);
-            Tv_account.setSelected(false);
-
-            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_inactive, 0, 0);
-            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_active, 0, 0);
-            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
-            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_inactive, 0, 0);
-
-
-            Tv_search.setTextColor(Color.parseColor("#3949AB"));
-            Tv_service.setTextColor(Color.parseColor("#3949AB"));
-            Tv_notification.setTextColor(Color.parseColor("#ED365B"));
-            Tv_account.setTextColor(Color.parseColor("#3949AB"));
-//            openImage();
-            startActivity(new Intent(MainActivity.this, NotificationActivity.class));
-        } else if (v.getId() == R.id.rl_tab_4) {
-            Tv_search.setSelected(false);
-            Tv_service.setSelected(false);
-            Tv_notification.setSelected(false);
-            Tv_account.setSelected(true);
-
-            Tv_search.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.search_inactive, 0, 0);
-            Tv_notification.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.notifications_inactive, 0, 0);
-            Tv_service.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.services_inactive, 0, 0);
-            Tv_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.account_active, 0, 0);
-
-//// pullllllllllllll
-            Tv_search.setTextColor(Color.parseColor("#3949AB"));
-            Tv_service.setTextColor(Color.parseColor("#3949AB"));
-            Tv_notification.setTextColor(Color.parseColor("#3949AB"));
-            Tv_account.setTextColor(Color.parseColor("#ED365B"));
-            //  startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
-
-            // startActivity(new Intent(MainActivity.this, ScheduleServiceActivity.class));
-
-        } else if (v.getId() == R.id.tv_book_now) {
-
+        if (v.getId() == R.id.tv_book_now) {
             startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
-
-
         } else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
-
         } else if (v == txt_location) {
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
@@ -536,18 +404,15 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             MainActivity.this.startActivityForResult(intent, 122);
         } else if (v == btn_search) {
             searchRadius();
-        } else if (v == Show_all) {
-            tv_serv_catg.setText("Handyman Services (8)");
-            adapter = new BottomServiceAdapter(services, this, 0);
-            bottom_sheet_recycler.setAdapter(adapter);
+        } else if (v == fab_all) {
+            fab_menu.collapse();
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-            // startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (v == Domestic) {
+        } else if (v == fab_domestic) {
+            fab_menu.collapse();
             tv_serv_catg.setText("Domestic Services (8)");
             adapter = new BottomServiceAdapter(services, this, 0);
             bottom_sheet_recycler.setAdapter(adapter);
@@ -556,8 +421,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-            // startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (v == Construction) {
+        } else if (v == fab_construction) {
+            fab_menu.collapse();
             tv_serv_catg.setText("Construction Services (7)");
             adapter = new BottomServiceAdapter(services, this, 1);
             bottom_sheet_recycler.setAdapter(adapter);
@@ -567,8 +432,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-            // /startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (v == Events) {
+        } else if (v == fab_events) {
+            fab_menu.collapse();
             tv_serv_catg.setText("Events Services (9)");
             adapter = new BottomServiceAdapter(services, this, 2);
             bottom_sheet_recycler.setAdapter(adapter);
@@ -577,7 +442,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-            //  startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         }
     }
 
@@ -611,40 +475,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
     private void setupUiElements() {
-        Tv_search = (TextView) findViewById(R.id.tv_search);
-        Tv_service = (TextView) findViewById(R.id.tv_services);
-        Tv_notification = (TextView) findViewById(R.id.tv_notification);
-        Tv_account = (TextView) findViewById(R.id.tv_account);
         navBtn = (ImageButton) findViewById(R.id.nav_drawer_btn);
         btn_search = (ImageButton) findViewById(R.id.btn_search);
 
-        setClick(R.id.rl_tab_1);
-        setClick(R.id.rl_tab_2);
-        setClick(R.id.rl_tab_3);
-        setClick(R.id.rl_tab_4);
         setClick(R.id.nav_drawer_btn);
         setClick(R.id.btn_search);
-        Tv_search.setSelected(true);
-        Tv_search.setTextColor(Color.parseColor("#ED365B"));
-
-        Show_all = (FloatingActionButton) findViewById(R.id.all_category);
-
-        Domestic = (FloatingActionButton) findViewById(R.id.domestic);
-        Construction = (FloatingActionButton) findViewById(R.id.construction);
-        Events = (FloatingActionButton) findViewById(R.id.events);
         tv_book_now = (TextView) findViewById(R.id.tv_book_now);
 
-       /* wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
-       // wallet_cash_spiner.setOnItemSelectedListener(this);*/
-
-
         setClick(R.id.tv_book_now);
-
-        setClick(R.id.all_category);
-        setClick(R.id.domestic);
-        setClick(R.id.construction);
-        setClick(R.id.events);
-
     }
 
     @Override
@@ -795,31 +633,31 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         mMap.clear();
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
-        Marker m1 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(LATITUDE + 0.2001, LONGITUDE - 0.0901))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-        builder.include(m1.getPosition());
-        Marker m2 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(LATITUDE + 0.05315, LONGITUDE - 0.1551))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-        builder.include(m2.getPosition());
-        Marker m3 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(LATITUDE - 0.0971, LONGITUDE + 0.4091))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-        builder.include(m3.getPosition());
-        Marker m4 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(LATITUDE - 0.00914, LONGITUDE + 0.0241))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-        builder.include(m4.getPosition());
-        Marker m5 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(LATITUDE - 0.0001, LONGITUDE + 0.1501))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-        builder.include(m5.getPosition());
-        Marker m6 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(LATITUDE + 0.1001, LONGITUDE - 0.0231))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-        builder.include(m6.getPosition());
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
+//        Marker m1 = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(LATITUDE + 0.2001, LONGITUDE - 0.0901))
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+//        builder.include(m1.getPosition());
+//        Marker m2 = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(LATITUDE + 0.05315, LONGITUDE - 0.1551))
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+//        builder.include(m2.getPosition());
+//        Marker m3 = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(LATITUDE - 0.0971, LONGITUDE + 0.4091))
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+//        builder.include(m3.getPosition());
+//        Marker m4 = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(LATITUDE - 0.00914, LONGITUDE + 0.0241))
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+//        builder.include(m4.getPosition());
+//        Marker m5 = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(LATITUDE - 0.0001, LONGITUDE + 0.1501))
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+//        builder.include(m5.getPosition());
+//        Marker m6 = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(LATITUDE + 0.1001, LONGITUDE - 0.0231))
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+//        builder.include(m6.getPosition());
+//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
 
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);

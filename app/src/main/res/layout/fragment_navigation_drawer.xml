@@ -83,7 +83,7 @@
                         android:padding="@dimen/dim_10"
                         android:text="My Service Request"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/dim_18" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/nav_item_scheduled"
@@ -96,7 +96,7 @@
                         android:padding="@dimen/dim_10"
                         android:text="Scheduled"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/dim_18" />
+                        android:textSize="16sp" />
 
                     <RelativeLayout
 
@@ -116,7 +116,7 @@
                             android:gravity="center_vertical"
                             android:text="Chats"
                             android:textColor="@color/blue"
-                            android:textSize="@dimen/dim_18" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/count_chat"
@@ -151,7 +151,7 @@
                             android:gravity="center_vertical"
                             android:text="History"
                             android:textColor="@color/blue"
-                            android:textSize="@dimen/dim_18" />
+                            android:textSize="16sp" />
 
                         <!--    <TextView
                                 android:id="@+id/count_notification"
@@ -188,7 +188,7 @@
                             android:gravity="center_vertical"
                             android:text="Wallet"
                             android:textColor="@color/blue"
-                            android:textSize="@dimen/dim_18" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/nav_wallet_amt"
@@ -214,7 +214,7 @@
                         android:padding="@dimen/dim_10"
                         android:text="Promos &amp; Offer"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/dim_18" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/nav_item_fav"
@@ -227,7 +227,7 @@
                         android:padding="@dimen/dim_10"
                         android:text="Favourites"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/dim_18" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/nav_item_invite_friends"
@@ -240,7 +240,7 @@
                         android:padding="@dimen/dim_10"
                         android:text="Invite Friends"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/dim_18" />
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
