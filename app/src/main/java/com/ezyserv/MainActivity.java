@@ -23,6 +23,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.ezyserv.adapter.AddServiceAdapter;
+import com.ezyserv.adapter.BottomServiceAdapter;
 import com.ezyserv.adapter.CustomAdapterTwo;
 import com.ezyserv.adapter.SpinnerAdapter;
 import com.ezyserv.adapter.SwipeDeckAdapter;
@@ -92,10 +97,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     private NestedScrollView bottom_sheet;
     private BottomSheetBehavior bottomSheetBehavior;
-    private GridView service_gridview;
-
-    private List<Services> allProducts=new ArrayList<>();
-
+    //  private GridView service_gridview;
+    private RecyclerView bottom_sheet_recycler;
+    private BottomServiceAdapter adapter;
+    // private Services services;
+    private List<Services> services = new ArrayList<>();
+    private TextView tv_serv_catg;
     private GoogleMap mMap;
     private DrawerLayout drawer;
     private SupportMapFragment mapFragment;
@@ -109,6 +116,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
     private Spinner wallet_cash_spiner;
     private TextView tv_book_now;
+    private int pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,14 +135,28 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
 //            v.setPadding(getStatusBarHeight(), getStatusBarHeight(), getStatusBarHeight(), 0);
         }
-
+/*SplashActivity splash= new SplashActivity();
+        splash.getServices();*/
 
         bottom_sheet = (NestedScrollView) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        service_gridview=(GridView)findViewById(R.id.service_gridview);
+        tv_serv_catg=(TextView)findViewById(R.id.tv_serv_catg);
+        bottom_sheet_recycler = (RecyclerView) findViewById(R.id.bottom_sheet_recycler);
+        bottom_sheet_recycler.setLayoutManager(new GridLayoutManager(this, 4));
+        services = MyApp.getApplication().readService();
+      /*  adapter = new BottomServiceAdapter(services, this, pos);
+        bottom_sheet_recycler.setAdapter(adapter);*/
+
+        /*ServiceList = (RecyclerView) findViewById(R.id.service_recycle);
+        ServiceList.setLayoutManager(new LinearLayoutManager(this));
+        services = SingleInstance.getInstance().getSelectedServiceCategory();
+        adapter = new AddServiceAdapter(services, this);
+        ServiceList.setAdapter(adapter);*/
+
+       /* service_gridview = (GridView) findViewById(R.id.service_gridview);
         allProducts = MyApp.getApplication().readService();
         CustomAdapterTwo customAdaptertwo = new CustomAdapterTwo(getContext(), allProducts);
-        service_gridview.setAdapter(customAdaptertwo);
+        service_gridview.setAdapter(customAdaptertwo);*/
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -149,6 +171,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             }
         });
         bottomSheetBehavior.setPeekHeight(0);
+
         wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
         wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -514,18 +537,47 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (v == btn_search) {
             searchRadius();
         } else if (v == Show_all) {
+            tv_serv_catg.setText("Handyman Services (8)");
+            adapter = new BottomServiceAdapter(services, this, 0);
+            bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
             // startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (v == Domestic) {
-            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            tv_serv_catg.setText("Domestic Services (8)");
+            adapter = new BottomServiceAdapter(services, this, 0);
+            bottom_sheet_recycler.setAdapter(adapter);
+            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            // startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (v == Construction) {
-            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            tv_serv_catg.setText("Construction Services (7)");
+            adapter = new BottomServiceAdapter(services, this, 1);
+            bottom_sheet_recycler.setAdapter(adapter);
+            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            // /startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (v == Events) {
-            startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            tv_serv_catg.setText("Events Services (9)");
+            adapter = new BottomServiceAdapter(services, this, 2);
+            bottom_sheet_recycler.setAdapter(adapter);
+            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            //  startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         }
     }
 

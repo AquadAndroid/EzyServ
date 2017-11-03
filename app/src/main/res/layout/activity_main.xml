@@ -378,7 +378,7 @@
                 android:id="@+id/tv_serv_catg"
                 android:textStyle="bold"
                 />
-            <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -390,7 +390,14 @@
                 android:padding="@dimen/dim_5"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="4dp"
-                tools:context="com.localfriend.fragments.AllFragment" />
+                tools:context="com.localfriend.fragments.AllFragment" />-->
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_10"
+                android:id="@+id/bottom_sheet_recycler"
+                />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>

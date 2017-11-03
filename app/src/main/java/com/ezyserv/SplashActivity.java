@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.ezyserv.application.MyApp;
+import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.model.Services;
 import com.ezyserv.model.User;
@@ -34,6 +35,7 @@ import java.util.List;
 public class SplashActivity extends CustomActivity implements CustomActivity.ResponseCallback {
     private static final int SPLASH_DURATION_MS = 1000;
     private Handler mHandler = new Handler();
+   // private List<Services> allServices = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +64,19 @@ public class SplashActivity extends CustomActivity implements CustomActivity.Res
                     finish();
                 }
 */
-              getServices();
+                getAllServices();
+              //getServices();
             }
         }, SPLASH_DURATION_MS);
 
 
     }
 
-    private void getServices(){
+    private void getAllServices() {
+        getCall(getContext(), AppConstant.BASE_URL + "getAllServices", "Loading services...", 1);
+    }
+
+   /* private void getServices(){
         RequestParams p = new RequestParams();
         p.put("services","");
         p.put("current_lat","78.2");
@@ -77,7 +84,7 @@ public class SplashActivity extends CustomActivity implements CustomActivity.Res
         p.put("radius","1000000");
 
         postCall(getContext(),AppConstant.BASE_URL+"nearByServiceProvider", p,"Getting....",1);
-    }
+    }*/
 
 
 
@@ -88,6 +95,7 @@ if (callNumber == 1){
         Type listType = new TypeToken<List<Services>>() {
         }.getType();
         try{
+         //  allServices = gson.fromJson(o.getJSONArray("data").toString(), listType);
             List<Services> u = new Gson().fromJson(o.getJSONArray("data").toString(), listType);
             MyApp.getApplication().writeService(u);
         }catch (JSONException e){
