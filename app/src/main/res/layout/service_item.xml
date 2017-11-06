@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/img_service"
         android:layout_width="@dimen/dim_35"
@@ -10,15 +13,15 @@
         android:src="@drawable/ac_installation"
         app:civ_border_color="@color/grey"
         app:civ_border_width="0.5dp" />
+
     <TextView
+        android:id="@+id/tv_service_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dim_5"
+        android:gravity="center"
         android:text="Ac Installation"
         android:textColor="@color/blue"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/tv_service_name"
-        android:layout_marginTop="@dimen/dim_5"
-        android:textSize="@dimen/dim_14"
-        />
+        android:textSize="@dimen/dim_14" />
 </LinearLayout>

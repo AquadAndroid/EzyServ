@@ -56,44 +56,44 @@ private Toolbar toolbar;
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-        final MenuItem item = menu.findItem(R.id.action_search);
-
-        final SearchView searchView = (SearchView) MenuItemCompat
-                .getActionView(item);
-        // SearchView.SearchAutoComplete theTextArea =
-        // (SearchView.SearchAutoComplete) searchView
-        // .findViewById(R.id.search_src_text);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Log.e("onQueryTextChange", "called");
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                if (TextUtils.isEmpty(query)) {
-
-                    Toast.makeText(DomesticActivity.this, "Enter Search Key", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-
-
-                //performSearch(query);
-                return false;
-            }
-
-        });
-        // theTextArea.setTextColor(Color.WHITE);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.search_menu, menu);
+//        final MenuItem item = menu.findItem(R.id.action_search);
+//
+//        final SearchView searchView = (SearchView) MenuItemCompat
+//                .getActionView(item);
+//        // SearchView.SearchAutoComplete theTextArea =
+//        // (SearchView.SearchAutoComplete) searchView
+//        // .findViewById(R.id.search_src_text);
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                // Log.e("onQueryTextChange", "called");
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//
+//                if (TextUtils.isEmpty(query)) {
+//
+//                    Toast.makeText(DomesticActivity.this, "Enter Search Key", Toast.LENGTH_SHORT).show();
+//                    return false;
+//                }
+//
+//
+//                //performSearch(query);
+//                return false;
+//            }
+//
+//        });
+//        // theTextArea.setTextColor(Color.WHITE);
+//        return true;
+//    }
 
 
 

@@ -9,6 +9,17 @@ repositories {
     }
 }
 android {
+    signingConfigs {
+        config {
+            keyAlias 'enolasia'
+            keyPassword '111111'
+            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
+            storePassword '111111'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+    }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -25,15 +36,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
 
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

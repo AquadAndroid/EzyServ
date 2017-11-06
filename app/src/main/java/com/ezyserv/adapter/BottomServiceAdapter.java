@@ -47,22 +47,16 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
 
     @Override
     public DataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = inflater.inflate(R.layout.service_item, parent, false);
         return new DataHolder(view);
-
     }
 
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
         Services.Data item = servicelist.get(catg).getServices().get(position);
         holder.tv_service_name.setText(item.getName());
-
-
         Picasso.with(c)
                 .load(item.getImage())
-//                .placeholder(R.drawable.ic_not_loaded) // optional
-//                .error(R.drawable.ic_not_loaded)         // optional
                 .into(holder.img_service);
     }
 

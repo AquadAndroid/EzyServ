@@ -44,6 +44,7 @@ import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.fragment.FragmentDrawer;
+import com.ezyserv.model.NearbyServices;
 import com.ezyserv.model.Services;
 import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.LocationProvider;
@@ -61,15 +62,27 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -78,7 +91,7 @@ import java.util.Locale;
 public class MainActivity extends CustomActivity implements FragmentDrawer.FragmentDrawerListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener, LocationProvider.LocationCallback, LocationProvider.PermissionCallback, GoogleMap.OnCameraIdleListener,
-        ResultCallback<LocationSettingsResult> {
+        ResultCallback<LocationSettingsResult>, CustomActivity.ResponseCallback {
 
     private boolean isFirstSet = false;
     private GoogleApiClient googleApiClient;
@@ -86,7 +99,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private LocationProvider locationProvider;
     private FragmentDrawer drawerFragment;
     private TextView txt_location;
-
     private NestedScrollView bottom_sheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView bottom_sheet_recycler;
@@ -107,10 +119,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private TextView tv_book_now;
     private int pos = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setResponseListener(this);
         if (Build.VERSION.SDK_INT >= 21) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -121,10 +135,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         }
 
 
-        bottom_sheet =  findViewById(R.id.bottom_sheet);
+        bottom_sheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        bottom_sheet_recycler =  findViewById(R.id.bottom_sheet_recycler);
-        tv_serv_catg =  findViewById(R.id.tv_serv_catg);
+        bottom_sheet_recycler = findViewById(R.id.bottom_sheet_recycler);
+        tv_serv_catg = findViewById(R.id.tv_serv_catg);
         bottom_sheet_recycler.setLayoutManager(new GridLayoutManager(this, 4));
         services = MyApp.getApplication().readService();
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -630,34 +644,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        mMap.clear();
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
-//        Marker m1 = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(LATITUDE + 0.2001, LONGITUDE - 0.0901))
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-//        builder.include(m1.getPosition());
-//        Marker m2 = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(LATITUDE + 0.05315, LONGITUDE - 0.1551))
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-//        builder.include(m2.getPosition());
-//        Marker m3 = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(LATITUDE - 0.0971, LONGITUDE + 0.4091))
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-//        builder.include(m3.getPosition());
-//        Marker m4 = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(LATITUDE - 0.00914, LONGITUDE + 0.0241))
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-//        builder.include(m4.getPosition());
-//        Marker m5 = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(LATITUDE - 0.0001, LONGITUDE + 0.1501))
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-//        builder.include(m5.getPosition());
-//        Marker m6 = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(LATITUDE + 0.1001, LONGITUDE - 0.0231))
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
-//        builder.include(m6.getPosition());
-//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
 
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
@@ -688,6 +674,15 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         return strAdd;
     }
 
+    private void getNearByServices(double lat, double lng) {
+        RequestParams p = new RequestParams();
+        p.put("services", "");
+        p.put("current_lat", lat);
+        p.put("current_lng", lng);
+        p.put("radius", "10000000");
+        postCall(getContext(), AppConstant.BASE_URL + "nearByServiceProvider", p, "Getting....", 1);
+    }
+
     @Override
     public void handleNewLocation(Location location) {
         sourceLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -696,6 +691,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 sourceLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 changeMap(location);
                 isFirstSet = true;
+                getNearByServices(sourceLocation.latitude, sourceLocation.longitude);
             }
 
         } catch (Exception e) {
@@ -782,10 +778,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "EzyServ (Open it in Google Play Store to Download the Application)");
-
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
             //  MyApp.showMassage(getContext(), "will invite your friends");
         } else if (position == 8) {
             MyApp.showMassage(getContext(), "will switch to service mode");
@@ -812,5 +806,57 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     public void serviceMenDetails() {
         startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));
+    }
+
+    @Override
+    public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
+        if (callNumber == 1) {
+            if (o.optString("status").equals("true")) {
+                Type listType = new TypeToken<List<NearbyServices.Data>>() {
+                }.getType();
+                try {
+
+                    //  allServices = gson.fromJson(o.getJSONArray("data").toString(), listType);
+                    List<NearbyServices.Data> nearBy = new Gson().fromJson(o.getJSONArray("data").toString(), listType);
+                    if (nearBy.size() > 0) {
+                        mMap.clear();
+                    }
+                    for (int i = 0; i < nearBy.size(); i++) {
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                        builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
+                        Marker m1 = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()),
+                                        Double.parseDouble(nearBy.get(i).getCurrentlong()) - 0.0901))
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+                        m1.setSnippet(nearBy.get(i).getName());
+                        m1.setTitle(nearBy.get(i).getService_name());
+                        builder.include(m1.getPosition());
+
+                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    MyApp.popMessage("Alert!", "Parsing error.", getContext());
+                    return;
+                } catch (JsonSyntaxException ee) {
+
+                }
+            } else {
+                MyApp.popMessageWithFinish("Alert!", o.optString("Message"), MainActivity.this);
+                return;
+            }
+
+        }
+    }
+
+    @Override
+    public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
+
+    }
+
+    @Override
+    public void onErrorReceived(String error) {
+
     }
 }
