@@ -131,7 +131,14 @@ public class FragmentDrawer extends Fragment {
         } else {
             lp.setMargins(0, getStatusBarHeight(), 0, 0);
         }
-        Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+
+
+     //
+        if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
+            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+        }else if(MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
+            Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+        }
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,7 +326,14 @@ public class FragmentDrawer extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+        if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
+            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+        }else if(MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
+            Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+        }
+      //  Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+       // Picasso.with(getContext()).load("https://graph.facebook.com/"+MyApp.getSharedPrefString(AppConstant.FB_ID)+"/picture?type=large").into(img_profile);
+
     }
 
     public interface FragmentDrawerListener {

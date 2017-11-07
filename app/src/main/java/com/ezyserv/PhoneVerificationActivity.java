@@ -285,6 +285,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
         p.put("docs1", "");
         p.put("docs2", "");
         p.put("profilepic", "");
+
         postCall(getContext(), AppConstant.BASE_URL + "register", p, "Registering...", 1);
     }
 

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 
 import com.ezyserv.model.Country;
+import com.ezyserv.model.NearbyServices;
 import com.ezyserv.model.Services;
 import com.ezyserv.model.User;
 
@@ -721,4 +722,59 @@ public class MyApp extends Application {
         }
         return user;
     }
+
+
+
+
+
+
+    public void writeNearByServices(List<NearbyServices> user) {
+
+        try {
+            String path = "/data/data/" + ctx.getPackageName()
+                    + "/nearservicesss.ser";
+            File f = new File(path);
+            if (f.exists()) {
+                f.delete();
+            }
+            FileOutputStream fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(user);
+            out.close();
+            fileOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<NearbyServices> readNearByServices() {
+        String path = "/data/data/" + ctx.getPackageName() + "/nearservicesss.ser";
+        File f = new File(path);
+        List<NearbyServices> user = new ArrayList<>();
+        if (f.exists()) {
+            try {
+                System.gc();
+                FileInputStream fileIn = new FileInputStream(path);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                user = (List<NearbyServices>) in.readObject();
+                in.close();
+                fileIn.close();
+            } catch (StreamCorruptedException e) {
+                e.printStackTrace();
+            } catch (OptionalDataException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
+
 }

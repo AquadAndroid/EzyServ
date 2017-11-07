@@ -181,7 +181,7 @@ public class ServiceSignUpActivity extends CustomActivity {
             } else if (TextUtils.isEmpty(Semail.getText().toString())) {
                 Semail.setError("Enter Your email address");
                 return;
-            } else if (MyApp.isEmailValid(Semail.getText().toString())) {
+            } else if (!MyApp.isEmailValid(Semail.getText().toString())) {
                 Semail.setError("Enter a valid email address");
                 return;
             } else if (TextUtils.isEmpty(Sphone.getText().toString())) {

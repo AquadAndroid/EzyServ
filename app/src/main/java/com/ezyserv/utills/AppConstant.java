@@ -8,6 +8,7 @@ public class AppConstant {
 
     public static final String DEVICE_TOKEN = "deviceToken";
     public static final String FB_ID = "fbId";
+    public static final String LOGIN_TYPE= "NORMAL";
     public static final String EXTRA_1 = "extra1";
     public static final String EXTRA_2 = "extra2";
     public static final String IS_LOGIN = "isLogin";

@@ -50,6 +50,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
     private Button cust_btn_sign_up;
     private LoginButton login_button;
     private CallbackManager callbackManager;
+    private String profilePicUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         if (MyApp.getApplication().readCountry().size() == 0) {
             collectCountryData();
         }
+       // MyApp.setStatus(AppConstant.LOGIN_TYPE, false);
         setupUiElement();
     }
 
@@ -99,6 +101,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         login_button = (LoginButton) findViewById(R.id.login_button);
         login_button.setReadPermissions("email,public_profile");
         // Callback registration
+
         callbackManager = CallbackManager.Factory.create();
         login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -117,6 +120,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
                                 try {
                                     fb_id = object.getString("id");
                                     MyApp.setSharedPrefString(AppConstant.FB_ID, fb_id);
+                                    MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"FB");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -185,11 +189,13 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.customer_login) {
+            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"NORMAL");
             startActivity(new Intent(CustomerSignUpActivity.this, CustomerLoginActivity.class));
         } else if (v.getId() == R.id.tv_term_con) {
             Toast.makeText(this, "Term Condition yet To be described ", Toast.LENGTH_SHORT).show();
@@ -207,14 +213,14 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
             } else if (TextUtils.isEmpty(cust_phone.getText().toString())) {
                 cust_phone.setError("Enter mobile number");
                 return;
-            } else if (MyApp.isEmailValid(cust_email.getText().toString())) {
+            } else if (!MyApp.isEmailValid(cust_email.getText().toString())) {
                 cust_email.setError("Enter a valid email address");
                 return;
             } else if (!cust_checkBox.isChecked()) {
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"NORMAL");
             MyApp.setSharedPrefString("name", cust_name.getText().toString());
             MyApp.setSharedPrefString("email", cust_email.getText().toString());
             registerUser();

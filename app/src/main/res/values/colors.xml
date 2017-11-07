@@ -10,5 +10,5 @@
     <color name="blue">#3949AB</color>
     <color name="green_text">#4caf50</color>
     <color name="grey">#8A8787</color>
-
+    <color name="scrim">#42000000</color>
 </resources>

@@ -1,6 +1,10 @@
 package com.ezyserv;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +34,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -77,6 +84,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
+import com.ogaclejapan.arclayout.ArcLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,7 +119,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
     private ImageButton navBtn, btn_search;
-    private FloatingActionsMenu fab_menu;
+  //  private FloatingActionsMenu fab_menu;
+    private ArcLayout arcLayout;
+    Button fab;
+    FrameLayout menu_arc_frame;
     private FloatingActionButton fab_events, fab_construction, fab_domestic, fab_all;
     String[] SpinnerText = {"Wallet", "Cash"};
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
@@ -196,13 +207,20 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         txt_location = findViewById(R.id.txt_location);
         txt_address = findViewById(R.id.txt_address);
-        fab_menu = findViewById(R.id.fab_menu);
+        menu_arc_frame=(FrameLayout) findViewById(R.id.menu_arc_frame);
+        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
+
+        for (int i = 0, size = arcLayout.getChildCount(); i < size; i++) {
+            arcLayout.getChildAt(i).setOnClickListener(this);
+        }
+        fab=(Button)findViewById(R.id.fab);
+        //fab_menu = findViewById(R.id.fab_menu);
         fab_events = findViewById(R.id.fab_events);
         fab_construction = findViewById(R.id.fab_construction);
         fab_domestic = findViewById(R.id.fab_domestic);
         fab_all = findViewById(R.id.fab_all);
 
-
+        setTouchNClick(R.id.fab);
         setTouchNClick(R.id.txt_address);
         setTouchNClick(R.id.txt_location);
         setTouchNClick(R.id.fab_all);
@@ -419,14 +437,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (v == btn_search) {
             searchRadius();
         } else if (v == fab_all) {
-            fab_menu.collapse();
+          //  fab_menu.collapse();
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab_domestic) {
-            fab_menu.collapse();
+           // fab_menu.collapse();
             tv_serv_catg.setText("Domestic Services (8)");
             adapter = new BottomServiceAdapter(services, this, 0);
             bottom_sheet_recycler.setAdapter(adapter);
@@ -436,7 +454,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab_construction) {
-            fab_menu.collapse();
+          //  fab_menu.collapse();
             tv_serv_catg.setText("Construction Services (7)");
             adapter = new BottomServiceAdapter(services, this, 1);
             bottom_sheet_recycler.setAdapter(adapter);
@@ -447,7 +465,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab_events) {
-            fab_menu.collapse();
+          //  fab_menu.collapse();
             tv_serv_catg.setText("Events Services (9)");
             adapter = new BottomServiceAdapter(services, this, 2);
             bottom_sheet_recycler.setAdapter(adapter);
@@ -456,9 +474,94 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
+        }else if(v == fab){
+            if (v.isSelected()) {
+                hideMenu();
+            } else {
+                showMenu();
+            }
+            v.setSelected(!v.isSelected());
         }
     }
+    private void showMenu() {
+        menu_arc_frame.setVisibility(View.VISIBLE);
 
+        List<Animator> animList = new ArrayList<>();
+
+        for (int i = 0, len = arcLayout.getChildCount(); i < len; i++) {
+            animList.add(createShowItemAnimator(arcLayout.getChildAt(i)));
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(400);
+        animSet.setInterpolator(new OvershootInterpolator());
+        animSet.playTogether(animList);
+        animSet.start();
+    }
+    private void hideMenu() {
+
+        List<Animator> animList = new ArrayList<>();
+
+        for (int i = arcLayout.getChildCount() - 1; i >= 0; i--) {
+            animList.add(createHideItemAnimator(arcLayout.getChildAt(i)));
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(400);
+        animSet.setInterpolator(new AnticipateInterpolator());
+        animSet.playTogether(animList);
+        animSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                menu_arc_frame.setVisibility(View.INVISIBLE);
+            }
+        });
+        animSet.start();
+
+    }
+    private Animator createShowItemAnimator(View item) {
+
+        float dx = fab.getX() - item.getX();
+        float dy = fab.getY() - item.getY();
+
+        item.setRotation(0f);
+        item.setTranslationX(dx);
+        item.setTranslationY(dy);
+
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.rotation(0f, 720f),
+                AnimatorUtils.translationX(dx, 0f),
+                AnimatorUtils.translationY(dy, 0f)
+        );
+
+        return anim;
+    }
+
+
+    private Animator createHideItemAnimator(final View item) {
+        float dx = fab.getX() - item.getX();
+        float dy = fab.getY() - item.getY();
+
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.rotation(720f, 0f),
+                AnimatorUtils.translationX(0f, dx),
+                AnimatorUtils.translationY(0f, dy)
+        );
+
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                item.setTranslationX(0f);
+                item.setTranslationY(0f);
+            }
+        });
+
+        return anim;
+    }
 
     @Override
 
