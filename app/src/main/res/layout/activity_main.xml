@@ -286,10 +286,11 @@
 
                     <FrameLayout
                         android:id="@+id/menu_arc_frame"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/card_book"
                         android:layout_alignParentRight="true"
+
                         android:layout_marginTop="@dimen/dim_15"
                         android:background="@null"
                         android:visibility="invisible">
@@ -297,14 +298,14 @@
                         <com.ogaclejapan.arclayout.ArcLayout
                             android:id="@+id/arc_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_alignEnd="@+id/cardView"
                             android:layout_below="@+id/cardView"
-                            app:arc_axisRadius="230dp"
+                            app:arc_axisRadius="@dimen/dim_160"
                             app:arc_color="#00000000"
                             app:arc_freeAngle="false"
-                            app:arc_origin="bottom|right"
-                            app:arc_radius="500dp"
+                            app:arc_origin="right"
+                            app:arc_radius="@dimen/dim_320"
                             app:arc_reverseAngle="false">
 
                             <RelativeLayout
@@ -397,9 +398,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginRight="-30dp"
+                                    android:layout_marginRight="-35dp"
                                     android:background="@drawable/rounded_white"
-                                    android:paddingLeft="15dp"
+                                    android:paddingLeft="@dimen/dim_10"
                                     android:paddingRight="30dp"
                                     android:text="Handyman"
                                     android:textColor="@color/colorAccent" />
@@ -423,7 +424,7 @@
                         android:layout_height="@dimen/dim_45"
                         android:layout_above="@+id/card_book"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="@dimen/dim_5"
                         android:layout_marginRight="@dimen/dim_10"
                         android:layout_marginTop="@dimen/dim_5"
                         android:background="@drawable/path_fab"
@@ -445,8 +446,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/pink"
-
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                          >
 
                             <Spinner
                                 android:id="@+id/wallet_cash_spiner"
@@ -506,13 +507,13 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:layout_height="@dimen/dim_200"
+
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dim_200"
             android:background="@color/white"
             android:orientation="vertical"
             android:padding="@dimen/dim_10">
@@ -533,6 +534,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="@dimen/dim_10" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
