@@ -288,93 +288,152 @@
                         android:id="@+id/menu_arc_frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dim_15"
+                        android:layout_above="@+id/card_book"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@+id/cardView"
-
+                        android:layout_marginTop="@dimen/dim_15"
                         android:background="@null"
-                        android:visibility="invisible"
-                        >
-                    <com.ogaclejapan.arclayout.ArcLayout
-                        android:id="@+id/arc_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/cardView"
-                        android:layout_below="@+id/cardView"
-                        app:arc_axisRadius="@dimen/dim_140"
-                        app:arc_color="#4D000000"
-                        app:arc_freeAngle="false"
-                        app:arc_origin="right"
-                        app:arc_radius="@dimen/dim_170"
-                        app:arc_reverseAngle="false">
-                        <!--  <com.getbase.floatingactionbutton.FloatingActionsMenu
-                                android:id="@+id/fab_menu"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_above="@id/card_book"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginRight="10dp"
-                                fab:fab_addButtonColorNormal="@color/white"
-                                fab:fab_addButtonColorPressed="@color/colorAccent"
-                                fab:fab_addButtonPlusIconColor="@color/colorPrimaryDark"
-                                fab:fab_addButtonSize="mini"
-                                fab:fab_labelStyle="@style/menu_labels_style"
-                                fab:fab_labelsPosition="left">-->
-                        <com.getbase.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/fab_events"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/events"
-                            fab:fab_colorNormal="@color/white"
-                            fab:fab_size="normal"
-                            fab:fab_title="Events" />
+                        android:visibility="invisible">
 
-                        <com.getbase.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/fab_construction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/construction"
-                            fab:fab_colorNormal="@color/white"
-                            fab:fab_size="normal"
-                            fab:fab_title="My Care" />
+                        <com.ogaclejapan.arclayout.ArcLayout
+                            android:id="@+id/arc_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignEnd="@+id/cardView"
+                            android:layout_below="@+id/cardView"
+                            app:arc_axisRadius="230dp"
+                            app:arc_color="#00000000"
+                            app:arc_freeAngle="false"
+                            app:arc_origin="bottom|right"
+                            app:arc_radius="500dp"
+                            app:arc_reverseAngle="false">
 
-                        <com.getbase.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/fab_domestic"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/domestic"
-                            fab:fab_colorNormal="@color/white"
-                            fab:fab_size="normal"
-                            fab:fab_title="Domestic" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
 
-                        <com.getbase.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/fab_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/all_cats"
-                            fab:fab_colorNormal="@color/white"
-                            fab:fab_size="normal"
-                            fab:fab_title="Handyman" />
+                                <com.getbase.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/fab_events"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/txt_event"
+                                    android:src="@drawable/events"
+                                    fab:fab_colorNormal="@color/white"
+                                    fab:fab_size="normal"
+                                    fab:fab_title="Events" />
 
-                    </com.ogaclejapan.arclayout.ArcLayout>
+                                <TextView
+                                    android:id="@+id/txt_event"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="-30dp"
+                                    android:background="@drawable/rounded_white"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="30dp"
+                                    android:text="Events"
+                                    android:textColor="@color/colorAccent" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/txt_construction"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="-30dp"
+                                    android:background="@drawable/rounded_white"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="30dp"
+                                    android:text="My Care"
+                                    android:textColor="@color/colorAccent" />
+
+                                <com.getbase.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/fab_construction"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/txt_construction"
+                                    android:src="@drawable/construction"
+                                    fab:fab_colorNormal="@color/white"
+                                    fab:fab_size="normal"
+                                    fab:fab_title="My Care" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/txt_domestic"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="-30dp"
+                                    android:background="@drawable/rounded_white"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="30dp"
+                                    android:text="Domestic"
+                                    android:textColor="@color/colorAccent" />
+
+                                <com.getbase.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/fab_domestic"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/txt_domestic"
+                                    android:src="@drawable/domestic"
+                                    fab:fab_colorNormal="@color/white"
+                                    fab:fab_size="normal"
+                                    fab:fab_title="Domestic" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/txt_handyman"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="-30dp"
+                                    android:background="@drawable/rounded_white"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="30dp"
+                                    android:text="Handyman"
+                                    android:textColor="@color/colorAccent" />
+
+                                <com.getbase.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/fab_all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/txt_handyman"
+                                    android:src="@drawable/all_cats"
+                                    fab:fab_colorNormal="@color/white"
+                                    fab:fab_size="normal"
+                                    fab:fab_title="Handyman" />
+                            </RelativeLayout>
+                        </com.ogaclejapan.arclayout.ArcLayout>
                     </FrameLayout>
-               <!-- </com.getbase.floatingactionbutton.FloatingActionsMenu>-->
-                    <Button
+                    <!-- </com.getbase.floatingactionbutton.FloatingActionsMenu>-->
+                    <ImageButton
                         android:id="@+id/fab"
                         android:layout_width="@dimen/dim_45"
                         android:layout_height="@dimen/dim_45"
-                        android:layout_below="@+id/menu_arc_frame"
-                       android:layout_alignParentRight="true"
-                      android:layout_marginTop="@dimen/dim_5"
+                        android:layout_above="@+id/card_book"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginRight="@dimen/dim_10"
+                        android:layout_marginTop="@dimen/dim_5"
                         android:background="@drawable/path_fab"
-                        android:text="+"
                         android:gravity="center"
+                        android:src="@drawable/all_cats"
                         android:textColor="@color/blue"
                         android:textSize="@dimen/dim_30" />
+
                     <android.support.v7.widget.CardView
                         android:id="@+id/card_book"
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/bottom_nav_layout"
@@ -448,6 +507,7 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
@@ -467,19 +527,6 @@
                 android:textSize="@dimen/dim_16"
                 android:textStyle="bold" />
 
-            <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/service_gridview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center"
-                android:horizontalSpacing="@dimen/dim_5"
-                android:numColumns="4"
-                android:padding="@dimen/dim_5"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="4dp"
-                tools:context="com.localfriend.fragments.AllFragment" />-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/bottom_sheet_recycler"

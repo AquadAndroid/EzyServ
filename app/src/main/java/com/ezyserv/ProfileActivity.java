@@ -1,6 +1,5 @@
 package com.ezyserv;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,13 +15,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.FileProvider;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -31,16 +25,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
-import com.ezyserv.fragment.AddedFragment;
-import com.ezyserv.fragment.PaidFragment;
 import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
-import com.ezyserv.utills.BlurTransformation;
 import com.loopj.android.http.RequestParams;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,10 +45,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class ProfileActivity extends CustomActivity implements CustomActivity.ResponseCallback {
 
@@ -73,7 +63,7 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         setResponseListener(this);
         setContentView(R.layout.activity_profile);
         u = MyApp.getApplication().readUser();
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout =  findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(u.getName());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,8 +91,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         img_profile = (CircleImageView) findViewById(R.id.img_profile);
         img_bg = (ImageView) findViewById(R.id.img_bg);
 
-        Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
-        Picasso.with(getContext()).load(u.getProfilepic()).transform(new BlurTransformation(getContext())).into(img_bg);
+        Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
+        Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
 
         txt_name = (TextView) findViewById(R.id.txt_name);
         txt_mail = (TextView) findViewById(R.id.txt_mail);
@@ -255,8 +245,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         Uri imageUri = Uri.fromFile(file);
 
         callChangeProfilePicture(fileString);
-        Picasso.with(this).load(imageUri).memoryPolicy(MemoryPolicy.NO_CACHE).centerCrop().resize(150, 150).into(img_profile);
-        Picasso.with(getContext()).load(imageUri).transform(new BlurTransformation(getContext())).into(img_bg);
+        Glide.with(this).load(imageUri).into(img_profile);
+        Glide.with(getContext()).load(imageUri).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
     }
 
     private void callChangeProfilePicture(String path) {
@@ -436,13 +426,13 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
                     MyApp.getApplication().writeUser(u);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
-                    Picasso.with(getContext()).load(u.getProfilepic()).transform(new BlurTransformation(getContext())).into(img_bg);
+                    Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
+                    Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
                 }
             } else {
                 MyApp.showMassage(getContext(), "Update failed.");
-                Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
-                Picasso.with(getContext()).load(u.getProfilepic()).transform(new BlurTransformation(getContext())).into(img_bg);
+                Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
+                Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
             }
         }
     }
@@ -454,8 +444,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
 
     @Override
     public void onErrorReceived(String error) {
-        Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
-        Picasso.with(getContext()).load(u.getProfilepic()).transform(new BlurTransformation(getContext())).into(img_bg);
+        Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
+        Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
         MyApp.popMessage("Error", error, getContext());
     }
 }

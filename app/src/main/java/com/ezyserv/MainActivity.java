@@ -119,9 +119,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
     private ImageButton navBtn, btn_search;
-  //  private FloatingActionsMenu fab_menu;
+    //  private FloatingActionsMenu fab_menu;
     private ArcLayout arcLayout;
-    Button fab;
+    private ImageButton fab;
     FrameLayout menu_arc_frame;
     private FloatingActionButton fab_events, fab_construction, fab_domestic, fab_all;
     String[] SpinnerText = {"Wallet", "Cash"};
@@ -207,13 +207,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         txt_location = findViewById(R.id.txt_location);
         txt_address = findViewById(R.id.txt_address);
-        menu_arc_frame=(FrameLayout) findViewById(R.id.menu_arc_frame);
-        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
+        menu_arc_frame =  findViewById(R.id.menu_arc_frame);
+        arcLayout =  findViewById(R.id.arc_layout);
 
         for (int i = 0, size = arcLayout.getChildCount(); i < size; i++) {
             arcLayout.getChildAt(i).setOnClickListener(this);
         }
-        fab=(Button)findViewById(R.id.fab);
+        fab =  findViewById(R.id.fab);
         //fab_menu = findViewById(R.id.fab_menu);
         fab_events = findViewById(R.id.fab_events);
         fab_construction = findViewById(R.id.fab_construction);
@@ -437,15 +437,19 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (v == btn_search) {
             searchRadius();
         } else if (v == fab_all) {
-          //  fab_menu.collapse();
+            fab.setImageResource(R.drawable.all_cats);
+            hideMenu();
+            //  fab_menu.collapse();
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab_domestic) {
-           // fab_menu.collapse();
-            tv_serv_catg.setText("Domestic Services (8)");
+            fab.setImageResource(R.drawable.domestic);
+            hideMenu();
+            // fab_menu.collapse();
+            tv_serv_catg.setText("Domestic Services ((" + services.get(0).getServices().size() + ")");
             adapter = new BottomServiceAdapter(services, this, 0);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
@@ -454,8 +458,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab_construction) {
-          //  fab_menu.collapse();
-            tv_serv_catg.setText("Construction Services (7)");
+            fab.setImageResource(R.drawable.construction);
+            hideMenu();
+            //  fab_menu.collapse();
+            tv_serv_catg.setText("Construction Services (" + services.get(1).getServices().size() + ")");
             adapter = new BottomServiceAdapter(services, this, 1);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
@@ -465,8 +471,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab_events) {
-          //  fab_menu.collapse();
-            tv_serv_catg.setText("Events Services (9)");
+            fab.setImageResource(R.drawable.events);
+            hideMenu();
+            //  fab_menu.collapse();
+            tv_serv_catg.setText("Events Services (" + services.get(2).getServices().size() + ")");
             adapter = new BottomServiceAdapter(services, this, 2);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
@@ -474,7 +482,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-        }else if(v == fab){
+        } else if (v == fab) {
             if (v.isSelected()) {
                 hideMenu();
             } else {
@@ -483,6 +491,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             v.setSelected(!v.isSelected());
         }
     }
+
     private void showMenu() {
         menu_arc_frame.setVisibility(View.VISIBLE);
 
@@ -498,6 +507,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         animSet.playTogether(animList);
         animSet.start();
     }
+
     private void hideMenu() {
 
         List<Animator> animList = new ArrayList<>();
@@ -520,6 +530,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         animSet.start();
 
     }
+
     private Animator createShowItemAnimator(View item) {
 
         float dx = fab.getX() - item.getX();

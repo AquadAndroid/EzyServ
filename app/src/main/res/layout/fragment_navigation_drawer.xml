@@ -9,7 +9,7 @@
         android:id="@+id/rl_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C0CFF5"
+        android:background="@drawable/gradient_pink"
         android:paddingBottom="@dimen/dim_5">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,7 +31,7 @@
             android:layout_marginTop="@dimen/dim_10"
             android:padding="5dp"
             android:text="Mark Zuckerberg "
-            android:textColor="@color/blue"
+            android:textColor="@color/white"
             android:textSize="@dimen/dim_16"
             android:textStyle="bold" />
 
@@ -42,9 +42,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dim_20"
-            android:text="Logout"
             android:padding="10dp"
-            android:textColor="@color/blue"
+            android:text="Logout"
+            android:textColor="@color/white"
             android:textSize="@dimen/dim_16"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -82,7 +82,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="My Service Request"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Scheduled"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <RelativeLayout
@@ -115,7 +115,7 @@
                             android:drawablePadding="@dimen/dim_10"
                             android:gravity="center_vertical"
                             android:text="Chats"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
 
                         <TextView
@@ -150,7 +150,7 @@
                             android:drawablePadding="@dimen/dim_10"
                             android:gravity="center_vertical"
                             android:text="History"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
 
                         <!--    <TextView
@@ -180,14 +180,12 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:layout_centerVertical="true"
                             android:drawableLeft="@drawable/wallet_inactive"
                             android:drawablePadding="@dimen/dim_10"
-
                             android:gravity="center_vertical"
                             android:text="Wallet"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
 
                         <TextView
@@ -213,7 +211,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Promos &amp; Offer"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
@@ -226,7 +224,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Favourites"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
@@ -239,9 +237,8 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Invite Friends"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
-
 
                 </LinearLayout>
             </ScrollView>
@@ -265,7 +262,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#C0CFF5">
+            android:background="@drawable/gradient_pink">
 
             <TextView
                 android:id="@+id/nav_item_switch_profile"
@@ -277,10 +274,8 @@
                 android:gravity="center_vertical"
                 android:padding="@dimen/dim_10"
                 android:text="Switch to Service Provider"
-                android:textColor="@color/blue"
+                android:textColor="@color/white"
                 android:textSize="@dimen/dim_18" />
         </RelativeLayout>
-
-
     </RelativeLayout>
 </LinearLayout>

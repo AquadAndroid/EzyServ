@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ezyserv.R;
 import com.ezyserv.model.Services;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -56,7 +56,7 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
             holder.Sadd_remove.setText("Add");
         }
 
-        Picasso.with(c)
+        Glide.with(c)
                 .load(item.getImage())
 //                .placeholder(R.drawable.ic_not_loaded) // optional
 //                .error(R.drawable.ic_not_loaded)         // optional

@@ -172,7 +172,7 @@
                     android:gravity="center"
                     android:padding="@dimen/dim_10"
                     android:text="Detecting current location..."
-                    android:textColor="@color/bel_grey_text"
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/dim_18" />
                 <!--<android.support.v7.widget.RecyclerView-->
                 <!--android:id="@+id/location_list"-->

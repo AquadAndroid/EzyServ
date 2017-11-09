@@ -20,18 +20,9 @@ import com.ezyserv.adapter.DummyGallaryData;
 import com.ezyserv.adapter.DummyReviewData;
 import com.ezyserv.adapter.ServiceGallaryAdapter;
 import com.ezyserv.custome.CustomActivity;
-import com.ezyserv.utills.PicassoImageLoader;
-import com.veinhorn.scrollgalleryview.MediaInfo;
-import com.veinhorn.scrollgalleryview.ScrollGalleryView;
-import com.veinhorn.scrollgalleryview.loader.DefaultImageLoader;
-import com.veinhorn.scrollgalleryview.loader.DefaultVideoLoader;
-import com.veinhorn.scrollgalleryview.loader.MediaLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import br.com.jeancsanchez.photoviewslider.PhotosViewSlider;
 
 public class ServicemanProfileActivity extends CustomActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
@@ -50,7 +41,7 @@ public class ServicemanProfileActivity extends CustomActivity {
             "http://www.dishmodels.ru/picture/glr/13/13312/g13312_7657277.jpg",
             "http://img2.goodfon.ru/original/1920x1080/b/c9/su-47-berkut-c-37-firkin.jpg"
     ));
-    PhotosViewSlider photoViewSlider;
+//    PhotosViewSlider photoViewSlider;
 
 
 
@@ -105,7 +96,7 @@ public class ServicemanProfileActivity extends CustomActivity {
         adapter = new ServiceGallaryAdapter(listdata, this);
         gallery_recyclerView.setAdapter(adapter);
 
-        photoViewSlider = (PhotosViewSlider) findViewById(R.id.photosViewSlider);
+//        photoViewSlider = (PhotosViewSlider) findViewById(R.id.photosViewSlider);
 
 
         adapter.SetItemClickCallback(new ServiceGallaryAdapter.ItemClickCallback() {

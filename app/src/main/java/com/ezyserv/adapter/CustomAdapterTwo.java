@@ -5,26 +5,19 @@ package com.ezyserv.adapter;
  */
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
+import com.bumptech.glide.Glide;
 import com.ezyserv.R;
 import com.ezyserv.model.Services;
-import com.squareup.picasso.Picasso;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.R.attr.data;
 
 public class CustomAdapterTwo extends BaseAdapter {
 
@@ -104,7 +97,7 @@ public class CustomAdapterTwo extends BaseAdapter {
         ViewHolder listViewHolder;
         listViewHolder = new ViewHolder();
         try {
-            Picasso.with(context).load(item.getImage());
+            Glide.with(context).load(item.getImage());
         } catch (Exception e) {
             listViewHolder.img_service.setImageResource(R.drawable.ac_installation);
         }

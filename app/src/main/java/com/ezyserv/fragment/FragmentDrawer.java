@@ -18,13 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ezyserv.ProfileActivity;
 import com.ezyserv.R;
 import com.ezyserv.SignUpSelection;
 import com.ezyserv.adapter.NavigationDrawerAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.utills.AppConstant;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,9 +135,9 @@ public class FragmentDrawer extends Fragment {
 
      //
         if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
-            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+            Glide.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
         }else if(MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
-            Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+            Glide.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
         }
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -327,9 +327,9 @@ public class FragmentDrawer extends Fragment {
     public void onResume() {
         super.onResume();
         if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
-            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+            Glide.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
         }else if(MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
-            Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+            Glide.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
         }
       //  Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
        // Picasso.with(getContext()).load("https://graph.facebook.com/"+MyApp.getSharedPrefString(AppConstant.FB_ID)+"/picture?type=large").into(img_profile);
