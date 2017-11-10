@@ -120,6 +120,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     protected static final String TAG = "MainActivity";
     private ImageButton navBtn, btn_search;
     //  private FloatingActionsMenu fab_menu;
+
+    private int markerPath =R.drawable.ic_handyman_marker;
+
     private ArcLayout arcLayout;
     private ImageButton fab;
     FrameLayout menu_arc_frame;
@@ -207,13 +210,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         txt_location = findViewById(R.id.txt_location);
         txt_address = findViewById(R.id.txt_address);
-        menu_arc_frame =  findViewById(R.id.menu_arc_frame);
-        arcLayout =  findViewById(R.id.arc_layout);
+        menu_arc_frame = findViewById(R.id.menu_arc_frame);
+        arcLayout = findViewById(R.id.arc_layout);
 
         for (int i = 0, size = arcLayout.getChildCount(); i < size; i++) {
             arcLayout.getChildAt(i).setOnClickListener(this);
         }
-        fab =  findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         //fab_menu = findViewById(R.id.fab_menu);
         fab_events = findViewById(R.id.fab_events);
         fab_construction = findViewById(R.id.fab_construction);
@@ -936,12 +939,26 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         mMap.clear();
                     }
                     for (int i = 0; i < nearBy.size(); i++) {
+
+                        if (nearBy.get(i).getService_categories_id().equals("7")) {
+                            markerPath = R.drawable.ic_domestic_marker;
+
+                        }else if (nearBy.get(i).getService_categories_id().equals("8")){
+                            markerPath = R.drawable.ic_mycare_marker;
+
+                        }else if (nearBy.get(i).getService_categories_id().equals("9")){
+                            markerPath = R.drawable.ic_event_marker;
+
+                        }else {
+                            markerPath = R.drawable.ic_handyman_marker;
+                        }
+
                         LatLngBounds.Builder builder = new LatLngBounds.Builder();
                         builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
                         Marker m1 = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()),
                                         Double.parseDouble(nearBy.get(i).getCurrentlong()) - 0.0901))
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.serviceman_on_map)));
+                                .icon(BitmapDescriptorFactory.fromResource(markerPath)));
                         m1.setSnippet(nearBy.get(i).getName());
                         m1.setTitle(nearBy.get(i).getService_name());
                         builder.include(m1.getPosition());
