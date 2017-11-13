@@ -45,6 +45,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ezyserv.adapter.BookingSpinnerAdapter;
 import com.ezyserv.adapter.BottomServiceAdapter;
 import com.ezyserv.adapter.SpinnerAdapter;
 import com.ezyserv.application.MyApp;
@@ -121,17 +122,18 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private ImageButton navBtn, btn_search;
     //  private FloatingActionsMenu fab_menu;
 
-    private int markerPath =R.drawable.ic_handyman_marker;
+    private int markerPath = R.drawable.ic_handyman_marker;
 
     private ArcLayout arcLayout;
     private ImageButton fab;
     FrameLayout menu_arc_frame;
     private FloatingActionButton fab_events, fab_construction, fab_domestic, fab_all;
     String[] SpinnerText = {"Wallet", "Cash"};
+    String[] spinnerBook = {"Book Now", "Schedule"};
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
     private Spinner wallet_cash_spiner;
-    private TextView tv_book_now;
-    private int pos = 0;
+    private Spinner spinner_booking;
+    private TextView txt_book;
 
 
     @Override
@@ -153,7 +155,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         bottom_sheet_recycler = findViewById(R.id.bottom_sheet_recycler);
         tv_serv_catg = findViewById(R.id.tv_serv_catg);
-        bottom_sheet_recycler.setLayoutManager(new GridLayoutManager(this, 4));
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
+        layoutManager.setAutoMeasureEnabled(true);
+        bottom_sheet_recycler.setLayoutManager(layoutManager);
         services = MyApp.getApplication().readService();
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -169,7 +174,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         });
         bottomSheetBehavior.setPeekHeight(0);
 
-        wallet_cash_spiner = (Spinner) findViewById(R.id.wallet_cash_spiner);
+        wallet_cash_spiner = findViewById(R.id.wallet_cash_spiner);
+        spinner_booking = findViewById(R.id.spinner_booking);
         wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -189,6 +195,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         SpinnerAdapter customAdapter = new SpinnerAdapter(getApplicationContext(), SpinnerIcons, SpinnerText);
         wallet_cash_spiner.setAdapter(customAdapter);
+
+        BookingSpinnerAdapter bookingAdapter = new BookingSpinnerAdapter(getApplicationContext(), null, spinnerBook);
+        spinner_booking.setAdapter(bookingAdapter);
+
+
         setupUiElements();
         locationProvider = new LocationProvider(this, this, this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -425,8 +436,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     public void onClick(View v) {
         super.onClick(v);
-        if (v.getId() == R.id.tv_book_now) {
-            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class));
+        if (v.getId() == R.id.txt_book) {
+            if (spinner_booking.getSelectedItemPosition() == 0) {
+                startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
+                        .putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
+            } else {
+                startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
+            }
+
         } else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
         } else if (v == txt_location) {
@@ -611,9 +628,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         setClick(R.id.nav_drawer_btn);
         setClick(R.id.btn_search);
-        tv_book_now = (TextView) findViewById(R.id.tv_book_now);
+        txt_book = findViewById(R.id.txt_book);
 
-        setClick(R.id.tv_book_now);
+        setTouchNClick(R.id.txt_book);
     }
 
     @Override
@@ -685,9 +702,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
                     locationButton.getLayoutParams();
             // position on right bottom
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 30, 300);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            layoutParams.setMargins(0, 300, 30, 0);
         }
     }
 
@@ -767,10 +785,17 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                if (returnedAddress.getMaxAddressLineIndex() > 0) {
+                    for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                        strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                    }
+                } else {
+                    try {
+                        strAdd = returnedAddress.getAddressLine(0);
+                    } catch (Exception ignored) {
+                    }
                 }
+
                 strAdd = strReturnedAddress.toString();
                 txt_location.setText(addresses.get(0).getSubLocality());
                 if (txt_location.getText().toString().isEmpty()) {
@@ -779,7 +804,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         txt_location.setText(strAdd.replace("\n", " "));
                     }
                 }
-                txt_address.setText(strReturnedAddress.toString().replace("\n", " "));
+                txt_address.setText(strAdd.replace("\n", " "));
+                if (strAdd.isEmpty()) {
+                    txt_address.setText(txt_location.getText().toString());
+                }
                 Log.w("address", "" + strReturnedAddress.toString());
             } else {
                 Log.w("address", "No Address returned!");
@@ -796,8 +824,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         p.put("services", "");
         p.put("current_lat", lat);
         p.put("current_lng", lng);
-        p.put("radius", "10000000");
-        postCall(getContext(), AppConstant.BASE_URL + "nearByServiceProvider", p, "Getting....", 1);
+        p.put("radius", "1000");
+        postCall(getContext(), AppConstant.BASE_URL + "nearByServiceProvider", p, "", 1);
     }
 
     @Override
@@ -943,13 +971,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         if (nearBy.get(i).getService_categories_id().equals("7")) {
                             markerPath = R.drawable.ic_domestic_marker;
 
-                        }else if (nearBy.get(i).getService_categories_id().equals("8")){
+                        } else if (nearBy.get(i).getService_categories_id().equals("8")) {
                             markerPath = R.drawable.ic_mycare_marker;
 
-                        }else if (nearBy.get(i).getService_categories_id().equals("9")){
+                        } else if (nearBy.get(i).getService_categories_id().equals("9")) {
                             markerPath = R.drawable.ic_event_marker;
 
-                        }else {
+                        } else {
                             markerPath = R.drawable.ic_handyman_marker;
                         }
 
@@ -963,7 +991,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         m1.setTitle(nearBy.get(i).getService_name());
                         builder.include(m1.getPosition());
 
-                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
+//                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
 
                     }
                 } catch (JSONException e) {

@@ -70,17 +70,18 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
     private Toolbar Dtoolbar;
     private TextView tvDomestic, tvConstruction, tvEvents, txt_add_location;
     private TextView tv_domestic_label, txt_mycare_counts, tv_events_label;
-    //    private RecyclerView listLocations;
     private Button Continue;
     private ArrayList listdata;
-    //    private ServiceLocationAdapter adapter;
     private ScrollView scrollView;
     private List<Services> allServices = null;
     private TextView txt_current_address;
+    private TextView tv_primary;
+    private boolean isCompany;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isCompany = getIntent().getBooleanExtra("isCompany", false);
         locationProvider = new LocationProvider(this, this, this);
         setResponseListener(this);
         setContentView(R.layout.activity_service_detail_two);
@@ -114,6 +115,10 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         tv_domestic_label.setText(domesticCounter + " services added");
         txt_mycare_counts.setText(myCareCounter + " services added");
         tv_events_label.setText(eventsCounter + " services added");
+
+        if (!SingleInstance.getInstance().getPrimaryName().isEmpty())
+            tv_primary.setText(SingleInstance.getInstance().getPrimaryName());
+        SingleInstance.getInstance().setPrimaryName("");
     }
 
     private void getAllServices() {
@@ -144,8 +149,10 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         setTouchNClick(R.id.tv_construction);
         setTouchNClick(R.id.tv_events);
         setTouchNClick(R.id.btn_continue);
+        setTouchNClick(R.id.tv_primary);
 
         txt_current_address = (TextView) findViewById(R.id.txt_current_address);
+        tv_primary = (TextView) findViewById(R.id.tv_primary);
         tvDomestic = (TextView) findViewById(R.id.tv_domestic);
         tvConstruction = (TextView) findViewById(R.id.tv_construction);
         tvEvents = (TextView) findViewById(R.id.tv_events);
@@ -186,6 +193,22 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
             }
             Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
             intent.putExtra("key", "domestic");
+            intent.putExtra("isCompany", isCompany);
+            SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(0));
+            startActivity(intent);
+        } else if (v.getId() == R.id.tv_primary) {
+            if (allServices == null) {
+                getAllServices();
+                return;
+            }
+            if (allServices.size() == 0) {
+                MyApp.popMessage("Message", "No data available for this category", getContext());
+                return;
+            }
+            Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
+            intent.putExtra("key", "Primary");
+            intent.putExtra("isPrimary", true);
+            intent.putExtra("isCompany", isCompany);
             SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(0));
             startActivity(intent);
         } else if (v.getId() == R.id.tv_construction) {
@@ -199,6 +222,7 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
             }
             Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
             intent.putExtra("key", "construction");
+            intent.putExtra("isCompany", isCompany);
             SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(1));
             startActivity(intent);
         } else if (v.getId() == R.id.tv_events) {
@@ -212,6 +236,7 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
             }
             Intent intent = new Intent(ServiceDetailActivityTwo.this, AddServicesActivity.class);
             intent.putExtra("key", "events");
+            intent.putExtra("isCompany", isCompany);
             SingleInstance.getInstance().setSelectedServiceCategory(allServices.get(2));
             startActivity(intent);
         } else if (v.getId() == R.id.btn_continue) {

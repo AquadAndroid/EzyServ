@@ -84,6 +84,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
         } else if (v.getId() == R.id.custom_term_cond) {
             //Toast.makeText(this, "Terms and Condition", Toast.LENGTH_SHORT).show();
             MyApp.setStatus(AppConstant.IS_LOGIN, true);
+//            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"Normal");
             startActivity(new Intent(CustomerLoginActivity.this, MainActivity.class));
             finishAffinity();
         }

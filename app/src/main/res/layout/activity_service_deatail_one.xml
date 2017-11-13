@@ -32,7 +32,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dim_10"
                     android:text="Please fill the following details to complete\n                   your registration "
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_15"

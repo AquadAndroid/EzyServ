@@ -13,6 +13,15 @@ import java.util.List;
 public class SingleInstance {
     private static final SingleInstance ourInstance = new SingleInstance();
     private String servicesId = "";
+    private String primaryName = "";
+
+    public String getPrimaryName() {
+        return primaryName;
+    }
+
+    public void setPrimaryName(String primaryName) {
+        this.primaryName = primaryName;
+    }
 
     public static SingleInstance getInstance() {
         return ourInstance;

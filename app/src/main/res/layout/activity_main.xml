@@ -102,140 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rl_top">
 
-                    <!--<FrameLayout-->
-                    <!--android:id="@+id/rl_floating_btn"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content">-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<RelativeLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1.1"-->
-                    <!--android:padding="@dimen/dim_10">-->
-
-                    <!--<android.support.design.widget.FloatingActionButton-->
-                    <!--android:id="@+id/all_category"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:src="@drawable/all_cats"-->
-                    <!--app:backgroundTint="@color/white" />-->
-
-                    <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/all_category"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_marginTop="@dimen/dim_20"-->
-                    <!--android:shadowColor="@color/grey"-->
-                    <!--android:shadowDx="-2"-->
-                    <!--android:shadowDy="-2"-->
-                    <!--android:shadowRadius="1"-->
-                    <!--android:text="Handyman"-->
-                    <!--android:textColor="@color/text_color_volet"-->
-                    <!--android:textSize="@dimen/dim_15" />-->
-                    <!--</RelativeLayout>-->
-
-
-                    <!--<RelativeLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:padding="@dimen/dim_10">-->
-
-                    <!--<android.support.design.widget.FloatingActionButton-->
-                    <!--android:id="@+id/domestic"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:src="@drawable/domestic"-->
-                    <!--app:backgroundTint="@color/white" />-->
-
-                    <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/domestic"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_marginTop="@dimen/dim_20"-->
-                    <!--android:shadowColor="@color/grey"-->
-                    <!--android:shadowDx="-2"-->
-                    <!--android:shadowDy="-2"-->
-                    <!--android:shadowRadius="1"-->
-                    <!--android:text="Domestic"-->
-                    <!--android:textColor="@color/text_color_volet"-->
-                    <!--android:textSize="@dimen/dim_15" />-->
-                    <!--</RelativeLayout>-->
-
-                    <!--<RelativeLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:padding="@dimen/dim_10">-->
-
-                    <!--<android.support.design.widget.FloatingActionButton-->
-                    <!--android:id="@+id/construction"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:background="@null"-->
-                    <!--android:shadowColor="@color/black"-->
-                    <!--android:shadowDx="-2"-->
-                    <!--android:shadowDy="-2"-->
-                    <!--android:shadowRadius="1"-->
-                    <!--android:src="@drawable/construction"-->
-                    <!--app:backgroundTint="@color/white" />-->
-
-                    <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/construction"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_marginTop="@dimen/dim_20"-->
-                    <!--android:shadowColor="@color/grey"-->
-                    <!--android:shadowDx="-2"-->
-                    <!--android:shadowDy="-2"-->
-                    <!--android:shadowRadius="1"-->
-                    <!--android:text="My Care"-->
-                    <!--android:textColor="@color/text_color_volet"-->
-                    <!--android:textSize="@dimen/dim_15" />-->
-                    <!--</RelativeLayout>-->
-
-                    <!--<RelativeLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:padding="@dimen/dim_10">-->
-
-                    <!--<android.support.design.widget.FloatingActionButton-->
-                    <!--android:id="@+id/events"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:src="@drawable/events"-->
-                    <!--app:backgroundTint="@color/white" />-->
-
-                    <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/events"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_marginTop="@dimen/dim_20"-->
-                    <!--android:shadowColor="@color/grey"-->
-                    <!--android:shadowDx="-2"-->
-                    <!--android:shadowDy="-2"-->
-                    <!--android:shadowRadius="1"-->
-                    <!--android:text="Events"-->
-                    <!--android:textColor="@color/text_color_volet"-->
-                    <!--android:textSize="@dimen/dim_15" />-->
-                    <!--</RelativeLayout>-->
-                    <!--</LinearLayout>-->
-                    <!--</FrameLayout>-->
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/cardView"
@@ -258,32 +124,6 @@
                     </android.support.v7.widget.CardView>
 
 
-                    <!--<com.daprlabs.cardstack.SwipeFrameLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_above="@+id/card_book"
-                        android:layout_height="@dimen/dim_200"
-                        android:orientation="vertical">
-
-                        <com.daprlabs.cardstack.SwipeDeck
-                            android:id="@+id/swipe_deck"
-                            swipedeck:card_gravity="bottom"
-                            android:layout_gravity="bottom"
-                            android:layout_marginBottom="@dimen/dim_20"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dim_70"
-                            swipedeck:card_spacing="10dp"
-                            android:paddingLeft="@dimen/dim_20"
-                            android:paddingRight="@dimen/dim_20"
-                            swipedeck:max_visible="3"
-                            swipedeck:render_above="true"
-                            swipedeck:rotation_degrees="15"
-                            swipedeck:opacity_end="0.33"/>
-
-                        &lt;!&ndash;<include layout="@layout/available_services" />&ndash;&gt;
-                    </com.daprlabs.cardstack.SwipeFrameLayout>-->
-
                     <FrameLayout
                         android:id="@+id/menu_arc_frame"
                         android:layout_width="match_parent"
@@ -301,11 +141,11 @@
                             android:layout_height="wrap_content"
                             android:layout_alignEnd="@+id/cardView"
                             android:layout_below="@+id/cardView"
-                            app:arc_axisRadius="@dimen/dim_160"
+                            app:arc_axisRadius="150dp"
                             app:arc_color="#00000000"
                             app:arc_freeAngle="false"
                             app:arc_origin="right"
-                            app:arc_radius="@dimen/dim_320"
+                            app:arc_radius="300dp"
                             app:arc_reverseAngle="false">
 
                             <RelativeLayout
@@ -316,46 +156,44 @@
                                     android:id="@+id/fab_events"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/txt_event"
                                     android:src="@drawable/events"
                                     fab:fab_colorNormal="@color/white"
                                     fab:fab_size="normal"
                                     fab:fab_title="Events" />
 
-                                <TextView
-                                    android:id="@+id/txt_event"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="-30dp"
-                                    android:background="@drawable/rounded_white"
-                                    android:paddingLeft="15dp"
-                                    android:paddingRight="30dp"
-                                    android:text="Events"
-                                    android:textColor="@color/colorAccent" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/txt_event"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_centerVertical="true"-->
+                                    <!--android:layout_marginRight="-30dp"-->
+                                    <!--android:background="@drawable/rounded_white"-->
+                                    <!--android:paddingLeft="15dp"-->
+                                    <!--android:paddingRight="30dp"-->
+                                    <!--android:text="Events"-->
+                                    <!--android:textColor="@color/colorAccent" />-->
                             </RelativeLayout>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/txt_construction"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="-30dp"
-                                    android:background="@drawable/rounded_white"
-                                    android:paddingLeft="15dp"
-                                    android:paddingRight="30dp"
-                                    android:text="My Care"
-                                    android:textColor="@color/colorAccent" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/txt_construction"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_centerVertical="true"-->
+                                    <!--android:layout_marginRight="-30dp"-->
+                                    <!--android:background="@drawable/rounded_white"-->
+                                    <!--android:paddingLeft="15dp"-->
+                                    <!--android:paddingRight="30dp"-->
+                                    <!--android:text="My Care"-->
+                                    <!--android:textColor="@color/colorAccent" />-->
 
                                 <com.getbase.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/fab_construction"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/txt_construction"
                                     android:src="@drawable/construction"
                                     fab:fab_colorNormal="@color/white"
                                     fab:fab_size="normal"
@@ -366,23 +204,22 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/txt_domestic"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="-30dp"
-                                    android:background="@drawable/rounded_white"
-                                    android:paddingLeft="15dp"
-                                    android:paddingRight="30dp"
-                                    android:text="Domestic"
-                                    android:textColor="@color/colorAccent" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/txt_domestic"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_centerVertical="true"-->
+                                    <!--android:layout_marginRight="-30dp"-->
+                                    <!--android:background="@drawable/rounded_white"-->
+                                    <!--android:paddingLeft="15dp"-->
+                                    <!--android:paddingRight="30dp"-->
+                                    <!--android:text="Domestic"-->
+                                    <!--android:textColor="@color/colorAccent" />-->
 
                                 <com.getbase.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/fab_domestic"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/txt_domestic"
                                     android:src="@drawable/domestic"
                                     fab:fab_colorNormal="@color/white"
                                     fab:fab_size="normal"
@@ -393,23 +230,22 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/txt_handyman"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="-35dp"
-                                    android:background="@drawable/rounded_white"
-                                    android:paddingLeft="@dimen/dim_10"
-                                    android:paddingRight="30dp"
-                                    android:text="Handyman"
-                                    android:textColor="@color/colorAccent" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/txt_handyman"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_centerVertical="true"-->
+                                    <!--android:layout_marginRight="-35dp"-->
+                                    <!--android:background="@drawable/rounded_white"-->
+                                    <!--android:paddingLeft="@dimen/dim_10"-->
+                                    <!--android:paddingRight="30dp"-->
+                                    <!--android:text="Handyman"-->
+                                    <!--android:textColor="@color/colorAccent" />-->
 
                                 <com.getbase.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/fab_all"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/txt_handyman"
                                     android:src="@drawable/all_cats"
                                     fab:fab_colorNormal="@color/white"
                                     fab:fab_size="normal"
@@ -424,7 +260,7 @@
                         android:layout_height="@dimen/dim_45"
                         android:layout_above="@+id/card_book"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="@dimen/dim_5"
+                        android:layout_marginBottom="@dimen/dim_10"
                         android:layout_marginRight="@dimen/dim_10"
                         android:layout_marginTop="@dimen/dim_5"
                         android:background="@drawable/path_fab"
@@ -461,17 +297,24 @@
                                 android:layout_height="@dimen/dim_50"
                                 android:background="@color/white" />
 
-                            <TextView
-                                android:id="@+id/tv_book_now"
+                            <Spinner
+                                android:id="@+id/spinner_booking"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight=".6"
+                                android:backgroundTint="@color/white" />
+
+                            <TextView
+                                android:id="@+id/txt_book"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".2"
                                 android:background="@null"
                                 android:backgroundTint="@null"
                                 android:gravity="center"
                                 android:hint="Enter YOur Loction"
                                 android:padding="@dimen/dim_10"
-                                android:text="BOOK NOW"
+                                android:text="Go"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/dim_18"
                                 android:textStyle="bold" />
@@ -507,13 +350,13 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dim_200"
+        android:layout_height="250dp"
 
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dim_200"
+            android:layout_height="250dp"
             android:background="@color/white"
             android:orientation="vertical"
             android:padding="@dimen/dim_10">

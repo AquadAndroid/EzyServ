@@ -91,7 +91,7 @@ public class AddMoneyActivity extends CustomActivity {
             edt_amount.setText("" + value);
         } else if (v.getId() == R.id.btn_done) {
             Toast.makeText(this, "Money Added Successfully", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(AddMoneyActivity.this, MainActivity.class));
+            startActivity(new Intent(AddMoneyActivity.this, ChatActivity.class));
         }
     }
 

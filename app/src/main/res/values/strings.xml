@@ -50,5 +50,10 @@
     <string name="connect_working_internet">Please Connect to a working internet connection.</string>
     <string name="timeout">Time out occurred, make sure that you have a valid internet connection.</string>
     <string name="something_wrong">Something went wrong</string>
+    <string name="text_ham_button_domestic">Domestic</string>
+    <string name="text_ham_button_handyman">Handyman</string>
+    <string name="text_ham_button_events">Events</string>
+    <string name="text_ham_button_my_care">My Care</string>
+    <string name="services">Services</string>
 
 </resources>

@@ -239,7 +239,18 @@
                         android:text="Invite Friends"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
-
+                    <TextView
+                        android:id="@+id/nav_item_switch_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:drawableLeft="@drawable/switch_user"
+                        android:drawablePadding="@dimen/dim_10"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dim_10"
+                        android:text="Switch to Service Provider"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dim_18" />
                 </LinearLayout>
             </ScrollView>
             <!--   <TextView
@@ -262,10 +273,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             android:background="@drawable/gradient_pink">
 
             <TextView
-                android:id="@+id/nav_item_switch_profile"
+                android:id="@+id/nav_item_switch_profilew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"

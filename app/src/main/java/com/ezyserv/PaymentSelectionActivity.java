@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,23 +40,24 @@ public class PaymentSelectionActivity extends CustomActivity {
     private EditText promocode;
     private TextView wallet_money, recharge_wallet, remove_coupon;
     private Button done;
-
     private PromoCodeAdapter adapter;
     private ArrayList listdata;
-    ArrayList<DummyPrmoList> dummyListItems;
+    private ArrayList<DummyPrmoList> dummyListItems;
+    private int isShedule = 0;
+    private RelativeLayout rl_cash, rl_wallet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_selection);
-
-        toolbar = (Toolbar) findViewById(R.id.side_toolbar);
+        isShedule = getIntent().getIntExtra("isShedule", 0);
+        toolbar = findViewById(R.id.side_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.side_toolbar_title);
+        TextView mTitle = toolbar.findViewById(R.id.side_toolbar_title);
         mTitle.setText("Select Payment Method");
         actionBar.setTitle("");
 
@@ -75,7 +77,7 @@ public class PaymentSelectionActivity extends CustomActivity {
         wallet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(wallet.isChecked()){
+                if (wallet.isChecked()) {
                     cash.setChecked(false);
                 }
             }
@@ -90,19 +92,29 @@ public class PaymentSelectionActivity extends CustomActivity {
         setTouchNClick(R.id.btn_done);
 
 
-        cash = (RadioButton) findViewById(R.id.rb_cash);
-        wallet = (RadioButton) findViewById(R.id.rb_wallet);
+        cash = findViewById(R.id.rb_cash);
+        wallet = findViewById(R.id.rb_wallet);
 
-        promocode = (EditText) findViewById(R.id.edt_promocode);
+        promocode = findViewById(R.id.edt_promocode);
+        rl_cash = findViewById(R.id.rl_cash);
+        rl_wallet = findViewById(R.id.rl_wallet);
 
-        wallet_money = (TextView) findViewById(R.id.tv_wallet_money);
+        if (isShedule == 0) {
+            rl_cash.setVisibility(View.GONE);
+            rl_wallet.setVisibility(View.VISIBLE);
+        } else {
+            rl_cash.setVisibility(View.VISIBLE);
+            rl_wallet.setVisibility(View.GONE);
+        }
 
-        recharge_wallet = (TextView) findViewById(R.id.btn_rec_wallet);
-        remove_coupon = (TextView) findViewById(R.id.btn_remove_coupon);
-        done = (Button) findViewById(R.id.btn_done);
+        wallet_money = findViewById(R.id.tv_wallet_money);
+
+        recharge_wallet = findViewById(R.id.btn_rec_wallet);
+        remove_coupon = findViewById(R.id.btn_remove_coupon);
+        done = findViewById(R.id.btn_done);
 
 
-        coupons_recy = (RecyclerView) findViewById(R.id.recy_coupons);
+        coupons_recy = findViewById(R.id.recy_coupons);
         listdata = (ArrayList) DummyCode.getListData();
         coupons_recy.setLayoutManager(new LinearLayoutManager(this));
 
@@ -115,12 +127,15 @@ public class PaymentSelectionActivity extends CustomActivity {
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.btn_rec_wallet) {
-            Toast.makeText(this, "Payment Gateway Yet To be Integrated  ", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(PaymentSelectionActivity.this, AddMoneyActivity.class));
         } else if (v.getId() == R.id.btn_remove_coupon) {
             Toast.makeText(this, "Coupon Removed", Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.btn_done) {
+            if (isShedule == 1) {
+                startActivity(new Intent(PaymentSelectionActivity.this, ChatActivity.class));
+                return;
+            }
             promoTerms();
-
         }
     }
 

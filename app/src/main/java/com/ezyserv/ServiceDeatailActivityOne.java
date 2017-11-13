@@ -34,6 +34,7 @@ public class ServiceDeatailActivityOne extends CustomActivity implements CustomA
     private EditText demail;
     private EditText edt_service_name;
     private EditText edt_service_mobile;
+    private EditText edt_company;
     private String value = "";
     private CountryCodePicker ccp;
     private TextView txt_upload1, txt_upload2, txt_doc1, txt_doc2;
@@ -56,7 +57,8 @@ public class ServiceDeatailActivityOne extends CustomActivity implements CustomA
         mTitle.setText("Add your details");
         mCount.setText("1/2");
         actionBar.setTitle("");
-        demail = (EditText) findViewById(R.id.edt_service_detail_email);
+        demail = findViewById(R.id.edt_service_detail_email);
+        edt_company = findViewById(R.id.edt_company);
         edt_service_name = (EditText) findViewById(R.id.edt_service_name);
         edt_service_mobile = (EditText) findViewById(R.id.edt_service_mobile);
         verifyemail = (TextView) findViewById(R.id.verify_email);
@@ -73,7 +75,7 @@ public class ServiceDeatailActivityOne extends CustomActivity implements CustomA
 
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
         ccp.setCcpClickable(false);
-     //   ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+", "")));
+        //   ccp.setCountryForPhoneCode(Integer.parseInt(edt_service_mobile.getText().toString().split(" ")[0].replace("+", "")));
 
         value = getIntent().getStringExtra("key");
         value = "email_verification";
@@ -96,7 +98,8 @@ public class ServiceDeatailActivityOne extends CustomActivity implements CustomA
             @Override
             public void onClick(View v) {
                 SingleInstance.getInstance().setServicesId("");
-                startActivity(new Intent(ServiceDeatailActivityOne.this, ServiceDetailActivityTwo.class));
+                startActivity(new Intent(ServiceDeatailActivityOne.this, ServiceDetailActivityTwo.class)
+                        .putExtra("isCompany", !edt_company.getText().toString().isEmpty()));
             }
         });
 

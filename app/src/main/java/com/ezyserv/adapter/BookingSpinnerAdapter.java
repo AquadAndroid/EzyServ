@@ -14,13 +14,13 @@ import com.ezyserv.R;
  * Created by HP on 8/1/2017.
  */
 
-public class SpinnerAdapter extends BaseAdapter {
+public class BookingSpinnerAdapter extends BaseAdapter {
     Context context;
     int SpinnerIcons[];
     String[] SpinnerText;
     LayoutInflater inflter;
 
-    public SpinnerAdapter(Context applicationContext, int[] SpinnerIcons, String[] SpinnerText) {
+    public BookingSpinnerAdapter(Context applicationContext, int[] SpinnerIcons, String[] SpinnerText) {
         this.context = applicationContext;
         this.SpinnerIcons = SpinnerIcons;
         this.SpinnerText = SpinnerText;
@@ -44,12 +44,8 @@ public class SpinnerAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.spinner_item, null);
-        ImageView icon = (ImageView) view.findViewById(R.id.spiner_img);
-        TextView names = (TextView) view.findViewById(R.id.tv_spinner);
-        try {
-            icon.setImageResource(SpinnerIcons[i]);
-        }catch (Exception e){}
+        view = inflter.inflate(R.layout.spinner_booking_item, null);
+        TextView names =  view.findViewById(R.id.tv_spinner);
 
         names.setText(SpinnerText[i]);
         return view;

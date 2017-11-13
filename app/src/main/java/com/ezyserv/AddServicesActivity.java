@@ -25,11 +25,15 @@ public class AddServicesActivity extends CustomActivity {
     private Button Save;
     private AddServiceAdapter adapter;
     private Services services;
+    private boolean isPrimary;
+    private boolean isCompany;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isPrimary = getIntent().getBooleanExtra("isPrimary", false);
+        isCompany = getIntent().getBooleanExtra("isCompany", false);
         setContentView(R.layout.activity_add_services);
         services = SingleInstance.getInstance().getSelectedServiceCategory();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,14 +53,21 @@ public class AddServicesActivity extends CustomActivity {
             mTitle.setText("Add My Care services");
         } else if (value.equals("events")) {
             mTitle.setText("Add Events services");
+        } else {
+            mTitle.setText("Add Primary service");
         }
 
         ServiceList = (RecyclerView) findViewById(R.id.service_recycle);
         ServiceList.setLayoutManager(new LinearLayoutManager(this));
         services = SingleInstance.getInstance().getSelectedServiceCategory();
-        adapter = new AddServiceAdapter(services, this);
+        adapter = new AddServiceAdapter(services, this, isPrimary, isCompany);
         ServiceList.setAdapter(adapter);
         Save = (Button) findViewById(R.id.btn_save);
+
+        if (isPrimary) {
+            Save.setVisibility(View.GONE);
+        }
+
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,5 +91,10 @@ public class AddServicesActivity extends CustomActivity {
 
     private Context getContext() {
         return AddServicesActivity.this;
+    }
+
+    public void setPrimaryName(String primary) {
+        SingleInstance.getInstance().setPrimaryName(primary);
+        finish();
     }
 }

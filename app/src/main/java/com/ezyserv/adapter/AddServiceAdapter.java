@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ezyserv.AddServicesActivity;
 import com.ezyserv.R;
+import com.ezyserv.application.MyApp;
 import com.ezyserv.model.Services;
 
 import java.util.HashMap;
@@ -26,6 +28,8 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
     private LayoutInflater inflater;
     public int count = 0;
     private Context c;
+    private boolean isPrimary;
+    private boolean isCompany;
 
     public interface ItemClickCallback {
         void onItemClick(int p);
@@ -33,10 +37,12 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
         void onSecondaryIconClick(int p);
     }
 
-    public AddServiceAdapter(Services data, Context c) {
+    public AddServiceAdapter(Services data, Context c, boolean isPrimary, boolean isCompany) {
         this.inflater = LayoutInflater.from(c);
         this.data = data;
         this.c = c;
+        this.isPrimary = isPrimary;
+        this.isCompany = isCompany;
     }
 
     @Override
@@ -83,12 +89,21 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
             Sadd_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (isPrimary) {
+                        ((AddServicesActivity) c).setPrimaryName(data.getServices().get(getLayoutPosition()).getName());
+                    }
+                    if (!isCompany && selected >= 5 && Sadd_remove.getText().equals("Add")) {
+                        MyApp.popMessage("Alert!", "You can add only 5 services as individual", c);
+                        return;
+                    }
                     if (Sadd_remove.getText().equals("Add")) {
+                        ++selected;
                         Sadd_remove.setText("Remove");
                         Sadd_remove.setTextColor(Color.parseColor("#3949AB"));
                         idMap.put(data.getServices().get(getLayoutPosition()).getId(), "");
                         count++;
                     } else if (Sadd_remove.getText().equals("Remove")) {
+                        --selected;
                         Sadd_remove.setText("Add");
                         Sadd_remove.setTextColor(Color.parseColor("#ED365B"));
                         idMap.remove(data.getServices().get(getLayoutPosition()).getId());
@@ -100,4 +115,6 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
 
         }
     }
+
+    private int selected = 0;
 }
