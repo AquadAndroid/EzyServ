@@ -75,10 +75,10 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
             if (TextUtils.isEmpty(cust_mobile_no.getText().toString())) {
                 cust_mobile_no.setError("Enter Mobile No");
                 return;
-            } else if (!checkBox.isChecked()) {
+            }/* else if (!checkBox.isChecked()) {
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
             callLogin();
 
         } else if (v.getId() == R.id.custom_term_cond) {

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -28,6 +29,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,9 +57,12 @@ import com.ezyserv.fragment.FragmentDrawer;
 import com.ezyserv.model.NearbyServices;
 import com.ezyserv.model.Services;
 import com.ezyserv.utills.AppConstant;
+import com.ezyserv.utills.BuilderManager;
 import com.ezyserv.utills.LocationProvider;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -85,6 +90,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
+import com.nightonke.boommenu.BoomButtons.BoomButton;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.OnBoomListener;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.ogaclejapan.arclayout.ArcLayout;
 
 import org.json.JSONArray;
@@ -107,7 +120,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private LatLng sourceLocation = null;
     private LocationProvider locationProvider;
     private FragmentDrawer drawerFragment;
-    private TextView txt_location;
+    //    private TextView txt_location;
     private NestedScrollView bottom_sheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView bottom_sheet_recycler;
@@ -119,8 +132,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private SupportMapFragment mapFragment;
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
-    private ImageButton navBtn, btn_search;
+    //    private ImageButton navBtn, btn_search;
     //  private FloatingActionsMenu fab_menu;
+    private Toolbar toolbar;
 
     private int markerPath = R.drawable.ic_handyman_marker;
 
@@ -141,21 +155,27 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setResponseListener(this);
-        if (Build.VERSION.SDK_INT >= 21) {
-
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
-            lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
-        }
+//        if (Build.VERSION.SDK_INT >= 21) {
+//
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+////            RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
+////            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
+////            lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
+//        }
 
 
         bottom_sheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         bottom_sheet_recycler = findViewById(R.id.bottom_sheet_recycler);
         tv_serv_catg = findViewById(R.id.tv_serv_catg);
-
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.main4);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getString(R.string.app_name));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
         layoutManager.setAutoMeasureEnabled(true);
         bottom_sheet_recycler.setLayoutManager(layoutManager);
@@ -207,19 +227,18 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         mapFragment.getMapAsync(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
 
         drawerFragment = (FragmentDrawer) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout), null);
         drawerFragment.setDrawerListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-        txt_location = findViewById(R.id.txt_location);
+//        txt_location = findViewById(R.id.txt_location);
         txt_address = findViewById(R.id.txt_address);
         menu_arc_frame = findViewById(R.id.menu_arc_frame);
         arcLayout = findViewById(R.id.arc_layout);
@@ -236,7 +255,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         setTouchNClick(R.id.fab);
         setTouchNClick(R.id.txt_address);
-        setTouchNClick(R.id.txt_location);
+//        setTouchNClick(R.id.txt_location);
         setTouchNClick(R.id.fab_all);
         setTouchNClick(R.id.fab_domestic);
         setTouchNClick(R.id.fab_construction);
@@ -252,7 +271,140 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             }
         }, (1000 * 10));
 
+
+        bmb = findViewById(R.id.bmb);
+        assert bmb != null;
+        bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_4_2);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_4_2);
+//        bmb.addBuilder(BuilderManager.getHamButtonBuilder());
+
+//        bmb.setPiecePlaceEnum((PiecePlaceEnum) piecesAndButtons.get(9).first);
+//        bmb.setButtonPlaceEnum((ButtonPlaceEnum) piecesAndButtons.get(9).second);
+        bmb.clearBuilders();
+        bmb.addBuilder(new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.dolphin)
+                .normalTextRes(R.string.text_ham_button_handyman).normalColor(Color.parseColor("#dd000000"))
+                .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
+
+        bmb.addBuilder(new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.dolphin)
+                .normalColor(Color.parseColor("#dd000000"))
+                .normalTextRes(R.string.text_ham_button_events)
+                .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
+
+        bmb.addBuilder(new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.dolphin)
+                .normalColor(Color.parseColor("#dd000000"))
+                .normalTextRes(R.string.text_ham_button_domestic)
+                .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
+
+        bmb.addBuilder(new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.dolphin)
+                .normalColor(Color.parseColor("#dd000000"))
+                .normalTextRes(R.string.text_ham_button_my_care)
+                .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
+
+        bmb.setOnBoomListener(new OnBoomListener() {
+            @Override
+            public void onClicked(int index, BoomButton boomButton) {
+                switch (index) {
+                    case 0:
+                        hideMenu();
+                        List<Services.Data> allData = new ArrayList<>();
+                        for (int i = 0; i < services.size(); i++) {
+                            allData.addAll(services.get(i).getServices());
+                        }
+                        tv_serv_catg.setText("Handyman Services (" + allData.size() + ")");
+                        adapter = new BottomServiceAdapter(allData, MainActivity.this, 1);
+                        bottom_sheet_recycler.setAdapter(adapter);
+                        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                        break;
+                    case 1:
+                        hideMenu();
+                        //  fab_menu.collapse();
+
+                        tv_serv_catg.setText("Events Services (" + services.get(2).getServices().size() + ")");
+                        adapter = new BottomServiceAdapter(services.get(2).getServices(), MainActivity.this, 2);
+                        bottom_sheet_recycler.setAdapter(adapter);
+                        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                        break;
+                    case 2:
+                        hideMenu();
+                        //  fab_menu.collapse();
+
+
+                        // fab_menu.collapse();
+                        tv_serv_catg.setText("Domestic Services (" + services.get(0).getServices().size() + ")");
+                        adapter = new BottomServiceAdapter(services.get(0).getServices(), MainActivity.this, 0);
+                        bottom_sheet_recycler.setAdapter(adapter);
+                        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                        break;
+                    case 3:
+                        hideMenu();
+                        tv_serv_catg.setText("My Care Services (" + services.get(1).getServices().size() + ")");
+                        adapter = new BottomServiceAdapter(services.get(1).getServices(), MainActivity.this, 1);
+                        bottom_sheet_recycler.setAdapter(adapter);
+                        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                        break;
+//                        fab.setImageResource(R.drawable.events);
+
+                }
+            }
+
+            @Override
+            public void onBackgroundClick() {
+
+            }
+
+            @Override
+            public void onBoomWillHide() {
+
+            }
+
+            @Override
+            public void onBoomDidHide() {
+
+            }
+
+            @Override
+            public void onBoomWillShow() {
+
+            }
+
+            @Override
+            public void onBoomDidShow() {
+
+            }
+        });
+
+
     }
+
+    private BoomMenuButton bmb;
 
     public int getStatusBarHeight() {
         int result = 0;
@@ -317,8 +469,61 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 //            currentLocation.distanceTo()
             // getNearbyDrivers(sourceLocation.latitude + "", sourceLocation.longitude + "");
         }
+        if (!MyApp.getStatus("SETTINGS_SHOWN")) {
+            openTutorialView();
+        }
 
+    }
 
+    private void openTutorialView() {
+
+        final TapTargetSequence sequence = new TapTargetSequence(this)
+                .targets(
+                        TapTarget.forToolbarMenuItem(toolbar, R.id.action_radius,
+                                "Radius Button",
+                                "You can change radius, if you cannot find services nearby you.")
+                                .dimColor(android.R.color.black)
+                                .outerCircleColor(R.color.colorPrimary)      // Specify a color for the outer circle
+                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+                                .titleTextColor(R.color.white)      // Specify the color of the title text
+                                .descriptionTextSize(14)            // Specify the size (in sp) of the description text
+                                .descriptionTextColor(R.color.white)  // Specify the color of the description text
+                                .textColor(R.color.white)            // Specify a color for both the title and description text
+                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                .tintTarget(true).id(3)
+                                // Whether to tint the target view's color
+                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+                                .targetRadius(50)
+                                .outerCircleColor(R.color.colorAccent)
+                                .targetCircleColor(android.R.color.black)
+                                .transparentTarget(true)
+                                .textColor(android.R.color.black)
+                )
+                .listener(new TapTargetSequence.Listener() {
+                    @Override
+                    public void onSequenceFinish() {
+//                        ((TextView) findViewById(R.id.educated)).setText("Congratulations! You're educated now!");
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+//                        Log.d("TapTargetView", "Clicked on " + lastTarget.id());
+                        MyApp.setStatus("SETTINGS_SHOWN", true);
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+//                        https://github.com/KeepSafe/TapTargetView
+//                        https://github.com/KeepSafe/TapTargetView/blob/master/app/src/main/java/com/getkeepsafe/taptargetviewsample/MainActivity.java
+                    }
+                });
+        sequence.start();
     }
 
     public void enableGPS() {
@@ -424,7 +629,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_radius) {
+            searchRadius();
             return true;
         }
 
@@ -444,19 +650,19 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
             }
 
-        } else if (v == navBtn) {
+        } /*else if (v == navBtn) {
             drawer.openDrawer(GravityCompat.START);
-        } else if (v == txt_location) {
+        }*//* else if (v == txt_location) {
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
             MainActivity.this.startActivityForResult(intent, 122);
-        } else if (v == txt_address) {
+        }*/ else if (v == txt_address) {
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
             MainActivity.this.startActivityForResult(intent, 122);
-        } else if (v == btn_search) {
+        } /*else if (v == btn_search) {
             searchRadius();
-        } else if (v == fab_all) {
+        }*/ else if (v == fab_all) {
             fab.setImageResource(R.drawable.all_cats);
             hideMenu();
             //  fab_menu.collapse();
@@ -470,7 +676,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             hideMenu();
             // fab_menu.collapse();
             tv_serv_catg.setText("Domestic Services ((" + services.get(0).getServices().size() + ")");
-            adapter = new BottomServiceAdapter(services, this, 0);
+//            adapter = new BottomServiceAdapter(services, this, 0);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -482,7 +688,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             hideMenu();
             //  fab_menu.collapse();
             tv_serv_catg.setText("Construction Services (" + services.get(1).getServices().size() + ")");
-            adapter = new BottomServiceAdapter(services, this, 1);
+//            adapter = new BottomServiceAdapter(services, this, 1);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
 
@@ -495,7 +701,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             hideMenu();
             //  fab_menu.collapse();
             tv_serv_catg.setText("Events Services (" + services.get(2).getServices().size() + ")");
-            adapter = new BottomServiceAdapter(services, this, 2);
+//            adapter = new BottomServiceAdapter(services, this, 2);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -503,12 +709,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab) {
-            if (v.isSelected()) {
-                hideMenu();
-            } else {
-                showMenu();
-            }
-            v.setSelected(!v.isSelected());
+
+
+//            if (v.isSelected()) {
+//                hideMenu();
+//            } else {
+//                showMenu();
+//            }
+//            v.setSelected(!v.isSelected());
         }
     }
 
@@ -623,11 +831,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
     private void setupUiElements() {
-        navBtn = (ImageButton) findViewById(R.id.nav_drawer_btn);
-        btn_search = (ImageButton) findViewById(R.id.btn_search);
+//        navBtn = (ImageButton) findViewById(R.id.nav_drawer_btn);
+//        btn_search = (ImageButton) findViewById(R.id.btn_search);
 
-        setClick(R.id.nav_drawer_btn);
-        setClick(R.id.btn_search);
+//        setClick(R.id.nav_drawer_btn);
+//        setClick(R.id.btn_search);
         txt_book = findViewById(R.id.txt_book);
 
         setTouchNClick(R.id.txt_book);
@@ -796,17 +1004,17 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     }
                 }
 
-                strAdd = strReturnedAddress.toString();
-                txt_location.setText(addresses.get(0).getSubLocality());
-                if (txt_location.getText().toString().isEmpty()) {
-                    txt_location.setText(addresses.get(0).getLocality());
-                    if (txt_location.getText().toString().isEmpty()) {
-                        txt_location.setText(strAdd.replace("\n", " "));
+                String alterAdd = "";
+                alterAdd = addresses.get(0).getSubLocality();
+                if (alterAdd.isEmpty()) {
+                    alterAdd = addresses.get(0).getLocality();
+                    if (alterAdd.isEmpty()) {
+                        alterAdd = strAdd.replace("\n", " ");
                     }
                 }
                 txt_address.setText(strAdd.replace("\n", " "));
                 if (strAdd.isEmpty()) {
-                    txt_address.setText(txt_location.getText().toString());
+                    txt_address.setText(alterAdd);
                 }
                 Log.w("address", "" + strReturnedAddress.toString());
             } else {
@@ -870,6 +1078,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                txt_book.setEnabled(true);
+                txt_book.setTextColor(Color.WHITE);
                 dialog.dismiss();
             }
         });

@@ -23,11 +23,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdapter.DataHolder> {
 
     //  private Services data;
-    private List<Services> servicelist;
+    private List<Services.Data> servicelist;
     private LayoutInflater inflater;
     // public int count = 0;
     private Context c;
-    int catg;
+//    int catg;
 
     public interface ItemClickCallback {
         void onItemClick(int p);
@@ -35,11 +35,11 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
         void onSecondaryIconClick(int p);
     }
 
-    public BottomServiceAdapter(List<Services> servicelist, Context c, int position) {
+    public BottomServiceAdapter(List<Services.Data> servicelist, Context c, int position) {
         this.inflater = LayoutInflater.from(c);
         this.servicelist = servicelist;
         this.c = c;
-        this.catg=position;
+//        this.catg=position;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
 
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
-        Services.Data item = servicelist.get(catg).getServices().get(position);
+        Services.Data item = servicelist.get(position);
         holder.tv_service_name.setText(item.getName());
         Glide.with(c)
                 .load(item.getImage())
@@ -59,7 +59,7 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
 
     @Override
     public int getItemCount() {
-        return servicelist.get(catg).getServices().size();
+        return servicelist.size();
     }
 
     public HashMap<String, String> idMap = new HashMap<>();

@@ -50,57 +50,58 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/location" />
 
+                <include layout="@layout/toolbar"></include>
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/rl_top"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@null"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:padding="@dimen/dim_10">-->
+
+                <!--<ImageButton-->
+                <!--android:id="@+id/nav_drawer_btn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@null"-->
+                <!--android:src="@drawable/menu" />-->
+
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/txt_location"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_centerVertical="true"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginLeft="@dimen/dim_10"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_toRightOf="@id/nav_drawer_btn"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="@null"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:drawablePadding="@dimen/dim_5"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:drawableRight="@drawable/location_chevron"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:padding="@dimen/dim_5"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:shadowColor="@color/grey"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:shadowDx="-2"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:shadowDy="-2"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:shadowRadius="1"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="YOUR LOCATION"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textColor="#ED365B"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textSize="@dimen/dim_16" />&ndash;&gt;-->
+
+                <!--<ImageButton-->
+                <!--android:id="@+id/btn_search"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="?selectableItemBackground"-->
+                <!--android:padding="@dimen/dim_5"-->
+                <!--android:src="@drawable/search" />-->
+                <!--</RelativeLayout>-->
+
                 <RelativeLayout
-                    android:id="@+id/rl_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dim_10">
-
-                    <ImageButton
-                        android:id="@+id/nav_drawer_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:background="@null"
-                        android:src="@drawable/menu" />
-
-                    <TextView
-                        android:id="@+id/txt_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dim_10"
-                        android:layout_toRightOf="@id/nav_drawer_btn"
-                        android:background="@null"
-                        android:drawablePadding="@dimen/dim_5"
-                        android:drawableRight="@drawable/location_chevron"
-                        android:padding="@dimen/dim_5"
-                        android:shadowColor="@color/grey"
-                        android:shadowDx="-2"
-                        android:shadowDy="-2"
-                        android:shadowRadius="1"
-                        android:text="YOUR LOCATION"
-                        android:textColor="#ED365B"
-                        android:textSize="@dimen/dim_16" />
-
-                    <ImageButton
-                        android:id="@+id/btn_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="?selectableItemBackground"
-                        android:padding="@dimen/dim_5"
-                        android:src="@drawable/search" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_top">
+                    android:layout_below="@+id/toolbar">
 
 
                     <android.support.v7.widget.CardView
@@ -109,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dim_10"
                         android:layout_marginRight="@dimen/dim_10"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="10dp"
                         app:cardCornerRadius="@dimen/dim_2"
                         app:cardElevation="@dimen/dim_5">
 
@@ -130,7 +131,6 @@
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/card_book"
                         android:layout_alignParentRight="true"
-
                         android:layout_marginTop="@dimen/dim_15"
                         android:background="@null"
                         android:visibility="invisible">
@@ -162,16 +162,16 @@
                                     fab:fab_title="Events" />
 
                                 <!--<TextView-->
-                                    <!--android:id="@+id/txt_event"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_centerVertical="true"-->
-                                    <!--android:layout_marginRight="-30dp"-->
-                                    <!--android:background="@drawable/rounded_white"-->
-                                    <!--android:paddingLeft="15dp"-->
-                                    <!--android:paddingRight="30dp"-->
-                                    <!--android:text="Events"-->
-                                    <!--android:textColor="@color/colorAccent" />-->
+                                <!--android:id="@+id/txt_event"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_centerVertical="true"-->
+                                <!--android:layout_marginRight="-30dp"-->
+                                <!--android:background="@drawable/rounded_white"-->
+                                <!--android:paddingLeft="15dp"-->
+                                <!--android:paddingRight="30dp"-->
+                                <!--android:text="Events"-->
+                                <!--android:textColor="@color/colorAccent" />-->
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -179,16 +179,16 @@
                                 android:layout_height="wrap_content">
 
                                 <!--<TextView-->
-                                    <!--android:id="@+id/txt_construction"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_centerVertical="true"-->
-                                    <!--android:layout_marginRight="-30dp"-->
-                                    <!--android:background="@drawable/rounded_white"-->
-                                    <!--android:paddingLeft="15dp"-->
-                                    <!--android:paddingRight="30dp"-->
-                                    <!--android:text="My Care"-->
-                                    <!--android:textColor="@color/colorAccent" />-->
+                                <!--android:id="@+id/txt_construction"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_centerVertical="true"-->
+                                <!--android:layout_marginRight="-30dp"-->
+                                <!--android:background="@drawable/rounded_white"-->
+                                <!--android:paddingLeft="15dp"-->
+                                <!--android:paddingRight="30dp"-->
+                                <!--android:text="My Care"-->
+                                <!--android:textColor="@color/colorAccent" />-->
 
                                 <com.getbase.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/fab_construction"
@@ -205,16 +205,16 @@
                                 android:layout_height="wrap_content">
 
                                 <!--<TextView-->
-                                    <!--android:id="@+id/txt_domestic"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_centerVertical="true"-->
-                                    <!--android:layout_marginRight="-30dp"-->
-                                    <!--android:background="@drawable/rounded_white"-->
-                                    <!--android:paddingLeft="15dp"-->
-                                    <!--android:paddingRight="30dp"-->
-                                    <!--android:text="Domestic"-->
-                                    <!--android:textColor="@color/colorAccent" />-->
+                                <!--android:id="@+id/txt_domestic"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_centerVertical="true"-->
+                                <!--android:layout_marginRight="-30dp"-->
+                                <!--android:background="@drawable/rounded_white"-->
+                                <!--android:paddingLeft="15dp"-->
+                                <!--android:paddingRight="30dp"-->
+                                <!--android:text="Domestic"-->
+                                <!--android:textColor="@color/colorAccent" />-->
 
                                 <com.getbase.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/fab_domestic"
@@ -231,16 +231,16 @@
                                 android:layout_height="wrap_content">
 
                                 <!--<TextView-->
-                                    <!--android:id="@+id/txt_handyman"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_centerVertical="true"-->
-                                    <!--android:layout_marginRight="-35dp"-->
-                                    <!--android:background="@drawable/rounded_white"-->
-                                    <!--android:paddingLeft="@dimen/dim_10"-->
-                                    <!--android:paddingRight="30dp"-->
-                                    <!--android:text="Handyman"-->
-                                    <!--android:textColor="@color/colorAccent" />-->
+                                <!--android:id="@+id/txt_handyman"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_centerVertical="true"-->
+                                <!--android:layout_marginRight="-35dp"-->
+                                <!--android:background="@drawable/rounded_white"-->
+                                <!--android:paddingLeft="@dimen/dim_10"-->
+                                <!--android:paddingRight="30dp"-->
+                                <!--android:text="Handyman"-->
+                                <!--android:textColor="@color/colorAccent" />-->
 
                                 <com.getbase.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/fab_all"
@@ -265,9 +265,18 @@
                         android:layout_marginTop="@dimen/dim_5"
                         android:background="@drawable/path_fab"
                         android:gravity="center"
-                        android:src="@drawable/all_cats"
+                        android:visibility="gone"
+                        android:src="@drawable/services_offered"
                         android:textColor="@color/blue"
                         android:textSize="@dimen/dim_30" />
+
+                    <com.nightonke.boommenu.BoomMenuButton
+                        android:id="@+id/bmb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/card_book"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true" />
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/card_book"
@@ -282,8 +291,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/pink"
-                            android:orientation="horizontal"
-                          >
+                            android:orientation="horizontal">
 
                             <Spinner
                                 android:id="@+id/wallet_cash_spiner"
@@ -301,7 +309,7 @@
                                 android:id="@+id/spinner_booking"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight=".6"
+                                android:layout_weight=".5"
                                 android:backgroundTint="@color/white" />
 
                             <TextView
@@ -311,11 +319,12 @@
                                 android:layout_weight=".2"
                                 android:background="@null"
                                 android:backgroundTint="@null"
+                                android:enabled="false"
                                 android:gravity="center"
                                 android:hint="Enter YOur Loction"
                                 android:padding="@dimen/dim_10"
                                 android:text="Go"
-                                android:textColor="@color/white"
+                                android:textColor="@color/grey"
                                 android:textSize="@dimen/dim_18"
                                 android:textStyle="bold" />
                         </LinearLayout>

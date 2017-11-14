@@ -32,7 +32,7 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
     private Toolbar toolbar;
     private EditText cust_mobile_no;
     private Button cust_login;
-    private CheckBox checkBox;
+//    private CheckBox checkBox;
     private CountryCodePicker countryCodePicker;
     private TextView cust_term_cond;
 
@@ -58,15 +58,15 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
 
 
         setTouchNClick(R.id.service_btn_login);
-        setTouchNClick(R.id.service_terms_condition);
+//        setTouchNClick(R.id.service_terms_condition);
 
         cust_mobile_no = (EditText) findViewById(R.id.service_mb_no);
         cust_login = (Button) findViewById(R.id.service_btn_login);
-        checkBox = (CheckBox) findViewById(R.id.service_terms_condition_checkbox);
+//        checkBox = (CheckBox) findViewById(R.id.service_terms_condition_checkbox);
         countryCodePicker = (CountryCodePicker) findViewById(R.id.ccp);
-        cust_term_cond = (TextView) findViewById(R.id.service_terms_condition);
+//        cust_term_cond = (TextView) findViewById(R.id.service_terms_condition);
         String htmlString = "<u>terms and condition</u>";
-        cust_term_cond.setText(Html.fromHtml(htmlString));
+//        cust_term_cond.setText(Html.fromHtml(htmlString));
     }
 
     private void callLogin() {
@@ -85,15 +85,15 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
             if (TextUtils.isEmpty(cust_mobile_no.getText().toString())) {
                 cust_mobile_no.setError("Enter Mobile No");
                 return;
-            } else if (!checkBox.isChecked()) {
+            } /*else if (!checkBox.isChecked()) {
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
             callLogin();
 
-        } else if (v.getId() == R.id.custom_term_cond) {
+        } /*else if (v.getId() == R.id.custom_term_cond) {
             Toast.makeText(this, "Terms and Condition", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
 

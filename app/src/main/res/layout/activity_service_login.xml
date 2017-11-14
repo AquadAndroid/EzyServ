@@ -89,30 +89,30 @@
             android:layout_marginLeft="@dimen/dim_10"
             android:paddingLeft="@dimen/dim_15">
 
-            <CheckBox
-                android:id="@+id/service_terms_condition_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true" />
+            <!--<CheckBox-->
+                <!--android:id="@+id/service_terms_condition_checkbox"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true" />-->
 
-            <TextView
-                android:id="@+id/terms_condition_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/service_terms_condition_checkbox"
-                android:text="I agree with the "
-                android:textSize="@dimen/dim_15" />
+            <!--<TextView-->
+                <!--android:id="@+id/terms_condition_label"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@+id/service_terms_condition_checkbox"-->
+                <!--android:text="I agree with the "-->
+                <!--android:textSize="@dimen/dim_15" />-->
 
-            <TextView
-                android:id="@+id/service_terms_condition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dim_5"
-                android:layout_toRightOf="@+id/terms_condition_label"
-                android:text="@string/term"
-                android:textSize="@dimen/dim_15" />
+            <!--<TextView-->
+                <!--android:id="@+id/service_terms_condition"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="@dimen/dim_5"-->
+                <!--android:layout_toRightOf="@+id/terms_condition_label"-->
+                <!--android:text="@string/term"-->
+                <!--android:textSize="@dimen/dim_15" />-->
         </RelativeLayout>
 
 
