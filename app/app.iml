@@ -142,6 +142,7 @@
     <orderEntry type="library" name="de.hdodenhof:circleimageview-2.1.0" level="project" />
     <orderEntry type="library" name="com.android.support:support-fragment-26.1.0" level="project" />
     <orderEntry type="library" name="com.facebook.android:facebook-share-4.28.0" level="project" />
+    <orderEntry type="library" name="com.getkeepsafe.taptargetview:taptargetview-1.9.1" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-maps-license-11.4.2" level="project" />
     <orderEntry type="library" name="com.parse.bolts:bolts-applinks:1.4.0@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.4.2" level="project" />
