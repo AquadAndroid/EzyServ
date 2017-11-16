@@ -3,73 +3,118 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:gravity="center_vertical"
             android:layout_alignParentTop="true"
             android:background="@color/white"
-            android:layout_marginLeft="@dimen/dim_10"
-            android:layout_marginRight="@dimen/dim_10"
-            android:layout_marginTop="@dimen/dim_10"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:background="@drawable/rounded_corner_search"
                 android:layout_height="match_parent">
-                <EditText
-                    android:id="@+id/search_et"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Search"
-                    android:maxLines="1"
-                    android:layout_toLeftOf="@+id/clear"
-                    android:imeOptions="actionSearch"
-                    android:background="@null"
-                    android:drawablePadding="@dimen/dim_10"
-                    android:paddingLeft="@dimen/dim_10"
-                    android:paddingRight="@dimen/dim_10"/>
-                <ImageView
-                    android:id="@+id/clear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/places_ic_clear"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right|center_vertical"
-                    android:padding="@dimen/dim_15"
-                    android:visibility="gone"/>
-            </RelativeLayout>
+                    android:background="@drawable/back_strip">
 
+                    <ImageButton
+                        android:id="@+id/img_btn_search_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:padding="@dimen/dim_5"
+                        android:src="@drawable/ic_back" />
 
+                    <View
+                        android:id="@+id/view_search_one"
+                        android:layout_width="@dimen/dim_1"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/dim_8"
+                        android:layout_toRightOf="@+id/img_btn_search_back"
+                        android:background="@color/pink" />
+
+                    <View
+                        android:id="@+id/view_search_two"
+                        android:layout_width="@dimen/dim_1"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/dim_8"
+                        android:layout_marginLeft="@dimen/dim_2"
+                        android:layout_toRightOf="@+id/view_search_one"
+                        android:background="@color/pink" />
+
+                    <EditText
+                        android:id="@+id/search_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@+id/clear"
+                        android:layout_toRightOf="@+id/view_search_two"
+                        android:background="@null"
+                        android:drawablePadding="@dimen/dim_10"
+                        android:hint="Search"
+                        android:imeOptions="actionSearch"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/dim_10"
+                        android:paddingRight="@dimen/dim_10" />
+
+                    <ImageView
+                        android:id="@+id/clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right|center_vertical"
+                        android:padding="@dimen/dim_15"
+                        android:src="@drawable/places_ic_clear"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_saved_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_layout"
+            android:layout_margin="@dimen/dim_10"
+            android:textSize="@dimen/dim_16"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dim_10"
+            android:paddingRight="@dimen/dim_10"
+            android:paddingTop="@dimen/dim_7"
+            android:paddingBottom="@dimen/dim_7"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/search_layout"
             android:layout_above="@+id/powered_by_google"
-            android:background="@color/white"
-            android:layout_marginTop="@dimen/dim_10"/>
+            android:layout_below="@+id/tv_saved_address"
+            android:layout_marginTop="@dimen/dim_10"
+            android:background="@color/white" />
 
         <ImageView
             android:id="@+id/powered_by_google"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/dim_10"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dim_10"
-            android:src="@drawable/powered_by_google_light"/>
+            android:padding="@dimen/dim_10"
+            android:src="@drawable/powered_by_google_light" />
     </RelativeLayout>
 </LinearLayout>

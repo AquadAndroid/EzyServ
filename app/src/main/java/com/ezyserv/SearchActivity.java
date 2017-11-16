@@ -2,7 +2,9 @@ package com.ezyserv;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,9 +15,12 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ezyserv.adapter.PlaceAutocompleteAdapter;
+import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.AppConstant;
@@ -41,7 +46,9 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
 
     LinearLayout mParent;
     private RecyclerView mRecyclerView;
+    private TextView tv_saved_address;
     LinearLayoutManager llm;
+
     PlaceAutocompleteAdapter mAdapter;
     //    List<SavedAddress> mSavedAddressList;
 //    PlaceSavedAdapter mSavedAdapter;
@@ -74,6 +81,18 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
                 .build();
+
+        tv_saved_address=(TextView)findViewById(R.id.tv_saved_address);
+        if(MyApp.getSharedPrefString(AppConstant.LOCATION).equals(null)){
+            tv_saved_address.setVisibility(View.GONE);
+
+        }else {
+            tv_saved_address.setVisibility(View.VISIBLE);
+            tv_saved_address.setBackgroundResource(R.drawable.search_back);
+            tv_saved_address.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.rating_yellow_big, 0);
+            tv_saved_address.setText(MyApp.getSharedPrefString(AppConstant.LOCATION));
+        }
+
 
         initViews();
     }
@@ -130,6 +149,8 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
         });
 
     }
+
+
 
     @Override
     public void onClick(View v) {

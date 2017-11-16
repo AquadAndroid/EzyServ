@@ -265,10 +265,10 @@
                         android:layout_marginTop="@dimen/dim_5"
                         android:background="@drawable/path_fab"
                         android:gravity="center"
-                        android:visibility="gone"
                         android:src="@drawable/services_offered"
                         android:textColor="@color/blue"
-                        android:textSize="@dimen/dim_30" />
+                        android:textSize="@dimen/dim_30"
+                        android:visibility="gone" />
 
                     <com.nightonke.boommenu.BoomMenuButton
                         android:id="@+id/bmb"
@@ -360,7 +360,6 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout

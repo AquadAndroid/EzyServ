@@ -10,14 +10,14 @@ repositories {
 }
 android {
 
-    signingConfigs {
-        config {
-            keyAlias 'enolasia'
-            keyPassword '111111'
-            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
-            storePassword '111111'
-        }
-    }
+//    signingConfigs {
+//        config {
+//            keyAlias 'enolasia'
+//            keyPassword '111111'
+//            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
+//            storePassword '111111'
+//        }
+//    }
 
     lintOptions {
         checkReleaseBuilds false
@@ -39,9 +39,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            signingConfig signingConfigs.config
-        }
+//        debug {
+//            signingConfig signingConfigs.config
+//        }
     }
 
 }

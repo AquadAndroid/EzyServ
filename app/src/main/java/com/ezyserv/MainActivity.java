@@ -159,10 +159,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 //
 //            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
 //                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-////            RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
+///      RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
 ////            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
 ////            lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
 //        }
+        Log.d("deviceToken",MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
+
 
 
         bottom_sheet = findViewById(R.id.bottom_sheet);

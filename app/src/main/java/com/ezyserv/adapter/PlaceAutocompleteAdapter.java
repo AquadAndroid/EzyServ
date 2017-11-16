@@ -2,6 +2,7 @@ package com.ezyserv.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
@@ -11,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ezyserv.R;
+import com.ezyserv.application.MyApp;
+import com.ezyserv.utills.AppConstant;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
@@ -32,9 +36,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by anuj.sharma on 4/6/2016.
  */
-public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocompleteAdapter.PlaceViewHolder> implements Filterable{
+public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocompleteAdapter.PlaceViewHolder> implements Filterable {
 
-    public interface PlaceAutoCompleteInterface{
+    public interface PlaceAutoCompleteInterface {
         public void onPlaceClick(ArrayList<PlaceAutocomplete> mResultList, int position);
     }
 
@@ -54,20 +58,20 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 
 
     public PlaceAutocompleteAdapter(Context context, int resource, GoogleApiClient googleApiClient,
-                                    LatLngBounds bounds, AutocompleteFilter filter){
+                                    LatLngBounds bounds, AutocompleteFilter filter) {
         this.mContext = context;
         layout = resource;
         mGoogleApiClient = googleApiClient;
 //        mBounds = bounds;
         mPlaceFilter = filter;
-        this.mListener = (PlaceAutoCompleteInterface)mContext;
+        this.mListener = (PlaceAutoCompleteInterface) mContext;
     }
 
     /*
     Clear List items
      */
-    public void clearList(){
-        if(mResultList!=null && mResultList.size()>0){
+    public void clearList() {
+        if (mResultList != null && mResultList.size() > 0) {
             mResultList.clear();
         }
     }
@@ -79,7 +83,6 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 //    public void setBounds(LatLngBounds bounds) {
 //        mBounds = bounds;
 //    }
-
     @Override
     public Filter getFilter() {
         Filter filter = new Filter() {
@@ -179,7 +182,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         mPredictionHolder.mParentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onPlaceClick(mResultList,i);
+                mListener.onPlaceClick(mResultList, i);
             }
         });
 
@@ -187,7 +190,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 
     @Override
     public int getItemCount() {
-        if(mResultList != null)
+        if (mResultList != null)
             return mResultList.size();
         else
             return 0;
@@ -204,11 +207,30 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         //        CardView mCardView;
         public RelativeLayout mParentLayout;
         public TextView mAddress;
-
+        public ImageButton img_btn_star;
+        public int star_img = R.drawable.rating_blank_big;
         public PlaceViewHolder(View itemView) {
             super(itemView);
-            mParentLayout = (RelativeLayout)itemView.findViewById(R.id.predictedRow);
-            mAddress = (TextView)itemView.findViewById(R.id.address);
+            mParentLayout = (RelativeLayout) itemView.findViewById(R.id.predictedRow);
+            mAddress = (TextView) itemView.findViewById(R.id.address);
+            img_btn_star = (ImageButton) itemView.findViewById(R.id.img_btn_star);
+            img_btn_star.setImageResource(star_img);
+            img_btn_star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+if (star_img == R.drawable.rating_blank_big){
+    star_img=R.drawable.rating_yellow_big;
+    img_btn_star.setImageResource(star_img);
+    MyApp.setSharedPrefString(AppConstant.LOCATION, mAddress.getText().toString());
+    //MyApp.setSharedPrefArray(AppConstant.ADDRESS,);
+
+}else {
+    star_img= R.drawable.rating_blank_big;
+    img_btn_star.setImageResource(star_img);
+}
+
+                }
+            });
         }
 
     }
