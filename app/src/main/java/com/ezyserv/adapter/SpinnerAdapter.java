@@ -45,8 +45,8 @@ public class SpinnerAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.spinner_item, null);
-        ImageView icon = (ImageView) view.findViewById(R.id.spiner_img);
-        TextView names = (TextView) view.findViewById(R.id.tv_spinner);
+        ImageView icon =  view.findViewById(R.id.spiner_img);
+        TextView names =  view.findViewById(R.id.tv_spinner);
         try {
             icon.setImageResource(SpinnerIcons[i]);
         }catch (Exception e){}

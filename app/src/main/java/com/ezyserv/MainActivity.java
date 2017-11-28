@@ -16,7 +16,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -27,6 +26,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -40,10 +40,13 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,11 +59,10 @@ import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.fragment.FragmentDrawer;
 import com.ezyserv.model.NearbyServices;
 import com.ezyserv.model.Services;
+import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
-import com.ezyserv.utills.BuilderManager;
 import com.ezyserv.utills.LocationProvider;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.common.ConnectionResult;
@@ -75,7 +77,6 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -92,14 +93,15 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
-import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.OnBoomListener;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.ogaclejapan.arclayout.ArcLayout;
+import com.skyfishjy.library.RippleBackground;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,12 +134,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private SupportMapFragment mapFragment;
     protected GoogleApiClient mGoogleApiClient;
     protected static final String TAG = "MainActivity";
-    //    private ImageButton navBtn, btn_search;
-    //  private FloatingActionsMenu fab_menu;
     private Toolbar toolbar;
-
     private int markerPath = R.drawable.ic_handyman_marker;
-
     private ArcLayout arcLayout;
     private ImageButton fab;
     FrameLayout menu_arc_frame;
@@ -148,6 +146,15 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private Spinner wallet_cash_spiner;
     private Spinner spinner_booking;
     private TextView txt_book;
+    private Switch switch_mode;
+    private TextView txt_offline;
+    private TextView txt_online;
+    private RelativeLayout rl_provider;
+    private CardView cardView;
+    private CardView card_book;
+    private LatLng mCenterLatLong;
+    private TextView txt_address;
+    private MenuItem menuRadius;
 
 
     @Override
@@ -155,17 +162,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setResponseListener(this);
-//        if (Build.VERSION.SDK_INT >= 21) {
-//
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-///      RelativeLayout v = (RelativeLayout) findViewById(R.id.rl_top);
-////            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
-////            lp.setMargins(0, getStatusBarHeight(), 0, -getStatusBarHeight());
-//        }
-        Log.d("deviceToken",MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
 
-
+        Log.d("deviceToken", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
 
         bottom_sheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
@@ -254,10 +252,29 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         fab_construction = findViewById(R.id.fab_construction);
         fab_domestic = findViewById(R.id.fab_domestic);
         fab_all = findViewById(R.id.fab_all);
+        switch_mode = findViewById(R.id.switch_mode);
+        txt_offline = findViewById(R.id.txt_offline);
+        txt_online = findViewById(R.id.txt_online);
+        rl_provider = findViewById(R.id.rl_provider);
+        cardView = findViewById(R.id.cardView);
+        card_book = findViewById(R.id.card_book);
+
+        switch_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txt_offline.setTextColor(Color.parseColor("#8A8787"));
+                    txt_online.setTextColor(Color.BLACK);
+                } else {
+                    txt_offline.setTextColor(Color.BLACK);
+                    txt_online.setTextColor(Color.parseColor("#8A8787"));
+                }
+                updateProviderAvailabilityStatus(isChecked);
+            }
+        });
 
         setTouchNClick(R.id.fab);
         setTouchNClick(R.id.txt_address);
-//        setTouchNClick(R.id.txt_location);
         setTouchNClick(R.id.fab_all);
         setTouchNClick(R.id.fab_domestic);
         setTouchNClick(R.id.fab_construction);
@@ -279,10 +296,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
         bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_4_2);
         bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_4_2);
-//        bmb.addBuilder(BuilderManager.getHamButtonBuilder());
-
-//        bmb.setPiecePlaceEnum((PiecePlaceEnum) piecesAndButtons.get(9).first);
-//        bmb.setButtonPlaceEnum((ButtonPlaceEnum) piecesAndButtons.get(9).second);
         bmb.clearBuilders();
         bmb.addBuilder(new TextInsideCircleButton.Builder()
                 .normalImageRes(R.drawable.dolphin)
@@ -406,6 +419,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     }
 
+    private void updateProviderAvailabilityStatus(boolean isChecked) {
+        RequestParams p = new RequestParams();
+        p.put("user_id", MyApp.getApplication().readUser().getId());
+        p.put("availability", isChecked ? 1 : 0);
+        postCall(getContext(), AppConstant.BASE_URL + "changeAvailability", p, "", 8);
+    }
+
     private BoomMenuButton bmb;
 
     public int getStatusBarHeight() {
@@ -516,7 +536,59 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
 //                        Log.d("TapTargetView", "Clicked on " + lastTarget.id());
                         MyApp.setStatus("SETTINGS_SHOWN", true);
-                        startActivity(new Intent(getContext(), MainActivity.class));
+//                        startActivity(new Intent(getContext(), MainActivity.class));
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+//                        https://github.com/KeepSafe/TapTargetView
+//                        https://github.com/KeepSafe/TapTargetView/blob/master/app/src/main/java/com/getkeepsafe/taptargetviewsample/MainActivity.java
+                    }
+                });
+        sequence.start();
+    }
+
+
+    private void openSearchServiceView() {
+
+        final TapTargetSequence sequence = new TapTargetSequence(this)
+                .targets(
+                        TapTarget.forView(bmb,
+                                "Search service",
+                                "You can select your required service by click this button.")
+                                .dimColor(android.R.color.black)
+                                .outerCircleColor(R.color.colorPrimary)      // Specify a color for the outer circle
+                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+                                .titleTextColor(R.color.white)      // Specify the color of the title text
+                                .descriptionTextSize(14)            // Specify the size (in sp) of the description text
+                                .descriptionTextColor(R.color.white)  // Specify the color of the description text
+                                .textColor(R.color.white)            // Specify a color for both the title and description text
+                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                .tintTarget(true).id(3)
+                                // Whether to tint the target view's color
+                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+                                .targetRadius(50)
+                                .outerCircleColor(R.color.colorAccent)
+                                .targetCircleColor(android.R.color.black)
+                                .transparentTarget(true)
+                                .textColor(android.R.color.white)
+                )
+                .listener(new TapTargetSequence.Listener() {
+                    @Override
+                    public void onSequenceFinish() {
+//                        ((TextView) findViewById(R.id.educated)).setText("Congratulations! You're educated now!");
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+//                        Log.d("TapTargetView", "Clicked on " + lastTarget.id());
+                        MyApp.setStatus("SETTINGS_SHOWN", true);
+//                        startActivity(new Intent(getContext(), MainActivity.class));
                     }
 
                     @Override
@@ -620,6 +692,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main4, menu);
+        menuRadius = menu.findItem(R.id.action_radius);
         return true;
     }
 
@@ -833,13 +906,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
     private void setupUiElements() {
-//        navBtn = (ImageButton) findViewById(R.id.nav_drawer_btn);
-//        btn_search = (ImageButton) findViewById(R.id.btn_search);
-
-//        setClick(R.id.nav_drawer_btn);
-//        setClick(R.id.btn_search);
         txt_book = findViewById(R.id.txt_book);
-
         setTouchNClick(R.id.txt_book);
     }
 
@@ -847,7 +914,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-
             return;
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
@@ -933,13 +999,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         if (mMap != null) {
             mMap.getUiSettings().setZoomControlsEnabled(false);
             LatLng latLong;
-
-
             latLong = new LatLng(location.getLatitude(), location.getLongitude());
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(latLong).zoom(15.5f).tilt(0).build();
-
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.animateCamera(CameraUpdateFactory
@@ -1006,16 +1069,17 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     }
                 }
 
-                String alterAdd = "";
-                alterAdd = addresses.get(0).getSubLocality();
-                if (alterAdd.isEmpty()) {
-                    alterAdd = addresses.get(0).getLocality();
-                    if (alterAdd.isEmpty()) {
-                        alterAdd = strAdd.replace("\n", " ");
-                    }
-                }
+
                 txt_address.setText(strAdd.replace("\n", " "));
                 if (strAdd.isEmpty()) {
+                    String alterAdd = "";
+                    alterAdd = addresses.get(0).getSubLocality();
+                    if (alterAdd.isEmpty() && strAdd.isEmpty()) {
+                        alterAdd = addresses.get(0).getLocality();
+                        if (alterAdd.isEmpty()) {
+                            alterAdd = strAdd.replace("\n", " ");
+                        }
+                    }
                     txt_address.setText(alterAdd);
                 }
                 Log.w("address", "" + strReturnedAddress.toString());
@@ -1029,12 +1093,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         return strAdd;
     }
 
-    private void getNearByServices(double lat, double lng) {
+    private void getNearByServices(double lat, double lng, String serviceId, String radius) {
         RequestParams p = new RequestParams();
-        p.put("services", "");
+        p.put("services", serviceId);
         p.put("current_lat", lat);
         p.put("current_lng", lng);
-        p.put("radius", "1000");
+        p.put("radius", radius);
         postCall(getContext(), AppConstant.BASE_URL + "nearByServiceProvider", p, "", 1);
     }
 
@@ -1046,12 +1110,22 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 sourceLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 changeMap(location);
                 isFirstSet = true;
-                getNearByServices(sourceLocation.latitude, sourceLocation.longitude);
+                updateProfileLocation(location);
+//                getNearByServices(sourceLocation.latitude, sourceLocation.longitude);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateProfileLocation(Location location) {
+        RequestParams p = new RequestParams();
+        p.put("user_id", MyApp.getApplication().readUser().getId());
+        p.put("currentlat", location.getLatitude() + "");
+        p.put("currentlong", location.getLongitude() + "");
+        p.put("device_token", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
+        postCall(getContext(), AppConstant.BASE_URL + "updateProfile", p, "", 7);
     }
 
     @Override
@@ -1061,27 +1135,48 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
 
     private void searchRadius() {
+        if (selectedService.isEmpty()) {
+            openSearchServiceView();
+            return;
+        }
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_search_radius);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
 
-        TextView txt_cancel = (TextView) dialog.findViewById(R.id.txt_cancel);
+        TextView txt_cancel = dialog.findViewById(R.id.txt_cancel);
+        final TextView txt_radius = dialog.findViewById(R.id.txt_radius);
+
+        final DiscreteSeekBar prog_bar = dialog.findViewById(R.id.prog_bar);
         txt_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
+        prog_bar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                txt_radius.setText(value + " miles");
+            }
 
-        Button btn_search = (Button) dialog.findViewById(R.id.btn_search);
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+        });
+        Button btn_search = dialog.findViewById(R.id.btn_search);
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), SearchingServiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                txt_book.setEnabled(true);
-                txt_book.setTextColor(Color.WHITE);
+                searchWithinRadius("Please wait...\nFinding you service within " + prog_bar.getProgress() + " miles");
+                getNearByServices(sourceLocation.latitude, sourceLocation.longitude, selectedService, prog_bar.getProgress()+"");
                 dialog.dismiss();
             }
         });
@@ -1095,6 +1190,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     }
 
+    private String selectedService = "";
 
     private void openImage() {
 
@@ -1139,12 +1235,37 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
             //  MyApp.showMassage(getContext(), "will invite your friends");
         } else if (position == 8) {
-            MyApp.showMassage(getContext(), "will switch to service mode");
+            try {
+                if (MyApp.getApplication().readUser().getAvailability().equals("0")) {
+                    isActive = false;
+                } else {
+                    isActive = true;
+                }
+                switch_mode.setChecked(isActive);
+            } catch (Exception e) {
+            }
+            if (isUser) {
+                menuRadius.setVisible(false);
+                card_book.setVisibility(View.GONE);
+                bmb.setVisibility(View.GONE);
+                drawerFragment.nav_item_switch_profile.setText("Switch to User");
+                cardView.setVisibility(View.GONE);
+                rl_provider.setVisibility(View.VISIBLE);
+            } else {
+                menuRadius.setVisible(true);
+                card_book.setVisibility(View.VISIBLE);
+                bmb.setVisibility(View.VISIBLE);
+                drawerFragment.nav_item_switch_profile.setText("Switch to Service Provider");
+                cardView.setVisibility(View.VISIBLE);
+                rl_provider.setVisibility(View.GONE);
+            }
+            isUser = !isUser;
         }
     }
 
-    private LatLng mCenterLatLong;
-    private TextView txt_address;
+    private boolean isUser = true;
+    private boolean isActive = true;
+
 
     @Override
     public void onCameraIdle() {
@@ -1168,6 +1289,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
         if (callNumber == 1) {
+            removeSearch();
+
             if (o.optString("status").equals("true")) {
                 Type listType = new TypeToken<List<NearbyServices.Data>>() {
                 }.getType();
@@ -1214,9 +1337,24 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
                 }
             } else {
-                MyApp.popMessageWithFinish("Alert!", o.optString("Message"), MainActivity.this);
+                MyApp.popMessage("Alert!", o.optString("Message"), MainActivity.this);
                 return;
             }
+
+        } else if (callNumber == 8) {
+            if (o.optString("status").equals("true")) {
+                try {
+                    User existingUser = MyApp.getApplication().readUser();
+                    User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
+                    existingUser.setActive(u.getActive());
+                    existingUser.setAvailability(u.getAvailability());
+                    existingUser.setCurrentActive(u.getCurrentActive());
+                    MyApp.getApplication().writeUser(existingUser);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (callNumber == 5) {
 
         }
     }
@@ -1229,5 +1367,15 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     @Override
     public void onErrorReceived(String error) {
 
+    }
+
+    public void searchCategoryById(String service_id) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        selectedService = service_id;
+        if (sourceLocation != null) {
+            getNearByServices(sourceLocation.latitude, sourceLocation.longitude, service_id, "5");
+            searchWithinRadius("Please wait...\nFinding you service within 5 miles");
+        } else
+            MyApp.popMessage("Alert!", "Location not loaded yet", getContext());
     }
 }

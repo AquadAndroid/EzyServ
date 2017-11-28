@@ -1,7 +1,11 @@
 package com.ezyserv.custome;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -12,8 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ezyserv.R;
+import com.ezyserv.SearchingServiceActivity;
 import com.ezyserv.application.MyApp;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -24,6 +33,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 import com.ezyserv.utills.ExceptionHandler;
 import com.ezyserv.utills.TouchEffect;
+import com.skyfishjy.library.RippleBackground;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -262,6 +272,33 @@ public class CustomActivity extends AppCompatActivity implements
 
         void onErrorReceived(String error);
 
+    }
+
+    Dialog radiusDialog = null;
+    public void searchWithinRadius(String loadingMessage) {
+        radiusDialog = new Dialog(this);
+        radiusDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        radiusDialog.setContentView(R.layout.activity_searching_service);
+        radiusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));
+
+        TextView txt_message = radiusDialog.findViewById(R.id.txt_message);
+
+        final RippleBackground rippleBackground = radiusDialog.findViewById(R.id.content);
+        rippleBackground.startRippleAnimation();
+        txt_message.setText(loadingMessage);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(radiusDialog.getWindow().getAttributes());
+        lp.width = lp.MATCH_PARENT;
+        lp.height = lp.MATCH_PARENT;
+        radiusDialog.getWindow().setAttributes(lp);
+        radiusDialog.show();
+    }
+
+    public void removeSearch(){
+        if(radiusDialog!=null){
+            radiusDialog.dismiss();
+        }
     }
 
 }

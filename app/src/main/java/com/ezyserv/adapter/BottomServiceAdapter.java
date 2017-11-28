@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ezyserv.MainActivity;
 import com.ezyserv.R;
 import com.ezyserv.model.Services;
 
@@ -64,15 +65,20 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
 
     public HashMap<String, String> idMap = new HashMap<>();
 
-    class DataHolder extends RecyclerView.ViewHolder {
+    class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tv_service_name;
         CircleImageView img_service;
 
         public DataHolder(final View itemView) {
             super(itemView);
-            tv_service_name = (TextView) itemView.findViewById(R.id.tv_service_name);
-            img_service = (CircleImageView) itemView.findViewById(R.id.img_service);
+            tv_service_name =  itemView.findViewById(R.id.tv_service_name);
+            img_service =  itemView.findViewById(R.id.img_service);
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
+            ((MainActivity)c).searchCategoryById(servicelist.get(getLayoutPosition()).getService_id());
         }
     }
 }

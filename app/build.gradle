@@ -7,17 +7,18 @@ repositories {
     maven {
         url 'https://maven.google.com'
     }
+//    maven { url "https://raw.githubusercontent.com/smilefam/SendBird-SDK-Android/master/" }
 }
 android {
 
-//    signingConfigs {
-//        config {
-//            keyAlias 'enolasia'
-//            keyPassword '111111'
-//            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
-//            storePassword '111111'
-//        }
-//    }
+    signingConfigs {
+        config {
+            keyAlias 'enolasia'
+            keyPassword '111111'
+            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
+            storePassword '111111'
+        }
+    }
 
     lintOptions {
         checkReleaseBuilds false
@@ -39,9 +40,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-//        debug {
-//            signingConfig signingConfigs.config
-//        }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
 
 }
@@ -77,6 +78,8 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:3.0.1'
     compile 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
     compile 'com.nightonke:boommenu:2.1.1'
+
+//    compile 'com.sendbird.sdk:sendbird-android-sdk:3.0.42'
     testCompile 'junit:junit:4.12'
 }
 

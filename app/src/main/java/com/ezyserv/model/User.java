@@ -25,7 +25,44 @@ public class User implements Serializable {
     private String currentlong;
     private String active;
     private String device_token;
-//    private List<Country> country;
+    private String type;
+    private String isCompany;
+    private String availability;
+    private String currentActive;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getIsCompany() {
+        return isCompany;
+    }
+
+    public void setIsCompany(String isCompany) {
+        this.isCompany = isCompany;
+    }
+
+    public String getCurrentActive() {
+        return currentActive;
+    }
+
+    public void setCurrentActive(String currentActive) {
+        this.currentActive = currentActive;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
+
+    //    private List<Country> country;
     private List<Location> location;
 
 //    public void setCountry(List<Country> country) {

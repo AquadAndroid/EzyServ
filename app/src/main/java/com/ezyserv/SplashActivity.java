@@ -34,6 +34,7 @@ public class SplashActivity extends CustomActivity implements CustomActivity.Res
         //  getHashKey();
 
 
+
     }
 
     private void getServices() {

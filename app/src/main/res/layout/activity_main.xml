@@ -51,52 +51,44 @@
                     android:src="@drawable/location" />
 
                 <include layout="@layout/toolbar"></include>
-                <!--<RelativeLayout-->
-                <!--android:id="@+id/rl_top"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@null"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:padding="@dimen/dim_10">-->
 
-                <!--<ImageButton-->
-                <!--android:id="@+id/nav_drawer_btn"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:background="@null"-->
-                <!--android:src="@drawable/menu" />-->
+                <RelativeLayout
+                    android:id="@+id/rl_provider"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:visibility="gone"
+                    android:layout_below="@+id/toolbar"
+                    android:background="@color/white">
 
-                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/txt_location"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_centerVertical="true"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_marginLeft="@dimen/dim_10"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_toRightOf="@id/nav_drawer_btn"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:background="@null"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:drawablePadding="@dimen/dim_5"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:drawableRight="@drawable/location_chevron"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:padding="@dimen/dim_5"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:shadowColor="@color/grey"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:shadowDx="-2"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:shadowDy="-2"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:shadowRadius="1"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:text="YOUR LOCATION"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textColor="#ED365B"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textSize="@dimen/dim_16" />&ndash;&gt;-->
+                    <TextView
+                        android:id="@+id/txt_offline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@+id/switch_mode"
+                        android:text="Go Offline"
+                        android:textColor="@color/grey"
+                        android:textSize="18sp" />
 
-                <!--<ImageButton-->
-                <!--android:id="@+id/btn_search"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:background="?selectableItemBackground"-->
-                <!--android:padding="@dimen/dim_5"-->
-                <!--android:src="@drawable/search" />-->
-                <!--</RelativeLayout>-->
+                    <Switch
+                        android:id="@+id/switch_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:checked="false" />
+
+                    <TextView
+                        android:id="@+id/txt_online"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/switch_mode"
+                        android:text="Go Online"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -111,6 +103,7 @@
                         android:layout_marginLeft="@dimen/dim_10"
                         android:layout_marginRight="@dimen/dim_10"
                         android:layout_marginTop="10dp"
+                        android:visibility="visible"
                         app:cardCornerRadius="@dimen/dim_2"
                         app:cardElevation="@dimen/dim_5">
 
@@ -120,8 +113,9 @@
                             android:layout_height="match_parent"
                             android:background="@null"
                             android:backgroundTint="@null"
+                            android:textColor="@color/black"
                             android:hint="Enter YOur Loction"
-                            android:padding="@dimen/dim_10" />
+                            android:padding="15dp" />
                     </android.support.v7.widget.CardView>
 
 
@@ -297,7 +291,7 @@
                                 android:id="@+id/wallet_cash_spiner"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight=".5"
+                                android:layout_weight=".6"
                                 android:backgroundTint="@color/white" />
 
                             <View
@@ -359,12 +353,12 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="400dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="400dp"
             android:background="@color/white"
             android:orientation="vertical"
             android:padding="@dimen/dim_10">
@@ -383,7 +377,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/bottom_sheet_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="350dp"
                 android:layout_marginTop="@dimen/dim_10" />
 
         </LinearLayout>

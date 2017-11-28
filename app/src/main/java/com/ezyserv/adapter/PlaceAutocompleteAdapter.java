@@ -204,35 +204,31 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     View Holder For Trip History
      */
     public class PlaceViewHolder extends RecyclerView.ViewHolder {
-        //        CardView mCardView;
         public RelativeLayout mParentLayout;
         public TextView mAddress;
         public ImageButton img_btn_star;
         public int star_img = R.drawable.rating_blank_big;
+
         public PlaceViewHolder(View itemView) {
             super(itemView);
-            mParentLayout = (RelativeLayout) itemView.findViewById(R.id.predictedRow);
-            mAddress = (TextView) itemView.findViewById(R.id.address);
-            img_btn_star = (ImageButton) itemView.findViewById(R.id.img_btn_star);
+            mParentLayout =  itemView.findViewById(R.id.predictedRow);
+            mAddress =  itemView.findViewById(R.id.address);
+            img_btn_star = itemView.findViewById(R.id.img_btn_star);
             img_btn_star.setImageResource(star_img);
             img_btn_star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-if (star_img == R.drawable.rating_blank_big){
-    star_img=R.drawable.rating_yellow_big;
-    img_btn_star.setImageResource(star_img);
-    MyApp.setSharedPrefString(AppConstant.LOCATION, mAddress.getText().toString());
-    //MyApp.setSharedPrefArray(AppConstant.ADDRESS,);
-
-}else {
-    star_img= R.drawable.rating_blank_big;
-    img_btn_star.setImageResource(star_img);
-}
-
+                    if (star_img == R.drawable.rating_blank_big) {
+                        star_img = R.drawable.rating_yellow_big;
+                        img_btn_star.setImageResource(star_img);
+                        MyApp.setSharedPrefString(AppConstant.LOCATION, mAddress.getText().toString());
+                    } else {
+                        star_img = R.drawable.rating_blank_big;
+                        img_btn_star.setImageResource(star_img);
+                    }
                 }
             });
         }
-
     }
 
     /**

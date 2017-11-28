@@ -82,14 +82,14 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        tv_saved_address=(TextView)findViewById(R.id.tv_saved_address);
-        if(MyApp.getSharedPrefString(AppConstant.LOCATION).equals(null)){
+        tv_saved_address = findViewById(R.id.tv_saved_address);
+        if (MyApp.getSharedPrefString(AppConstant.LOCATION).equals(null)) {
             tv_saved_address.setVisibility(View.GONE);
 
-        }else {
+        } else {
             tv_saved_address.setVisibility(View.VISIBLE);
             tv_saved_address.setBackgroundResource(R.drawable.search_back);
-            tv_saved_address.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.rating_yellow_big, 0);
+            tv_saved_address.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.rating_yellow_big, 0);
             tv_saved_address.setText(MyApp.getSharedPrefString(AppConstant.LOCATION));
         }
 
@@ -149,7 +149,6 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
         });
 
     }
-
 
 
     @Override
