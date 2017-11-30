@@ -17,12 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:fontFamily="@font/ptsans_regular"
             android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/dim_20" />
 
         <TextView
-
             android:id="@+id/tv_edit_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,13 +30,12 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dim_10"
             android:background="@drawable/curvey_bg_white"
+            android:fontFamily="@font/ptsans_bold"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dim_10"
-
             android:paddingRight="@dimen/dim_10"
             android:text=""
             android:textColor="@color/pink"
-            android:textSize="@dimen/dim_14"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dim_14" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

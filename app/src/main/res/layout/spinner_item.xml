@@ -21,7 +21,7 @@
             android:padding="@dimen/dim_5"
             android:src="@drawable/wallet_white" />
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:id="@+id/tv_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

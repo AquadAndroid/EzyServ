@@ -3,60 +3,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dailog_bg"
-    android:paddingTop="@dimen/dim_10"
     android:paddingLeft="@dimen/dim_10"
-    android:paddingRight="@dimen/dim_10">
+    android:paddingRight="@dimen/dim_10"
+    android:paddingTop="@dimen/dim_10">
 
     <TextView
+        android:id="@+id/title_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_8"
+        android:fontFamily="@font/ptsans_bold"
+        android:paddingLeft="@dimen/dim_10"
         android:text="Verification"
         android:textColor="@color/blue"
-        android:paddingLeft="@dimen/dim_10"
-        android:textSize="@dimen/dim_20"
-        android:textStyle="bold"
-        android:id="@+id/title_label"
-        android:layout_marginTop="@dimen/dim_8"
-        />
+        android:textSize="@dimen/dim_20" />
 
     <TextView
         android:id="@+id/verification_message"
-        android:layout_below="@+id/title_label"
         android:layout_width="fill_parent"
-        android:textColor="#757575"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/title_label"
+        android:fontFamily="@font/ptsans_regular"
+        android:padding="15dp"
         android:text="A verification code will be sent"
-        android:textSize="@dimen/dim_18"
-        android:padding="15dp"/>
+        android:textColor="#757575"
+        android:textSize="@dimen/dim_18" />
 
 
     <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentRight="true"
-    android:text="SEND"
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/verification_message"
-    android:textSize="@dimen/dim_17"
-    android:layout_marginTop="@dimen/dim_10"
-    android:layout_marginRight="@dimen/dim_10"
-    android:id="@+id/btn_send"
-    android:paddingLeft="@dimen/dim_10"
-    android:paddingRight="@dimen/dim_10"
+        android:layout_marginRight="@dimen/dim_10"
+        android:layout_marginTop="@dimen/dim_10"
         android:background="?attr/selectableItemBackground"
-    android:textColor="@color/pink" />
+        android:paddingLeft="@dimen/dim_10"
+        android:paddingRight="@dimen/dim_10"
+        android:text="SEND"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/dim_17" />
 
     <Button
+        android:id="@+id/ph_verify_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/verification_message"
+        android:layout_marginRight="@dimen/dim_15"
+        android:layout_marginTop="@dimen/dim_10"
+        android:layout_toLeftOf="@+id/btn_send"
+        android:background="?attr/selectableItemBackground"
+        android:paddingLeft="@dimen/dim_10"
+        android:paddingRight="@dimen/dim_10"
         android:text="CANCEL"
         android:textColor="#757575"
-        android:layout_marginTop="@dimen/dim_10"
-       android:id="@+id/ph_verify_cancel"
-        android:paddingRight="@dimen/dim_10"
-        android:paddingLeft="@dimen/dim_10"
-        android:textSize="@dimen/dim_17"
-        android:layout_marginRight="@dimen/dim_15"
-        android:background="?attr/selectableItemBackground"
-        android:layout_toLeftOf="@+id/btn_send" />
+        android:textSize="@dimen/dim_17" />
 </RelativeLayout>

@@ -32,7 +32,7 @@
 
     </com.skyfishjy.library.RippleBackground>
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:id="@+id/txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

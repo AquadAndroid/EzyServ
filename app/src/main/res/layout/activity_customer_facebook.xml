@@ -27,10 +27,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dim_5"
+                android:fontFamily="@font/ptsans_bold"
                 android:text="Continue with Log In"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dim_20"
-                android:textStyle="bold" />
+                android:textSize="@dimen/dim_20" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -43,6 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/fb_info"
+                    android:fontFamily="@font/ptsans_regular"
                     android:hint="Name"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
@@ -67,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/fb_info"
+                    android:fontFamily="@font/ptsans_regular"
 
                     android:hint="Email"
                     android:imeOptions="actionUnspecified"
@@ -104,6 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/fb_info"
+                        android:fontFamily="@font/ptsans_regular"
                         android:hint="Phone Number"
                         android:imeOptions="actionUnspecified"
                         android:inputType="phone"

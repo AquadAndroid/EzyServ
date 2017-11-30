@@ -28,26 +28,27 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="@dimen/dim_20"
                     android:layout_marginTop="@dimen/dim_20"
+                    android:fontFamily="@font/ptsans_bold"
                     android:text="Verify Phone Number"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dim_20"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/dim_20" />
 
                 <TextView
                     android:id="@+id/otp_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/ptsans_bold"
                     android:text="Enter One Time Password(OTP)"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/dim_15"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/dim_15" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dim_25"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="Enter the verification code sent to"
                     android:textColor="@color/black" />
 
@@ -56,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="+60 8978897688"
                     android:textColor="@color/black" />
 
@@ -68,6 +70,7 @@
                         android:id="@+id/login_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/ptsans_regular"
                         android:text="Not your number ?"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dim_15" />
@@ -78,6 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dim_5"
                         android:layout_toRightOf="@+id/login_label"
+                        android:fontFamily="@font/ptsans_regular"
                         android:text="CHANGE HERE"
                         android:textColor="@color/pink"
                         android:textSize="@dimen/dim_15" />
@@ -97,6 +101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/rect_bg"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center"
                         android:inputType="number"
                         android:maxLength="6"
@@ -121,6 +126,7 @@
                         android:id="@+id/timer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/ptsans_regular"
                         android:text="Resend Code in"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dim_15" />
@@ -131,6 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dim_5"
                         android:layout_toRightOf="@+id/timer"
+                        android:fontFamily="@font/ptsans_regular"
                         android:text="00 : 60"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dim_15" />
@@ -141,23 +148,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/ptsans_bold"
                     android:padding="10dp"
                     android:text="Enter Manually"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/dim_18"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/dim_18" />
 
                 <TextView
                     android:id="@+id/txt_resend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/ptsans_bold"
                     android:padding="10dp"
                     android:text="Resend Code"
-                    android:visibility="gone"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/dim_18"
-                    android:textStyle="bold" />
+                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
 

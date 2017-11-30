@@ -93,8 +93,11 @@ public class MyApp extends Application {
 
     public static void spinnerStop() {
         if (dialog != null) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
+            try {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            } catch (Exception e) {
             }
         }
 
@@ -134,7 +137,7 @@ public class MyApp extends Application {
 
     public static String getPath(Context context, Uri uri) throws URISyntaxException {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = { "_data" };
+            String[] projection = {"_data"};
             Cursor cursor = null;
 
             try {
@@ -146,8 +149,7 @@ public class MyApp extends Application {
             } catch (Exception e) {
                 // Eat it
             }
-        }
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
         }
 
@@ -722,10 +724,6 @@ public class MyApp extends Application {
         }
         return user;
     }
-
-
-
-
 
 
     public void writeNearByServices(List<NearbyServices> user) {

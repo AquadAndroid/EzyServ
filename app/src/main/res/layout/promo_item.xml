@@ -5,15 +5,15 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_promo_code_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="@dimen/dim_10"
+        android:fontFamily="@font/ptsans_bold"
         android:text="NEWUSER"
-        android:id="@+id/tv_promo_code_name"
         android:textColor="@color/black"
-        android:textSize="@dimen/dim_15"
-        android:textStyle="bold" />
+        android:textSize="@dimen/dim_15" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,19 +27,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:fontFamily="@font/ptsans_regular"
 
             android:text="Use NEWUSER and get cashback on convenience fee upto S$50" />
 
         <TextView
+            android:id="@+id/btn_code_apply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dim_7"
             android:background="@drawable/rect_bound_pink"
-            android:text="Apply"
+            android:fontFamily="@font/ptsans_regular"
             android:padding="@dimen/dim_10"
-            android:id="@+id/btn_code_apply"
+            android:text="Apply"
             android:textColor="@color/pink" />
     </LinearLayout>
 
@@ -48,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dim_10"
+        android:fontFamily="@font/ptsans_regular"
         android:text="Terms &amp; Condition"
         android:textColor="@color/blue" />
 

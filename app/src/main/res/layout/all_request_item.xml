@@ -25,10 +25,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:fontFamily="@font/ptsans_bold"
                 android:text="Electrical Repair"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dim_18"
-                android:textStyle="bold" />
+                android:textSize="@dimen/dim_18" />
 
             <TextView
                 android:id="@+id/tv_req_date"
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_service_name"
                 android:layout_marginTop="@dimen/dim_6"
+                android:fontFamily="@font/ptsans_regular"
                 android:text="Requested 13 April 2017"
                 android:textSize="@dimen/dim_15" />
 
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/curvey_bg_green"
+                android:fontFamily="@font/ptsans_regular"
                 android:paddingLeft="@dimen/dim_8"
                 android:paddingRight="@dimen/dim_8"
                 android:text="Completed"
@@ -70,10 +72,10 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="@dimen/dim_10"
                 android:layout_toRightOf="@+id/img_profile"
+                android:fontFamily="@font/ptsans_bold"
                 android:text="Serviceman Name "
                 android:textColor="@color/black"
-                android:textSize="@dimen/dim_18"
-                android:textStyle="bold" />
+                android:textSize="@dimen/dim_18" />
 
             <RelativeLayout
                 android:id="@+id/rel_order_id"
@@ -88,6 +90,7 @@
                     android:id="@+id/tv_order_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ptsans_regular"
 
                     android:text="Order ID "
                     android:textSize="@dimen/dim_15" />
@@ -98,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_3"
                     android:layout_toRightOf="@+id/tv_order_label"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="#ES170623-234"
                     android:textSize="@dimen/dim_15" />
             </RelativeLayout>
@@ -115,6 +119,7 @@
                     android:id="@+id/tv_paid_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="Paid :"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_17" />
@@ -125,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_3"
                     android:layout_toRightOf="@+id/tv_paid_label"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="SGD(S$)20"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_17" />
@@ -143,6 +149,7 @@
                     android:id="@+id/tv_rating_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="Rated :"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_17" />
@@ -155,6 +162,7 @@
                     android:layout_toRightOf="@+id/tv_rating_label"
                     android:drawableLeft="@drawable/rating_green"
                     android:drawablePadding="@dimen/dim_5"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="4"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_17" />

@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:id="@+id/tv_cust_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/dim_18" />
 
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:id="@+id/chat_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dim_10">
 
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:id="@+id/sent_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
 
                 />
 
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:id="@+id/tv_last_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
 
                 />
 
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:id="@+id/tv_last_date"
                 android:layout_width="wrap_content"
 

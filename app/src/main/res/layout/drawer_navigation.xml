@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:id="@+id/nav_item_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textColor="@color/blue"
         android:textSize="@dimen/dim_18" />
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:id="@+id/nav_item_service_request"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:paddingRight="@dimen/dim_10"
         android:paddingTop="@dimen/dim_5">
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -84,7 +84,7 @@
         android:paddingRight="@dimen/dim_10"
         android:paddingTop="@dimen/dim_5">
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -122,7 +122,7 @@
         android:paddingRight="@dimen/dim_10"
         android:paddingTop="@dimen/dim_5">
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
             android:textColor="@color/blue"
             android:textSize="@dimen/dim_18" />
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -150,7 +150,7 @@
     </RelativeLayout>
 
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:id="@+id/nav_item_promo_offer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
         android:textColor="@color/blue"
         android:textSize="@dimen/dim_18" />
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:id="@+id/nav_item_switch_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:id="@+id/nav_item_customer_support"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

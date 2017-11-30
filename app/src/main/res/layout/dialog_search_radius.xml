@@ -18,11 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/ptsans_bold"
             android:gravity="center"
             android:text="No serviceman found near you"
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_18"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dim_18" />
 
         <TextView
             android:id="@+id/label_two"
@@ -30,11 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dim_8"
+            android:fontFamily="@font/ptsans_regular"
             android:gravity="center"
             android:text="Try again after increasing your search radius"
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_16"
-            />
+            android:textSize="@dimen/dim_16" />
 
     </LinearLayout>
 
@@ -44,6 +44,7 @@
         android:layout_above="@+id/prog_bar"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/dim_7"
+        android:fontFamily="@font/ptsans_regular"
         android:text="5 miles"
         android:textColor="@color/white" />
 
@@ -53,6 +54,7 @@
         android:layout_above="@+id/prog_bar"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/dim_7"
+        android:fontFamily="@font/ptsans_regular"
         android:text="50 miles"
         android:textColor="@color/white" />
 
@@ -81,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/ptsans_regular"
             android:gravity="center"
             android:text="SEARCH NOW"
             android:textColor="@color/white"
@@ -89,9 +92,9 @@
         <Button
             android:id="@+id/btn_search"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dim_18"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dim_18"
             android:background="@drawable/rect_pink"
             android:gravity="center"
             android:text="SEARCH NOW"
@@ -104,10 +107,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dim_18"
+            android:fontFamily="@font/ptsans_regular"
             android:gravity="center"
             android:text="CANCEL"
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_18"
-            />
+            android:textSize="@dimen/dim_18" />
     </LinearLayout>
 </RelativeLayout>

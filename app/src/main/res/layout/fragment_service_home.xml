@@ -32,10 +32,10 @@
                 android:id="@+id/tv_company_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ptsans_bold"
                 android:text="Excel Services"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dim_18"
-                android:textStyle="bold" />
+                android:textSize="@dimen/dim_18" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -45,6 +45,7 @@
                     android:id="@+id/status_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ptsans_regular"
                     android:text="Set your status"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dim_16" />
@@ -93,6 +94,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_margin="@dimen/dim_10"
                         android:background="@drawable/curvey_bg_ping"
+                        android:fontFamily="@font/ptsans_regular"
 
                         android:paddingLeft="@dimen/dim_5"
                         android:paddingRight="@dimen/dim_5"
@@ -119,18 +121,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_bold"
                             android:text="Profile"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dim_18"
-                            android:textStyle="bold"
-
-                            />
+                            android:textSize="@dimen/dim_18" />
 
                         <TextView
+                            android:id="@+id/tv_business_details"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="Your business details"
-                            android:id="@+id/tv_business_details"
                             android:textSize="@dimen/dim_16" />
                     </LinearLayout>
 
@@ -142,10 +143,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="@dimen/dim_5"
                         android:layout_marginRight="@dimen/dim_8"
+                        android:fontFamily="@font/ptsans_bold"
                         android:text="EDIT YOUR PROFILE"
                         android:textColor="@color/pink"
-                        android:textSize="@dimen/dim_14"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/dim_14" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
@@ -181,17 +182,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_bold"
                             android:text="Services you provide"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dim_18"
-                            android:textStyle="bold"
-
-                            />
+                            android:textSize="@dimen/dim_18" />
 
                         <TextView
                             android:id="@+id/tv_service_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="12 services"
                             android:textSize="@dimen/dim_16" />
                     </LinearLayout>
@@ -204,10 +204,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="@dimen/dim_5"
                         android:layout_marginRight="@dimen/dim_8"
+                        android:fontFamily="@font/ptsans_bold"
                         android:text="VIEW &amp; ADD MORE SERVICES"
                         android:textColor="@color/pink"
-                        android:textSize="@dimen/dim_14"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/dim_14" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
@@ -243,17 +243,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_bold"
                             android:text="Locations you serve"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dim_18"
-                            android:textStyle="bold"
-
-                            />
+                            android:textSize="@dimen/dim_18" />
 
                         <TextView
                             android:id="@+id/tv_location_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="08 Locations"
                             android:textSize="@dimen/dim_16" />
                     </LinearLayout>
@@ -266,10 +265,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="@dimen/dim_5"
                         android:layout_marginRight="@dimen/dim_8"
+                        android:fontFamily="@font/ptsans_bold"
                         android:text="VIEW &amp; ADD MORE LOCATIONS"
                         android:textColor="@color/pink"
-                        android:textSize="@dimen/dim_14"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/dim_14" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
@@ -293,6 +292,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_margin="@dimen/dim_10"
                         android:background="@drawable/curvey_bg_ping"
+                        android:fontFamily="@font/ptsans_regular"
 
                         android:paddingLeft="@dimen/dim_5"
                         android:paddingRight="@dimen/dim_5"
@@ -319,24 +319,24 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_bold"
                             android:text="Wallet"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dim_18"
-                            android:textStyle="bold"
-
-                            />
+                            android:textSize="@dimen/dim_18" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="Wallet Balance"
                             android:textSize="@dimen/dim_14" />
 
                         <TextView
+                            android:id="@+id/tv_wallet_bal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="SGD (S$) 12"
-                            android:id="@+id/tv_wallet_bal"
                             android:textColor="@color/black"
                             android:textSize="@dimen/dim_14" />
                     </LinearLayout>
@@ -349,10 +349,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="@dimen/dim_5"
                         android:layout_marginRight="@dimen/dim_8"
+                        android:fontFamily="@font/ptsans_bold"
                         android:text="RECHARGE WALLET TO GET SERVICE"
                         android:textColor="@color/pink"
-                        android:textSize="@dimen/dim_14"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/dim_14" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

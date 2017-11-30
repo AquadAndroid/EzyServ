@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text=""
@@ -21,7 +21,7 @@
             android:textAllCaps="true"
             android:padding="16dp"/>
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text=""

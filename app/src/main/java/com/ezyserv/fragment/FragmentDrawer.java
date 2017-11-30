@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.ezyserv.ProfileActivity;
 import com.ezyserv.R;
 import com.ezyserv.SignUpSelection;
-import com.ezyserv.adapter.NavigationDrawerAdapter;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.utills.AppConstant;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -42,7 +41,6 @@ public class FragmentDrawer extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
 
-    private NavigationDrawerAdapter adapter;
     private View containerView;
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;

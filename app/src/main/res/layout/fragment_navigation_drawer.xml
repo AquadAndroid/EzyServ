@@ -29,11 +29,12 @@
             android:layout_below="@+id/img_profile"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dim_10"
+            android:fontFamily="@font/ptsans_bold"
             android:padding="5dp"
             android:text="Mark Zuckerberg "
             android:textColor="@color/white"
             android:textSize="@dimen/dim_16"
-            android:textStyle="bold" />
+              />
 
         <TextView
             android:id="@+id/txt_logout"
@@ -42,11 +43,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dim_20"
+            android:fontFamily="@font/ptsans_bold"
             android:padding="10dp"
             android:text="Logout"
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_16"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dim_16" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -77,8 +78,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
-                        android:drawableLeft="@drawable/service_req_inactive"
+                        android:drawableLeft="@drawable/menu_my_requests"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="My Service Request"
@@ -92,6 +94,7 @@
                         android:background="?selectableItemBackground"
                         android:drawableLeft="@drawable/ic_action_schedule"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Scheduled"
@@ -107,12 +110,13 @@
                         android:padding="@dimen/dim_10">
 
                         <TextView
-
                             android:layout_width="wrap_content"
+
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:drawableLeft="@drawable/chats_inactive"
+                            android:drawableLeft="@drawable/menu_chat"
                             android:drawablePadding="@dimen/dim_10"
+                            android:fontFamily="@font/ptsans_regular"
                             android:gravity="center_vertical"
                             android:text="Chats"
                             android:textColor="@color/black"
@@ -125,6 +129,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:background="@drawable/curvey_bg_ping"
+                            android:fontFamily="@font/ptsans_regular"
                             android:paddingBottom="@dimen/dim_3"
                             android:paddingLeft="@dimen/dim_15"
                             android:paddingRight="@dimen/dim_15"
@@ -142,18 +147,19 @@
                         android:padding="@dimen/dim_10">
 
                         <TextView
-
                             android:layout_width="wrap_content"
+
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:drawableLeft="@drawable/ic_action_history"
+                            android:drawableLeft="@drawable/menu_history"
                             android:drawablePadding="@dimen/dim_10"
+                            android:fontFamily="@font/ptsans_regular"
                             android:gravity="center_vertical"
                             android:text="History"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <!--    <TextView
+                        <!--    <TextView                android:fontFamily="@font/ptsans_regular"
                                 android:id="@+id/count_notification"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -177,12 +183,13 @@
                         android:padding="@dimen/dim_10">
 
                         <TextView
-
                             android:layout_width="wrap_content"
+
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:drawableLeft="@drawable/wallet_inactive"
                             android:drawablePadding="@dimen/dim_10"
+                            android:fontFamily="@font/ptsans_regular"
                             android:gravity="center_vertical"
                             android:text="Wallet"
                             android:textColor="@color/black"
@@ -194,6 +201,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:fontFamily="@font/ptsans_regular"
                             android:paddingLeft="@dimen/dim_7"
                             android:paddingRight="@dimen/dim_7"
                             android:text="SGD 200"
@@ -206,8 +214,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
-                        android:drawableLeft="@drawable/offers"
+                        android:drawableLeft="@drawable/menu_promo"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Promos &amp; Offer"
@@ -219,8 +228,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
-                        android:drawableLeft="@drawable/ic_action_fav"
+                        android:drawableLeft="@drawable/menu_favourite"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Favourites"
@@ -232,20 +242,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
-                        android:drawableLeft="@drawable/ic_action_invite"
+                        android:drawableLeft="@drawable/menu_invite"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Invite Friends"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/nav_item_switch_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
-                        android:drawableLeft="@drawable/switch_user"
+                        android:drawableLeft="@drawable/menu_switch_user"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dim_10"
                         android:text="Switch to Service Provider"
@@ -253,7 +266,7 @@
                         android:textSize="@dimen/dim_18" />
                 </LinearLayout>
             </ScrollView>
-            <!--   <TextView
+            <!--   <TextView                android:fontFamily="@font/ptsans_regular"
                    android:id="@+id/nav_item_logout"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
@@ -273,8 +286,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:visibility="gone"
-            android:background="@drawable/gradient_pink">
+            android:background="@drawable/gradient_pink"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/nav_item_switch_profilew"
@@ -283,6 +296,7 @@
                 android:background="?selectableItemBackground"
                 android:drawableLeft="@drawable/switch_user"
                 android:drawablePadding="@dimen/dim_10"
+                android:fontFamily="@font/ptsans_regular"
                 android:gravity="center_vertical"
                 android:padding="@dimen/dim_10"
                 android:text="Switch to Service Provider"

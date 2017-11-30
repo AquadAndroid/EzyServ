@@ -11,7 +11,7 @@
         android:background="@color/pink"
         android:orientation="horizontal">
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:id="@+id/tv_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

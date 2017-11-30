@@ -8,8 +8,8 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/locate_me_bg" />
 
     <LinearLayout
@@ -26,11 +26,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dim_30"
+            android:fontFamily="@font/ptsans_bold"
             android:gravity="center"
             android:text="Allow Location Acess"
             android:textColor="@color/black"
-            android:textSize="@dimen/dim_20"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dim_20" />
 
         <Button
             android:id="@+id/btn_locate"
@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dim_15"
+            android:fontFamily="@font/ptsans_regular"
             android:text="or"
             android:textSize="@dimen/dim_15" />
 
@@ -65,11 +66,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dim_35"
             android:layout_marginTop="@dimen/dim_20"
+            android:fontFamily="@font/ptsans_bold"
             android:gravity="center"
             android:text="Enter Location manually"
             android:textColor="@color/pink"
-            android:textSize="@dimen/dim_18"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dim_18" />
 
     </LinearLayout>
 

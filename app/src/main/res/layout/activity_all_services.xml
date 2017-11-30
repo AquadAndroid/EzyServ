@@ -26,7 +26,7 @@
                 android:id="@+id/icn_domestic"
                 android:layout_centerVertical="true"
                 />
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Domestic"
@@ -36,7 +36,7 @@
                 android:layout_marginLeft="@dimen/dim_10"
                android:layout_toRightOf="@+id/icn_domestic"
                 />
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_serv_domestic"
@@ -72,7 +72,7 @@
                 android:id="@+id/icn_construction"
                 android:layout_centerVertical="true"
                 />
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Construction"
@@ -82,7 +82,7 @@
                 android:layout_marginLeft="@dimen/dim_10"
                 android:layout_toRightOf="@+id/icn_construction"
                 />
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_serv_construction"
@@ -118,7 +118,7 @@
                 android:id="@+id/icn_events"
                 android:layout_centerVertical="true"
                 />
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Events"
@@ -128,7 +128,7 @@
                 android:layout_marginLeft="@dimen/dim_10"
                 android:layout_toRightOf="@+id/icn_events"
                 />
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_serv_events"

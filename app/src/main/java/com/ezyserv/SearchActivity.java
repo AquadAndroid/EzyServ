@@ -3,6 +3,7 @@ package com.ezyserv;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.Browser;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,13 +52,12 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
     LinearLayoutManager llm;
 
     PlaceAutocompleteAdapter mAdapter;
-    //    List<SavedAddress> mSavedAddressList;
-//    PlaceSavedAdapter mSavedAdapter;
     private static final LatLngBounds BOUNDS_INDIA = new LatLngBounds(
             new LatLng(23.63936, 68.14712), new LatLng(28.20453, 97.34466));
 
     EditText mSearchEdittext;
     ImageView mClear;
+    private ImageButton img_btn_search_back;
 
     @Override
     public void onStart() {
@@ -83,7 +84,8 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
                 .build();
 
         tv_saved_address = findViewById(R.id.tv_saved_address);
-        if (MyApp.getSharedPrefString(AppConstant.LOCATION).equals(null)) {
+        img_btn_search_back = findViewById(R.id.img_btn_search_back);
+        if (MyApp.getSharedPrefString(AppConstant.LOCATION).equals(null) || MyApp.getSharedPrefString(AppConstant.LOCATION).isEmpty()) {
             tv_saved_address.setVisibility(View.GONE);
 
         } else {
@@ -93,22 +95,24 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
             tv_saved_address.setText(MyApp.getSharedPrefString(AppConstant.LOCATION));
         }
 
+        setTouchNClick(R.id.img_btn_search_back);
 
         initViews();
     }
+
 
     /*
    Initialize Views
     */
     private void initViews() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.list_search);
+        mRecyclerView = findViewById(R.id.list_search);
         mRecyclerView.setHasFixedSize(true);
         llm = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(llm);
 
-        mSearchEdittext = (EditText) findViewById(R.id.search_et);
+        mSearchEdittext = findViewById(R.id.search_et);
         mSearchEdittext.setHint(getIntent().getStringExtra(AppConstant.EXTRA_1));
-        mClear = (ImageView) findViewById(R.id.clear);
+        mClear = findViewById(R.id.clear);
         mClear.setOnClickListener(this);
 
         mAdapter = new PlaceAutocompleteAdapter(this, R.layout.view_placesearch,
@@ -158,7 +162,8 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
             if (mAdapter != null) {
                 mAdapter.clearList();
             }
-
+        } else if (v == img_btn_search_back) {
+            finish();
         }
     }
 

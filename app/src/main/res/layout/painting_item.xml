@@ -30,7 +30,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/dim_10">
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/serviceman_img"
@@ -40,7 +40,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_16" />
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:text="127 Trywhitt Rd, Singapore 207551"
                     android:textSize="@dimen/dim_12" />
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/tv_service_offered"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="@dimen/dim_10">
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/tv_avg_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:textSize="@dimen/dim_15" />
 
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/tv_availability_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

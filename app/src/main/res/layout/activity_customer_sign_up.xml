@@ -30,7 +30,7 @@
                 android:layout_marginTop="@dimen/dim_10"
                 android:theme="@style/MyTextInputLayout">
 
-                <EditText
+                <EditText                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/edt_customer_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--   <TextView
+            <!--   <TextView                android:fontFamily="@font/ptsans_regular"
                    android:layout_width="wrap_content"
                    android:layout_marginTop="@dimen/dim_10"
                    android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                    android:layout_marginLeft="@dimen/dim_5"
                    android:textColor="@color/blue"/>
 
-               <EditText
+               <EditText                android:fontFamily="@font/ptsans_regular"
                    android:id="@+id/edt_customer_name"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_marginTop="@dimen/dim_5"
                 android:theme="@style/MyTextInputLayout">
 
-                <EditText
+                <EditText                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/edt_customer_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--<TextView
+            <!--<TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="@dimen/dim_10"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 android:layout_marginLeft="@dimen/dim_5"
                 android:textColor="@color/blue"/>
 
-            <EditText
+            <EditText                android:fontFamily="@font/ptsans_regular"
                 android:id="@+id/edt_customer_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
 
                 />-->
 
-            <!--  <TextView
+            <!--  <TextView                android:fontFamily="@font/ptsans_regular"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="Phone"
@@ -136,7 +136,7 @@
                     android:layout_toRightOf="@+id/ccp"
                     android:theme="@style/MyTextInputLayout">
 
-                    <EditText
+                    <EditText                android:fontFamily="@font/ptsans_regular"
                         android:id="@+id/edt_customer_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
 
 
                 </android.support.design.widget.TextInputLayout>
-                <!--   <EditText
+                <!--   <EditText                android:fontFamily="@font/ptsans_regular"
                        android:id="@+id/edt_customer_mb_no"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dim_7">
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/login_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_15" />
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/customer_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                     android:layout_centerVertical="true"
                     android:checked="false" />
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/terms_condition_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
                     android:text="I agree with the "
                     android:textSize="@dimen/dim_15" />
 
-                <TextView
+                <TextView                android:fontFamily="@font/ptsans_regular"
                     android:id="@+id/tv_term_con"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

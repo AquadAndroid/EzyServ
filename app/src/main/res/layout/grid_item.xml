@@ -10,7 +10,7 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/all_cat_icon"
         android:src="@drawable/all_cats"/>
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

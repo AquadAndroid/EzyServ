@@ -27,35 +27,40 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ptsans_regular"
                 android:text="Wallet Balance"
                 android:textSize="@dimen/dim_14" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_5"
+                android:fontFamily="@font/ptsans_bold"
                 android:text="SGD (S$) 12"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dim_16"
-                android:layout_marginTop="@dimen/dim_5"
-                android:textStyle="bold"/>
+                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dim_10"
+                android:fontFamily="@font/ptsans_regular"
                 android:text="Minimum balance required : SGD(S$) 100"
                 android:textSize="@dimen/dim_14" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim_5"
-            android:background="#E8E8E8"/>
+            android:background="#E8E8E8" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_10"
             android:layout_marginLeft="@dimen/dim_15"
             android:layout_marginRight="@dimen/dim_15"
+            android:layout_marginTop="@dimen/dim_10"
             android:theme="@style/MyTextInputLayout">
 
             <EditText
@@ -63,15 +68,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="false"
+                android:fontFamily="@font/ptsans_regular"
                 android:hint="Add amount to wallet"
                 android:imeOptions="actionUnspecified"
                 android:inputType="number"
                 android:maxLength="12"
                 android:maxLines="1"
-                android:textSize="@dimen/dim_16"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                />
+                android:textSize="@dimen/dim_16" />
 
 
         </android.support.design.widget.TextInputLayout>
@@ -79,66 +84,71 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_15"
             android:layout_marginLeft="@dimen/dim_15"
+            android:layout_marginTop="@dimen/dim_15"
+            android:fontFamily="@font/ptsans_regular"
             android:text="Select payment method "
             android:textSize="@dimen/dim_14" />
+
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dim_12">
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dim_15"
-                android:text="Net Banking"
-                android:id="@+id/rb_net_banking"
-                android:paddingLeft="@dimen/dim_10"
-                android:textSize="@dimen/dim_16"
-                android:textColor="@color/black"
-                android:drawablePadding="@dimen/dim_10"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dim_2"
-                android:layout_marginTop="@dimen/dim_5"
-                android:background="#E8E8E8"/>
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dim_15"
-                android:text="Credit/Debit cards"
-                android:layout_marginTop="@dimen/dim_10"
-                android:paddingLeft="@dimen/dim_10"
-                android:id="@+id/rb_debit_credit"
-                android:textSize="@dimen/dim_16"
-                android:textColor="@color/black"
-                android:drawablePadding="@dimen/dim_10"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dim_2"
-                android:layout_marginTop="@dimen/dim_5"
-                android:background="#E8E8E8"/>
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dim_15"
-                android:text="Other Method"
-                android:id="@+id/rb_other_method"
-                android:layout_marginTop="@dimen/dim_10"
-                android:paddingLeft="@dimen/dim_10"
-                android:textSize="@dimen/dim_16"
-                android:textColor="@color/black"
-                android:drawablePadding="@dimen/dim_10"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dim_2"
-                android:layout_marginTop="@dimen/dim_5"
-                android:background="#E8E8E8"/>
 
-            </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_net_banking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:drawablePadding="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_10"
+                android:text="Net Banking"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:layout_marginTop="@dimen/dim_5"
+                android:background="#E8E8E8" />
+
+            <RadioButton
+                android:id="@+id/rb_debit_credit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:layout_marginTop="@dimen/dim_10"
+                android:drawablePadding="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_10"
+                android:text="Credit/Debit cards"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:layout_marginTop="@dimen/dim_5"
+                android:background="#E8E8E8" />
+
+            <RadioButton
+                android:id="@+id/rb_other_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_15"
+                android:layout_marginTop="@dimen/dim_10"
+                android:drawablePadding="@dimen/dim_10"
+                android:paddingLeft="@dimen/dim_10"
+                android:text="Other Method"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_2"
+                android:layout_marginTop="@dimen/dim_5"
+                android:background="#E8E8E8" />
+
+        </RadioGroup>
 
     </LinearLayout>
 

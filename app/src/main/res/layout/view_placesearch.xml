@@ -20,7 +20,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp" />
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

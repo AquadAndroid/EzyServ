@@ -56,7 +56,7 @@
                 android:id="@+id/nav_drawer"
                 android:layout_alignParentLeft="true"
                 android:background="@null"/>
-            <TextView
+            <TextView                android:fontFamily="@font/ptsans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dim_10"
@@ -99,7 +99,7 @@
                             app:backgroundTint="@color/white"
                             android:layout_centerInParent="true"
                             android:src="@drawable/all_cats"/>
-                        <TextView
+                        <TextView                android:fontFamily="@font/ptsans_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/all_category"
@@ -124,7 +124,7 @@
                             android:id="@+id/domestic"
                             android:src="@drawable/domestic"
                             android:layout_centerInParent="true" />
-                        <TextView
+                        <TextView                android:fontFamily="@font/ptsans_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/domestic"
@@ -147,7 +147,7 @@
                             android:layout_centerInParent="true"
                             android:background="@null"
                             android:src="@drawable/construction"/>
-                        <TextView
+                        <TextView                android:fontFamily="@font/ptsans_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/construction"
@@ -169,7 +169,7 @@
                             app:backgroundTint="@color/white"
                             android:layout_centerInParent="true"
                             android:src="@drawable/events"/>
-                        <TextView
+                        <TextView                android:fontFamily="@font/ptsans_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/events"

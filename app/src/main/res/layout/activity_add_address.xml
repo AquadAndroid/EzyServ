@@ -27,17 +27,14 @@
                 android:id="@+id/edt_address_line_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ptsans_regular"
                 android:hint="Address Line 1"
-
-
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPersonName"
-
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/blue" />
-
 
         </android.support.design.widget.TextInputLayout>
 
@@ -51,6 +48,7 @@
                 android:id="@+id/edt_address_line_two"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ptsans_regular"
                 android:hint="Address Line 2"
 
 
@@ -75,6 +73,7 @@
                 android:id="@+id/edt_address_pin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ptsans_regular"
                 android:hint="Pincode"
 
 
@@ -91,14 +90,13 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_save_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/pink"
         android:padding="@dimen/dim_10"
         android:text="SAVE"
-        android:id="@+id/btn_save_address"
         android:textColor="@color/white"
-        android:textSize="@dimen/dim_20"
-        />
+        android:textSize="@dimen/dim_20" />
 </RelativeLayout>

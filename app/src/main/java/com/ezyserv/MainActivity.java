@@ -226,7 +226,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer =  findViewById(R.id.drawer_layout);
 
         drawerFragment = (FragmentDrawer) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_navigation_drawer);
@@ -298,24 +298,24 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_4_2);
         bmb.clearBuilders();
         bmb.addBuilder(new TextInsideCircleButton.Builder()
-                .normalImageRes(R.drawable.dolphin)
+                .normalImageRes(R.drawable.ic_handyman_new)
                 .normalTextRes(R.string.text_ham_button_handyman).normalColor(Color.parseColor("#dd000000"))
                 .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
 
         bmb.addBuilder(new TextInsideCircleButton.Builder()
-                .normalImageRes(R.drawable.dolphin)
+                .normalImageRes(R.drawable.ic_events_new)
                 .normalColor(Color.parseColor("#dd000000"))
                 .normalTextRes(R.string.text_ham_button_events)
                 .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
 
         bmb.addBuilder(new TextInsideCircleButton.Builder()
-                .normalImageRes(R.drawable.dolphin)
+                .normalImageRes(R.drawable.ic_domestic_new)
                 .normalColor(Color.parseColor("#dd000000"))
                 .normalTextRes(R.string.text_ham_button_domestic)
                 .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
 
         bmb.addBuilder(new TextInsideCircleButton.Builder()
-                .normalImageRes(R.drawable.dolphin)
+                .normalImageRes(R.drawable.ic_mycare_new)
                 .normalColor(Color.parseColor("#dd000000"))
                 .normalTextRes(R.string.text_ham_button_my_care)
                 .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
@@ -348,7 +348,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     case 1:
                         hideMenu();
                         //  fab_menu.collapse();
-
                         tv_serv_catg.setText("Events Services (" + services.get(2).getServices().size() + ")");
                         adapter = new BottomServiceAdapter(services.get(2).getServices(), MainActivity.this, 2);
                         bottom_sheet_recycler.setAdapter(adapter);
@@ -361,9 +360,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     case 2:
                         hideMenu();
                         //  fab_menu.collapse();
-
-
-                        // fab_menu.collapse();
                         tv_serv_catg.setText("Domestic Services (" + services.get(0).getServices().size() + ")");
                         adapter = new BottomServiceAdapter(services.get(0).getServices(), MainActivity.this, 0);
                         bottom_sheet_recycler.setAdapter(adapter);
@@ -386,7 +382,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         }
                         break;
 //                        fab.setImageResource(R.drawable.events);
-
                 }
             }
 
@@ -494,7 +489,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         if (!MyApp.getStatus("SETTINGS_SHOWN")) {
             openTutorialView();
         }
-
     }
 
     private void openTutorialView() {
@@ -1176,7 +1170,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             @Override
             public void onClick(View v) {
                 searchWithinRadius("Please wait...\nFinding you service within " + prog_bar.getProgress() + " miles");
-                getNearByServices(sourceLocation.latitude, sourceLocation.longitude, selectedService, prog_bar.getProgress()+"");
+                getNearByServices(sourceLocation.latitude, sourceLocation.longitude, selectedService, prog_bar.getProgress() + "");
                 dialog.dismiss();
             }
         });
@@ -1377,5 +1371,40 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             searchWithinRadius("Please wait...\nFinding you service within 5 miles");
         } else
             MyApp.popMessage("Alert!", "Location not loaded yet", getContext());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+//        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+//                mGoogleApiClient);
+//        if (mLastLocation != null) {
+////            changeMap(mLastLocation);
+//            Log.d(TAG, "ON connected");
+//
+//        } else
+//            try {
+//                LocationServices.FusedLocationApi.removeLocationUpdates(
+//                        mGoogleApiClient, this);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        try {
+//            LocationRequest mLocationRequest = new LocationRequest();
+//            mLocationRequest.setInterval(10000);
+//            mLocationRequest.setFastestInterval(5000);
+//            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//            LocationServices.FusedLocationApi.requestLocationUpdates(
+//                    mGoogleApiClient, mLocationRequest, MainActivity.this);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        locationProvider = new LocationProvider(this, this, this);
+        locationProvider.connect();
     }
 }

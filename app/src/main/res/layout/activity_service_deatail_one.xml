@@ -32,10 +32,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Please fill the following details to complete\n                   your registration "
+                    android:fontFamily="@font/ptsans_bold"
+                    android:gravity="center"
+                    android:text="Please fill the following details to complete\nyour registration "
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dim_15"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/dim_15" />
 
                 <TextView
                     android:id="@+id/tv_skip"
@@ -43,10 +44,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dim_10"
+                    android:fontFamily="@font/ptsans_bold"
                     android:text="SKIP NOW"
                     android:textColor="@color/pink"
-                    android:textSize="@dimen/dim_15"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/dim_15" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -59,6 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/shape"
+                        android:fontFamily="@font/ptsans_regular"
                         android:hint="Name of the person company is under"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPersonName"
@@ -84,6 +86,7 @@
                             android:id="@+id/edt_service_detail_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/ptsans_regular"
 
                             android:hint="Email"
                             android:imeOptions="actionUnspecified"
@@ -102,6 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:fontFamily="@font/ptsans_regular"
                         android:text="VERIFY EMAIL"
                         android:textColor="@color/pink" />
 
@@ -133,6 +137,7 @@
                             android:drawableRight="@drawable/shape"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
+                            android:fontFamily="@font/ptsans_regular"
                             android:hint="Phone Number"
                             android:imeOptions="actionUnspecified"
                             android:inputType="number"
@@ -157,6 +162,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/shape"
+                        android:fontFamily="@font/ptsans_regular"
                         android:hint="Compnay Name"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textEmailAddress"
@@ -178,6 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:fontFamily="@font/ptsans_regular"
                         android:paddingLeft="@dimen/dim_10"
                         android:text="Document 1"
                         android:textColor="@color/black"
@@ -190,6 +197,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_below="@+id/txt1"
                         android:layout_marginTop="-5dp"
+                        android:fontFamily="@font/ptsans_regular"
                         android:padding="@dimen/dim_10"
                         android:text="Upload Document"
                         android:textColorHint="@color/blue"
@@ -202,6 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:fontFamily="@font/ptsans_regular"
                         android:padding="@dimen/dim_10"
                         android:text="Upload"
                         android:textColor="@color/pink" />
@@ -221,6 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:fontFamily="@font/ptsans_regular"
                     android:paddingLeft="@dimen/dim_10"
                     android:paddingTop="@dimen/dim_10"
                     android:text="Document 2"
@@ -236,6 +246,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-5dp"
+                        android:fontFamily="@font/ptsans_regular"
                         android:maxLines="1"
                         android:padding="@dimen/dim_10"
                         android:text="Upload Document"
@@ -248,6 +259,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:fontFamily="@font/ptsans_regular"
                         android:padding="10dp"
                         android:text="Upload"
                         android:textColor="@color/pink" />
@@ -271,6 +283,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/pink"
+            android:fontFamily="@font/ptsans_regular"
             android:text="CONTINUE"
             android:textColor="@color/white"
             android:textSize="@dimen/dim_20" />

@@ -55,7 +55,7 @@
                         android:layout_toRightOf="@+id/view_search_one"
                         android:background="@color/pink" />
 
-                    <EditText
+                    <EditText                android:fontFamily="@font/ptsans_regular"
                         android:id="@+id/search_et"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -83,7 +83,7 @@
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:id="@+id/tv_saved_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -24,7 +24,7 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/green_dot" />
 
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:id="@+id/tv_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

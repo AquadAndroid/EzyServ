@@ -16,7 +16,7 @@
         android:paddingTop="@dimen/dim_10"
         android:paddingBottom="@dimen/dim_10"
         android:orientation="vertical">
-        <TextView
+        <TextView                android:fontFamily="@font/ptsans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -87,7 +87,7 @@
             android:textSize="@dimen/dim_16"
             />
 </RadioGroup>
-        <EditText
+        <EditText                android:fontFamily="@font/ptsans_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
            android:inputType="textMultiLine"

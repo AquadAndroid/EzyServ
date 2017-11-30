@@ -25,16 +25,17 @@
                 android:id="@+id/side_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ptsans_bold"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/ptsans_regular"
             android:text="TOTAL BALANCE"
             android:textSize="@dimen/dim_18" />
 
@@ -42,9 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/ptsans_bold"
             android:text="SGD (S$) 500"
-            android:textSize="@dimen/dim_18"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dim_18" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
@@ -58,9 +59,9 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/view_container"
         android:layout_width="match_parent"
-        android:layout_below="@+id/appbar"
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_add_money"
+        android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <Button

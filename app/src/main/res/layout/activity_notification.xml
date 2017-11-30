@@ -15,7 +15,7 @@
         android:layout_centerInParent="true"
         android:src="@drawable/no_notification" />
 
-    <TextView
+    <TextView                android:fontFamily="@font/ptsans_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/img_notification"
