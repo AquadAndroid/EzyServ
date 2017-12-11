@@ -15,7 +15,10 @@ android {
         config {
             keyAlias 'enolasia'
             keyPassword '111111'
-            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
+
+            /*Comment By Hector For the Setup of project*/
+
+            //storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
             storePassword '111111'
         }
     }
