@@ -93,8 +93,8 @@ public class AddServicesActivity extends CustomActivity {
         return AddServicesActivity.this;
     }
 
-    public void setPrimaryName(String primary) {
-        SingleInstance.getInstance().setPrimaryName(primary);
+    public void setPrimaryName(String primary, String id) {
+        SingleInstance.getInstance().setPrimaryName(primary + "@" + id);
         finish();
     }
 }

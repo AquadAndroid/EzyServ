@@ -90,7 +90,8 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
                 @Override
                 public void onClick(View v) {
                     if (isPrimary) {
-                        ((AddServicesActivity) c).setPrimaryName(data.getServices().get(getLayoutPosition()).getName());
+                        ((AddServicesActivity) c).setPrimaryName(data.getServices().get(getLayoutPosition()).getName(),
+                                data.getServices().get(getLayoutPosition()).getId());
                     }
                     if (!isCompany && selected >= 5 && Sadd_remove.getText().equals("Add")) {
                         MyApp.popMessage("Alert!", "You can add only 5 services as individual", c);

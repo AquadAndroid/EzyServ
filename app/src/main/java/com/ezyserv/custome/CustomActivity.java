@@ -285,6 +285,7 @@ public class CustomActivity extends AppCompatActivity implements
 
         final RippleBackground rippleBackground = radiusDialog.findViewById(R.id.content);
         rippleBackground.startRippleAnimation();
+
         txt_message.setText(loadingMessage);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

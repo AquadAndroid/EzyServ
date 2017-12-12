@@ -226,7 +226,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
-        drawer =  findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         drawerFragment = (FragmentDrawer) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_navigation_drawer);
@@ -707,14 +707,26 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-
-
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.txt_book) {
+            String sId = "";
+            for (String s : servicesIDs) {
+                sId = s + ",";
+            }
+            sId = sId.substring(0, sId.length() - 1);
             if (spinner_booking.getSelectedItemPosition() == 0) {
-                startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
-                        .putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
+                RequestParams p = new RequestParams();
+                p.put("serviceman_ids", sId);
+                p.put("user_id", MyApp.getApplication().readUser().getId());
+                p.put("service_id", "");
+                p.put("service_lat", sourceLocation.latitude + "");
+                p.put("service_long", sourceLocation.longitude + "");
+                p.put("service_time", "");
+                p.put("service_address", txt_address.getText().toString());
+                p.put("service_type ", ""); //general, emergency ,scheduled
+                p.put("service_description ", "");
+                postCall(getContext(), AppConstant.BASE_URL + "createService", p, "Please wait...\nwe are assigning you a provider.", 10);
             } else {
                 startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
             }
@@ -1089,11 +1101,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     private void getNearByServices(double lat, double lng, String serviceId, String radius) {
         RequestParams p = new RequestParams();
-        p.put("services", serviceId);
+        p.put("user_id", MyApp.getApplication().readUser().getId());
+        p.put("service_id", serviceId);
         p.put("current_lat", lat);
         p.put("current_lng", lng);
         p.put("radius", radius);
-        postCall(getContext(), AppConstant.BASE_URL + "nearByServiceProvider", p, "", 1);
+        postCall(getContext(), AppConstant.BASE_URL + "Autoassign", p, "", 1);
     }
 
     @Override
@@ -1119,7 +1132,21 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         p.put("currentlat", location.getLatitude() + "");
         p.put("currentlong", location.getLongitude() + "");
         p.put("device_token", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
+        p.put("device_type", "Android");
         postCall(getContext(), AppConstant.BASE_URL + "updateProfile", p, "", 7);
+        if (!MyApp.getStatus(AppConstant.IS_SERVICES_UPDATE)) {
+            updateServices();
+        }
+
+    }
+
+    private void updateServices() {
+        RequestParams p = new RequestParams();
+        p.put("user_id", MyApp.getApplication().readUser().getId());
+        p.put("primaryservices", MyApp.getSharedPrefString(AppConstant.PRIMARY_SERVICE_ID));
+        p.put("services", MyApp.getSharedPrefString(AppConstant.SECONDARY_SERVICES).replace(" ", ""));
+
+        postCall(getContext(), AppConstant.BASE_URL + "updateServices", p, "", 9);
     }
 
     @Override
@@ -1260,7 +1287,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private boolean isUser = true;
     private boolean isActive = true;
 
-
     @Override
     public void onCameraIdle() {
         Log.d("Camera position change", this.mMap.getCameraPosition() + "");
@@ -1280,6 +1306,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         startActivity(new Intent(MainActivity.this, ServicemanProfileActivity.class));
     }
 
+    private List<String> servicesIDs = new ArrayList<>();
+
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
         if (callNumber == 1) {
@@ -1289,14 +1317,22 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 Type listType = new TypeToken<List<NearbyServices.Data>>() {
                 }.getType();
                 try {
-
                     //  allServices = gson.fromJson(o.getJSONArray("data").toString(), listType);
                     List<NearbyServices.Data> nearBy = new Gson().fromJson(o.getJSONArray("data").toString(), listType);
+                    servicesIDs.clear();
                     if (nearBy.size() > 0) {
                         mMap.clear();
+                        txt_book.setEnabled(true);
+                        txt_book.setTextColor(Color.WHITE);
+                    } else {
+                        txt_book.setEnabled(false);
+                        txt_book.setTextColor(Color.GRAY);
                     }
                     for (int i = 0; i < nearBy.size(); i++) {
-
+                        servicesIDs.add(nearBy.get(i).getUser_id());
+                        if (i == 0) {
+                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()), Double.parseDouble(nearBy.get(i).getCurrentlong()))).zoom(15.5f).tilt(0.0f).build()));
+                        }
                         if (nearBy.get(i).getService_categories_id().equals("7")) {
                             markerPath = R.drawable.ic_domestic_marker;
 
@@ -1319,16 +1355,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         m1.setSnippet(nearBy.get(i).getName());
                         m1.setTitle(nearBy.get(i).getService_name());
                         builder.include(m1.getPosition());
-
-//                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()), 50);
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     MyApp.popMessage("Alert!", "Parsing error.", getContext());
                     return;
                 } catch (JsonSyntaxException ee) {
-
                 }
             } else {
                 MyApp.popMessage("Alert!", o.optString("Message"), MainActivity.this);
@@ -1350,6 +1382,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             }
         } else if (callNumber == 5) {
 
+        } else if (callNumber == 9) {
+            if (o.optString("status").equals("true")) {
+                MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
+            }
+        } else if (callNumber == 10) {
+//            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
+//                    .putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
         }
     }
 
@@ -1379,31 +1418,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-//        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-//                mGoogleApiClient);
-//        if (mLastLocation != null) {
-////            changeMap(mLastLocation);
-//            Log.d(TAG, "ON connected");
-//
-//        } else
-//            try {
-//                LocationServices.FusedLocationApi.removeLocationUpdates(
-//                        mGoogleApiClient, this);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        try {
-//            LocationRequest mLocationRequest = new LocationRequest();
-//            mLocationRequest.setInterval(10000);
-//            mLocationRequest.setFastestInterval(5000);
-//            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//            LocationServices.FusedLocationApi.requestLocationUpdates(
-//                    mGoogleApiClient, mLocationRequest, MainActivity.this);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         locationProvider = new LocationProvider(this, this, this);
         locationProvider.connect();
     }

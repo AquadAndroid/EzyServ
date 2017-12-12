@@ -85,14 +85,14 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         locationProvider = new LocationProvider(this, this, this);
         setResponseListener(this);
         setContentView(R.layout.activity_service_detail_two);
-        Dtoolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        Dtoolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(Dtoolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        TextView mTitle = (TextView) Dtoolbar.findViewById(R.id.detail_toolbar_title);
-        TextView mCount = (TextView) Dtoolbar.findViewById(R.id.detail_toolbar_count);
+        TextView mTitle = Dtoolbar.findViewById(R.id.detail_toolbar_title);
+        TextView mCount = Dtoolbar.findViewById(R.id.detail_toolbar_count);
         mTitle.setText("Add your details");
         mCount.setText("2/2");
         actionBar.setTitle("");
@@ -105,6 +105,8 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         }
     }
 
+    private String primaryServiceId = "";
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -116,9 +118,13 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         txt_mycare_counts.setText(myCareCounter + " services added");
         tv_events_label.setText(eventsCounter + " services added");
 
-        if (!SingleInstance.getInstance().getPrimaryName().isEmpty())
-            tv_primary.setText(SingleInstance.getInstance().getPrimaryName());
-        SingleInstance.getInstance().setPrimaryName("");
+        if (!SingleInstance.getInstance().getPrimaryName().isEmpty()) {
+            tv_primary.setText(SingleInstance.getInstance().getPrimaryName().split("@")[0]);
+            primaryServiceId = SingleInstance.getInstance().getPrimaryName().split("@")[1];
+            SingleInstance.getInstance().setPrimaryName("");
+        }
+
+
     }
 
     private void getAllServices() {
@@ -151,17 +157,17 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         setTouchNClick(R.id.btn_continue);
         setTouchNClick(R.id.tv_primary);
 
-        txt_current_address = (TextView) findViewById(R.id.txt_current_address);
-        tv_primary = (TextView) findViewById(R.id.tv_primary);
-        tvDomestic = (TextView) findViewById(R.id.tv_domestic);
-        tvConstruction = (TextView) findViewById(R.id.tv_construction);
-        tvEvents = (TextView) findViewById(R.id.tv_events);
-        txt_add_location = (TextView) findViewById(R.id.txt_add_location);
+        txt_current_address = findViewById(R.id.txt_current_address);
+        tv_primary = findViewById(R.id.tv_primary);
+        tvDomestic = findViewById(R.id.tv_domestic);
+        tvConstruction = findViewById(R.id.tv_construction);
+        tvEvents = findViewById(R.id.tv_events);
+        txt_add_location = findViewById(R.id.txt_add_location);
         setTouchNClick(R.id.txt_add_location);
 
-        tv_domestic_label = (TextView) findViewById(R.id.tv_domestic_label);
-        txt_mycare_counts = (TextView) findViewById(R.id.txt_mycare_counts);
-        tv_events_label = (TextView) findViewById(R.id.tv_events_label);
+        tv_domestic_label = findViewById(R.id.tv_domestic_label);
+        txt_mycare_counts = findViewById(R.id.txt_mycare_counts);
+        tv_events_label = findViewById(R.id.tv_events_label);
         listdata = (ArrayList) DummyLocation.getListData();
 //        listLocations = (RecyclerView) findViewById(R.id.location_list);
 
@@ -170,8 +176,8 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
 //        adapter = new ServiceLocationAdapter(listdata, this);
 //        listLocations.setAdapter(adapter);
 
-        Continue = (Button) findViewById(R.id.btn_continue);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        Continue = findViewById(R.id.btn_continue);
+        scrollView = findViewById(R.id.scrollView);
         scrollView.post(new Runnable() {
             public void run() {
                 scrollView.fullScroll(scrollView.FOCUS_UP);
@@ -263,12 +269,15 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         SingleInstance.getInstance().setServicesId("");
 
         MyApp.spinnerStart(getContext(), "Taking you to home...");
+        MyApp.setSharedPrefString(AppConstant.PRIMARY_SERVICE_ID, primaryServiceId);
+        MyApp.setSharedPrefString(AppConstant.SECONDARY_SERVICES, ids);
+        MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 navigateAfterUpdate();
             }
-        }, 2000);
+        }, 1000);
     }
 
     @Override
