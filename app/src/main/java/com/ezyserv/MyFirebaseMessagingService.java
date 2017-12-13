@@ -42,30 +42,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "onMessageReceived: message: " + remoteMessage.getData().get("message"));
         Log.e(TAG, "onMessageReceived: Title: " + remoteMessage.getData().get("title"));
         Log.e(TAG, "onMessageReceived: mType: " + remoteMessage.getData().get("mType"));
+        Log.e(TAG, "onMessageReceived: " + MyApp.getApplication().readUser().getIsServicemen());
+
 
         mType = remoteMessage.getData().get("mType");
         message = remoteMessage.getData().get("message");
         title = remoteMessage.getData().get("title");
 
-
         //Hector Call
         if (!TextUtils.isEmpty(mType)) {
             switch (mType) {
-                case "sendRequest":
-                    Log.e(TAG, "onMessageReceived: " + MyApp.getApplication().readUser().getIsServicemen());
+                case "sendRequest": // gives alert to user that request sent to provider
+                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
+                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    }
+                    break;
+                case "noOneAccept": // gives alert to user when no one accept the request
+                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
+                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    }
+                    break;
+                case "createService":   // this will pop up the accept reject option at provider side
                     if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
                         SendMessageNotificationBook();
                         sendNotificationBookServiceBackGround(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
-                    }
-                    break;
-                case "createService":
-                    if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
-                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
-                    }
-                    break;
-                case "noOneAccept":
-                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
-                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
                     }
                     break;
             }
