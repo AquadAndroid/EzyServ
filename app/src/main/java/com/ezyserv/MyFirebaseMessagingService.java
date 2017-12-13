@@ -12,8 +12,11 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
+import com.ezyserv.application.MyApp;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -28,34 +31,45 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static final String MESSAGE_NOTIFICATION = "MessageNotification";
     public static final String MESAGE_ERROR = "MessageError";
 
+    String mType, message, title;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-        }
+        //Hector Call
+        Log.e(TAG, "onMessageReceived: message: " + remoteMessage.getData().get("message"));
+        Log.e(TAG, "onMessageReceived: Title: " + remoteMessage.getData().get("title"));
+        Log.e(TAG, "onMessageReceived: mType: " + remoteMessage.getData().get("mType"));
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
-        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
+        mType = remoteMessage.getData().get("mType");
+        message = remoteMessage.getData().get("message");
+        title = remoteMessage.getData().get("title");
 
 
         //Hector Call
-        SendMessageNotificationBook();
-        sendNotificationBookServiceBackGround();
-        Log.e(TAG, "onMessageReceived: ");
-
+        if (!TextUtils.isEmpty(mType)) {
+            switch (mType) {
+                case "sendRequest":
+                    Log.e(TAG, "onMessageReceived: " + MyApp.getApplication().readUser().getIsServicemen());
+                    if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
+                        SendMessageNotificationBook();
+                        sendNotificationBookServiceBackGround(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    }
+                    break;
+                case "createService":
+                    if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
+                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    }
+                    break;
+                case "noOneAccept":
+                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
+                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    }
+                    break;
+            }
+        }
     }
 
 
@@ -104,7 +118,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /*Sending Notification If App is In back ground to Accept Reject Service Request*/
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void sendNotificationBookServiceBackGround() {
+    private void sendNotificationBookServiceBackGround(String message, String title) {
 
 
         Intent acceptIntent = new Intent(this, ChatActivity.class);
@@ -125,6 +139,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setSound(defaultSoundUri)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .addAction(R.drawable.ic_check_black_24dp, "Accept", pendingIntent) // #0
