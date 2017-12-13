@@ -21,4 +21,7 @@ public class AppConstant {
     public static final String SECONDARY_SERVICES = "secondaryServices";
     public static final String BASE_URL = "http://stubuz.com/EzyServ/Webservices/";
     public static final String IS_SERVICES_UPDATE = "isServiceUpdated";
+
+    //Hector Call
+    public static final String IS_SERVICES_MAN= "isServicemen";
 }

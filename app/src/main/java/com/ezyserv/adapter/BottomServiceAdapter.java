@@ -2,6 +2,7 @@ package com.ezyserv.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,20 +66,20 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
 
     public HashMap<String, String> idMap = new HashMap<>();
 
-    class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_service_name;
         CircleImageView img_service;
 
         public DataHolder(final View itemView) {
             super(itemView);
-            tv_service_name =  itemView.findViewById(R.id.tv_service_name);
-            img_service =  itemView.findViewById(R.id.img_service);
+            tv_service_name = itemView.findViewById(R.id.tv_service_name);
+            img_service = itemView.findViewById(R.id.img_service);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            ((MainActivity)c).searchCategoryById(servicelist.get(getLayoutPosition()).getService_id());
+            ((MainActivity)c).searchCategoryById(servicelist.get(getLayoutPosition()).getId());
         }
     }
 }

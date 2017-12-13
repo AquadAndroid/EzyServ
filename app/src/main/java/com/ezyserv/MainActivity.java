@@ -5,9 +5,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -17,11 +21,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -44,6 +50,8 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -156,6 +164,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private TextView txt_address;
     private MenuItem menuRadius;
 
+    //Hector Call
+    private BroadcastReceiver mReceiveMessageFromNotification;
+    NotificationManager mNotificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +182,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         tv_serv_catg = findViewById(R.id.tv_serv_catg);
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main4);
+
+        //Hector Call
+        setupUiElements();
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         setSupportActionBar(toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -220,7 +236,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         spinner_booking.setAdapter(bookingAdapter);
 
 
-        setupUiElements();
         locationProvider = new LocationProvider(this, this, this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -412,7 +427,33 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         });
 
 
+        //Hector Call
+        getMessageFromNotification();
+
     }
+
+    //Hector Call
+    private void getMessageFromNotification() {
+        mReceiveMessageFromNotification = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //If the broadcast has received with success
+                //that means device is registered successfully
+                Log.e("TAG", "that means device is registered successfully");
+
+                if (intent.getAction().equals(MyFirebaseMessagingService.MESAGE_ERROR)) {
+                    Toast.makeText(context, "MESSAGE_ERROR", Toast.LENGTH_SHORT).show();
+                } else if (intent.getAction().equals(MyFirebaseMessagingService.MESSAGE_NOTIFICATION)) {
+                    mNotificationManager.cancel(1);
+                    if (intent.getExtras() != null) {
+                        mNotificationManager.cancel(1);
+                        dialogTimer();
+                    }
+                }
+            }
+        };
+    }
+
 
     private void updateProviderAvailabilityStatus(boolean isChecked) {
         RequestParams p = new RequestParams();
@@ -489,6 +530,21 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         if (!MyApp.getStatus("SETTINGS_SHOWN")) {
             openTutorialView();
         }
+
+        //Hector Call
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReceiveMessageFromNotification,
+                new IntentFilter(MyFirebaseMessagingService.MESSAGE_NOTIFICATION));
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //Hector Call
+        Log.e("MainActivity", "onPause");
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mReceiveMessageFromNotification);
     }
 
     private void openTutorialView() {
@@ -710,9 +766,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.txt_book) {
+
             String sId = "";
             for (String s : servicesIDs) {
-                sId = s + ",";
+                sId += s + ",";
             }
             sId = sId.substring(0, sId.length() - 1);
             if (spinner_booking.getSelectedItemPosition() == 0) {
@@ -725,7 +782,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 p.put("service_time", "");
                 p.put("service_address", txt_address.getText().toString());
                 p.put("service_type ", ""); //general, emergency ,scheduled
-                p.put("service_description ", "");
+                p.put("service_description ", "service");
                 postCall(getContext(), AppConstant.BASE_URL + "createService", p, "Please wait...\nwe are assigning you a provider.", 10);
             } else {
                 startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
@@ -1332,6 +1389,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         servicesIDs.add(nearBy.get(i).getUser_id());
                         if (i == 0) {
                             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()), Double.parseDouble(nearBy.get(i).getCurrentlong()))).zoom(15.5f).tilt(0.0f).build()));
+
                         }
                         if (nearBy.get(i).getService_categories_id().equals("7")) {
                             markerPath = R.drawable.ic_domestic_marker;
@@ -1346,15 +1404,22 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                             markerPath = R.drawable.ic_handyman_marker;
                         }
 
-                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                        builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
+
+                        //Hector Call
+                        /*Marker For the Map Services*/
                         Marker m1 = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()),
-                                        Double.parseDouble(nearBy.get(i).getCurrentlong()) - 0.0901))
+                                .position(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude))
+                                .title(nearBy.get(i).getService_name())
+                                .icon(BitmapDescriptorFactory.fromResource(markerPath)));
+
+                        /*LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                        builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
+                        Marker m1 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()),
+                                Double.parseDouble(nearBy.get(i).getCurrentlong()) - 0.0901))
                                 .icon(BitmapDescriptorFactory.fromResource(markerPath)));
                         m1.setSnippet(nearBy.get(i).getName());
                         m1.setTitle(nearBy.get(i).getService_name());
-                        builder.include(m1.getPosition());
+                        builder.include(m1.getPosition());*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1386,11 +1451,74 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             if (o.optString("status").equals("true")) {
                 MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
             }
-        } else if (callNumber == 10) {
-//            startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
-//                    .putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
+        }/* else if (callNumber == 10) {
+            // Hector Call
+
+
+            //startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
+            //.putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
+        }*/
+    }
+
+
+    //Hector Call
+    //Show Timer Dialog If App Is Open
+    private void showTimerDialog() {
+        Log.e("TAG", "1m Time ypeeeeee ");
+        if (getIntent().getExtras() != null) {
+            String book_serv = getIntent().getExtras().getString("type", "");
+            Log.e("TAG", "1mTypeeeeee = " + book_serv);
+            if (!book_serv.isEmpty() && book_serv.equalsIgnoreCase("book_serv")) {
+                dialogTimer();
+            }
+
         }
     }
+
+
+    //Hector Call
+    /*Dialog to Display the user request if app is open and will count down for 20 seconds*/
+    private void dialogTimer() {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.dialog_book_request);
+        dialog.setCancelable(false);
+        final TextView txt_timer = dialog.findViewById(R.id.txt_timer);
+        Button btn_denied_req = dialog.findViewById(R.id.btn_denied_req);
+        Button btn_accept_req = dialog.findViewById(R.id.btn_accept_req);
+        int time = 20 * 1000;
+        final CountDownTimer countDownTimer = new CountDownTimer(time, 1000) {
+            public void onTick(long millisUntilFinished) {
+                txt_timer.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                mNotificationManager.cancel(1);
+                dialog.dismiss();
+            }
+
+        }.start();
+        btn_denied_req.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                mNotificationManager.cancel(1);
+            }
+        });
+        btn_accept_req.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNotificationManager.cancel(1);
+                countDownTimer.onFinish();
+                startActivity(new Intent(getContext(), ChatActivity.class));
+
+            }
+        });
+        dialog.show();
+        Window window = dialog.getWindow();
+        assert window != null;
+        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
 
     @Override
     public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
