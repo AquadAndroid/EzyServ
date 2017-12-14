@@ -1386,6 +1386,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         txt_book.setTextColor(Color.GRAY);
                     }
                     for (int i = 0; i < nearBy.size(); i++) {
+                        if (nearBy.get(i).getUser_id().equals(MyApp.getApplication().readUser().getId())) {
+                            return;
+                        }
                         servicesIDs.add(nearBy.get(i).getUser_id());
                         if (i == 0) {
                             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()), Double.parseDouble(nearBy.get(i).getCurrentlong()))).zoom(15.5f).tilt(0.0f).build()));
@@ -1420,6 +1423,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         m1.setSnippet(nearBy.get(i).getName());
                         m1.setTitle(nearBy.get(i).getService_name());
                         builder.include(m1.getPosition());*/
+                    }
+
+                    if (servicesIDs.size() == 0) {
+                        txt_book.setEnabled(false);
+                        txt_book.setTextColor(Color.GRAY);
+                        MyApp.popMessage("Alert!", o.optString("No service provider is nearby to you. Try to change radius and search again.\nThank you"), MainActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1475,6 +1484,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         }
     }
 
+    private int progress;
 
     //Hector Call
     /*Dialog to Display the user request if app is open and will count down for 20 seconds*/
@@ -1483,8 +1493,26 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         dialog.setContentView(R.layout.dialog_book_request);
         dialog.setCancelable(false);
         final TextView txt_timer = dialog.findViewById(R.id.txt_timer);
+        txt_timer.setVisibility(View.GONE);
+        final CircleCountDownView countDownView =  dialog.findViewById(R.id.countDownView);
         Button btn_denied_req = dialog.findViewById(R.id.btn_denied_req);
         Button btn_accept_req = dialog.findViewById(R.id.btn_accept_req);
+        progress = 1;
+        final CountDownTimer countDownTimer2 = new CountDownTimer((long) 30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                countDownView.setProgress(progress, 20);
+                progress = progress + 1;
+            }
+
+            public void onFinish() {
+                countDownView.setProgress(progress, 20);
+                dialog.dismiss();
+//                mp.stop();
+                dialog.dismiss();
+//                isTimerDialogShown = false;
+            }
+        };
+        countDownTimer2.start();
         int time = 20 * 1000;
         final CountDownTimer countDownTimer = new CountDownTimer(time, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -1502,6 +1530,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             public void onClick(View view) {
                 dialog.dismiss();
                 mNotificationManager.cancel(1);
+                countDownTimer.cancel();
+                countDownTimer2.cancel();
             }
         });
         btn_accept_req.setOnClickListener(new View.OnClickListener() {
@@ -1510,7 +1540,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 mNotificationManager.cancel(1);
                 countDownTimer.onFinish();
                 startActivity(new Intent(getContext(), ChatActivity.class));
-
+                countDownTimer.cancel();
+                countDownTimer2.cancel();
             }
         });
         dialog.show();
