@@ -137,7 +137,7 @@
                             android:layout_marginRight="@dimen/dim_5"
                             android:drawablePadding="@dimen/dim_5"
                             android:drawableRight="@drawable/accepted_green"
-                            android:fontFamily="@font/ptsans_bold"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="Verified"
                             android:textColor="@color/green_text"
                             android:textSize="16sp" />
@@ -173,13 +173,105 @@
                             android:layout_marginRight="@dimen/dim_5"
                             android:drawablePadding="@dimen/dim_5"
                             android:drawableRight="@drawable/accepted_green"
-                            android:fontFamily="@font/ptsans_bold"
+                            android:fontFamily="@font/ptsans_regular"
                             android:text="Verified"
                             android:textColor="@color/green_text"
                             android:textSize="16sp" />
 
 
                     </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_services"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txt_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dim_10"
+                                android:fontFamily="@font/ptsans_regular"
+                                android:text="Primary Service"
+                                android:textColor="@color/black"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/txt_primary_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txt_primary"
+                                android:layout_marginRight="@dimen/dim_5"
+                                android:layout_toLeftOf="@+id/edt_primary"
+                                android:fontFamily="@font/ptsans_bold"
+                                android:text="Builder"
+                                android:textColor="@color/pink"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/edt_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@+id/txt_primary"
+                                android:layout_marginRight="@dimen/dim_5"
+                                android:fontFamily="@font/ptsans_regular"
+                                android:text="Edit"
+                                android:textColor="@color/pink"
+                                android:textSize="16sp" />
+
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txt_secondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dim_10"
+                                android:fontFamily="@font/ptsans_regular"
+                                android:text="Secondary Services"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/txt_secondary_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txt_secondary"
+                                android:layout_marginRight="@dimen/dim_5"
+                                android:layout_toLeftOf="@+id/edt_secondary"
+                                android:drawablePadding="@dimen/dim_5"
+                                android:fontFamily="@font/ptsans_bold"
+                                android:text="Painter"
+                                android:textColor="@color/pink"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/edt_secondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@+id/txt_secondary"
+                                android:layout_marginRight="@dimen/dim_5"
+                                android:drawablePadding="@dimen/dim_5"
+                                android:fontFamily="@font/ptsans_regular"
+                                android:text="Edit"
+                                android:textColor="@color/pink"
+                                android:textSize="16sp" />
+
+
+                        </RelativeLayout>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/txt_update"

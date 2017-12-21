@@ -11,9 +11,9 @@ public class AppConstant {
 
     public static final String DEVICE_TOKEN = "deviceToken";
     public static final String FB_ID = "fbId";
-    public static final String LOCATION="";
-    public static final List<String> ADDRESS= new ArrayList<String>();
-    public static final String LOGIN_TYPE= "NORMAL";
+    public static final String LOCATION = "";
+    public static final List<String> ADDRESS = new ArrayList<String>();
+    public static final String LOGIN_TYPE = "NORMAL";
     public static final String EXTRA_1 = "extra1";
     public static final String EXTRA_2 = "extra2";
     public static final String IS_LOGIN = "isLogin";
@@ -23,5 +23,6 @@ public class AppConstant {
     public static final String IS_SERVICES_UPDATE = "isServiceUpdated";
 
     //Hector Call
-    public static final String IS_SERVICES_MAN= "isServicemen";
+    public static final String IS_SERVICES_MAN = "isServicemen";
+    public static final String REQUESTED_SERVICE_ID = "requestedServiceId";
 }

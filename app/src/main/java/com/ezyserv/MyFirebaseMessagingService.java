@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ezyserv.application.MyApp;
+import com.ezyserv.utills.AppConstant;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -43,6 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "onMessageReceived: Title: " + remoteMessage.getData().get("title"));
         Log.e(TAG, "onMessageReceived: mType: " + remoteMessage.getData().get("mType"));
         Log.e(TAG, "onMessageReceived: " + MyApp.getApplication().readUser().getIsServicemen());
+        MyApp.setSharedPrefString(AppConstant.REQUESTED_SERVICE_ID, remoteMessage.getData().get("createService_id"));
 
 
         mType = remoteMessage.getData().get("mType");
@@ -57,10 +59,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
                     }
                     break;
-                case "noOneAccept": // gives alert to user when no one accept the request
-                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
-                        sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                case "serviceAccepted":
+                    sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    Intent registrationCompletef = null;
+                    try {
+                        registrationCompletef = new Intent(MESSAGE_NOTIFICATION).putExtra("type", "accepted");
+                    } catch (Exception e) {
+                        //If any error occurred
+                        Log.e("FCMRegIntentService", "Registration error");
+                        registrationCompletef = new Intent(MESAGE_ERROR);
                     }
+                    //Sending the broadcast that registration is completed
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(registrationCompletef);
+                    break;
+                case "noOneAccept": // gives alert to user when no one accept the request
+//                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
+                    sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+                    Intent registrationComplete = null;
+                    try {
+                        registrationComplete = new Intent(MESSAGE_NOTIFICATION).putExtra("type", "book_no_one");
+                    } catch (Exception e) {
+                        //If any error occurred
+                        Log.e("FCMRegIntentService", "Registration error");
+                        registrationComplete = new Intent(MESAGE_ERROR);
+                    }
+                    //Sending the broadcast that registration is completed
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+//                    }
                     break;
                 case "createService":   // this will pop up the accept reject option at provider side
                     if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
@@ -103,7 +128,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent registrationComplete = null;
         try {
             registrationComplete = new Intent(MESSAGE_NOTIFICATION).putExtra("type", "book_serv");
-
         } catch (Exception e) {
             //If any error occurred
             Log.e("FCMRegIntentService", "Registration error");

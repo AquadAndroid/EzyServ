@@ -444,11 +444,19 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 if (intent.getAction().equals(MyFirebaseMessagingService.MESAGE_ERROR)) {
                     Toast.makeText(context, "MESSAGE_ERROR", Toast.LENGTH_SHORT).show();
                 } else if (intent.getAction().equals(MyFirebaseMessagingService.MESSAGE_NOTIFICATION)) {
-                    mNotificationManager.cancel(1);
-                    if (intent.getExtras() != null) {
+                    String type = intent.getStringExtra("type");
+                    if (type.equals("accepted")) {
+                        startActivity(new Intent(getContext(), ChatActivity.class));
+                    } else if (type.equals("book_no_one")) {
+                        MyApp.popMessage("Message", "No one accepted", getContext());
+                    } else {
                         mNotificationManager.cancel(1);
-                        dialogTimer();
+                        if (intent.getExtras() != null) {
+                            mNotificationManager.cancel(1);
+                            dialogTimer();
+                        }
                     }
+
                 }
             }
         };
@@ -493,8 +501,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             dialog.setContentView(R.layout.location_dialog);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-            Button btn_locate = (Button) dialog.findViewById(R.id.btn_locate);
-            TextView txt_enter_manually = (TextView) dialog.findViewById(R.id.txt_enter_manually);
+            Button btn_locate = dialog.findViewById(R.id.btn_locate);
+            TextView txt_enter_manually = dialog.findViewById(R.id.txt_enter_manually);
             txt_enter_manually.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -783,7 +791,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 p.put("service_address", txt_address.getText().toString());
                 p.put("service_type ", ""); //general, emergency ,scheduled
                 p.put("service_description ", "service");
-                postCall(getContext(), AppConstant.BASE_URL + "createService", p, "Please wait...\nwe are assigning you a provider.", 10);
+                searchWithinRadius("Searching you a serviceman");
+                postCall(getContext(), AppConstant.BASE_URL + "createService", p, "", 10);
             } else {
                 startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
             }
@@ -1163,7 +1172,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         p.put("current_lat", lat);
         p.put("current_lng", lng);
         p.put("radius", radius);
-        postCall(getContext(), AppConstant.BASE_URL + "Autoassign", p, "", 1);
+        postCall(getContext(), AppConstant.BASE_URL + "Autoassign", p, "Collecting data...", 1);
     }
 
     @Override
@@ -1253,7 +1262,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchWithinRadius("Please wait...\nFinding you service within " + prog_bar.getProgress() + " miles");
                 getNearByServices(sourceLocation.latitude, sourceLocation.longitude, selectedService, prog_bar.getProgress() + "");
                 dialog.dismiss();
             }
@@ -1368,8 +1376,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
         if (callNumber == 1) {
-            removeSearch();
-
+//            removeSearch();
             if (o.optString("status").equals("true")) {
                 Type listType = new TypeToken<List<NearbyServices.Data>>() {
                 }.getType();
@@ -1390,10 +1397,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                             return;
                         }
                         servicesIDs.add(nearBy.get(i).getUser_id());
-                        if (i == 0) {
-                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()), Double.parseDouble(nearBy.get(i).getCurrentlong()))).zoom(15.5f).tilt(0.0f).build()));
-
-                        }
+//                        if (i == 0) {
+//                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()), Double.parseDouble(nearBy.get(i).getCurrentlong()))).zoom(15.5f).tilt(0.0f).build()));
+//
+//                        }
                         if (nearBy.get(i).getService_categories_id().equals("7")) {
                             markerPath = R.drawable.ic_domestic_marker;
 
@@ -1460,13 +1467,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             if (o.optString("status").equals("true")) {
                 MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
             }
-        }/* else if (callNumber == 10) {
+        } else if (callNumber == 12) {
+
+        } else if (callNumber == 10) {
+            removeSearch();
             // Hector Call
-
-
             //startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
             //.putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
-        }*/
+        }
     }
 
 
@@ -1494,7 +1502,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         dialog.setCancelable(false);
         final TextView txt_timer = dialog.findViewById(R.id.txt_timer);
         txt_timer.setVisibility(View.GONE);
-        final CircleCountDownView countDownView =  dialog.findViewById(R.id.countDownView);
+        final CircleCountDownView countDownView = dialog.findViewById(R.id.countDownView);
         Button btn_denied_req = dialog.findViewById(R.id.btn_denied_req);
         Button btn_accept_req = dialog.findViewById(R.id.btn_accept_req);
         progress = 1;
@@ -1539,9 +1547,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             public void onClick(View v) {
                 mNotificationManager.cancel(1);
                 countDownTimer.onFinish();
-                startActivity(new Intent(getContext(), ChatActivity.class));
                 countDownTimer.cancel();
                 countDownTimer2.cancel();
+                RequestParams p = new RequestParams();
+                p.put("createService_id", MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
+                p.put("service_status", "accepted");
+                postCall(getContext(), AppConstant.BASE_URL + "respondService", p, "", 12);
+                startActivity(new Intent(getContext(), ChatActivity.class));
             }
         });
         dialog.show();
@@ -1566,7 +1578,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         selectedService = service_id;
         if (sourceLocation != null) {
             getNearByServices(sourceLocation.latitude, sourceLocation.longitude, service_id, "5");
-            searchWithinRadius("Please wait...\nFinding you service within 5 miles");
         } else
             MyApp.popMessage("Alert!", "Location not loaded yet", getContext());
     }

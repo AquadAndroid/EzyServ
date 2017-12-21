@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -54,8 +55,9 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private CircleImageView img_profile;
     private ImageView img_bg;
-    private TextView txt_name, txt_mail, txt_phone;
+    private TextView txt_name, txt_mail, txt_phone, txt_primary_name, txt_secondary_name;
     private User u;
+    private LinearLayout ll_services;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,9 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         setResponseListener(this);
         setContentView(R.layout.activity_profile);
         u = MyApp.getApplication().readUser();
-        collapsingToolbarLayout =  findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(u.getName());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -74,10 +76,10 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         setupUiElements();
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Log.v("","Permission is granted");
+                Log.v("", "Permission is granted");
                 //File write logic here
 
-            }else{
+            } else {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
             }
             //do your check here
@@ -88,22 +90,73 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
     }
 
     private void setupUiElements() {
-        img_profile = (CircleImageView) findViewById(R.id.img_profile);
-        img_bg = (ImageView) findViewById(R.id.img_bg);
+        img_profile = findViewById(R.id.img_profile);
+        img_bg = findViewById(R.id.img_bg);
+        ll_services = findViewById(R.id.ll_services);
+
 
         Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
         Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
 
-        txt_name = (TextView) findViewById(R.id.txt_name);
-        txt_mail = (TextView) findViewById(R.id.txt_mail);
-        txt_phone = (TextView) findViewById(R.id.txt_phone);
+        txt_name = findViewById(R.id.txt_name);
+        txt_mail = findViewById(R.id.txt_mail);
+        txt_phone = findViewById(R.id.txt_phone);
+        txt_primary_name = findViewById(R.id.txt_primary_name);
+        txt_secondary_name = findViewById(R.id.txt_secondary_name);
 
         txt_name.setText(u.getName());
         txt_mail.setText(u.getEmail());
         txt_phone.setText(u.getPhone());
 
+        setTouchNClick(R.id.edt_primary);
+        setTouchNClick(R.id.edt_secondary);
+
+        try {
+            txt_primary_name.setText(u.getService().getPrimary().get(0).getName());
+        } catch (Exception e) {
+            txt_primary_name.setText("N/A");
+        }
+
+        try {
+            txt_secondary_name.setText(u.getService().getSecondary().get(0).getName());
+            String names = "";
+            for (int i = 0; i < u.getService().getSecondary().size(); i++) {
+                names += u.getService().getSecondary().get(i).getName() + ", ";
+            }
+            txt_secondary_name.setText(names.substring(0, names.length() - 2));
+        } catch (Exception e) {
+            txt_secondary_name.setText("N/A");
+        }
+
+        if (u.getIsServicemen().equals("1")) {
+            ll_services.setVisibility(View.VISIBLE);
+        }
+
         setTouchNClick(R.id.txt_update);
         setClick(R.id.img_profile);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        u = MyApp.getApplication().readUser();
+        try {
+            txt_primary_name.setText(u.getService().getPrimary().get(0).getName());
+        } catch (Exception e) {
+            txt_primary_name.setText("N/A");
+        }
+
+        try {
+            txt_secondary_name.setText(u.getService().getSecondary().get(0).getName());
+            String names = "";
+            for (int i = 0; i < u.getService().getSecondary().size(); i++) {
+                names += u.getService().getSecondary().get(i).getName() + ", ";
+            }
+            txt_secondary_name.setText(names.substring(0, names.length() - 2));
+        } catch (Exception e) {
+            txt_secondary_name.setText("N/A");
+        }
+
     }
 
     @Override
@@ -126,6 +179,10 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
                     openGallery();
                 }
             }).create().show();
+        } else if (v.getId() == R.id.edt_primary) {
+            startActivity(new Intent(getContext(), ChangeServicesActivity.class));
+        } else if (v.getId() == R.id.edt_secondary) {
+            startActivity(new Intent(getContext(), ChangeServicesActivity.class));
         }
     }
 

@@ -29,6 +29,15 @@ public class User implements Serializable {
     private String isCompany;
     private String availability;
     private String currentActive;
+    private Service service;
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
 
     public String getType() {
         return type;
@@ -205,4 +214,25 @@ public class User implements Serializable {
         this.device_token = device_token;
     }
 
+    public class Service implements Serializable {
+        private static final long serialVersionUID = 124598456541L;
+        private List<Services> secondary;
+        private List<Services> primary;
+
+        public List<Services> getSecondary() {
+            return secondary;
+        }
+
+        public void setSecondary(List<Services> secondary) {
+            this.secondary = secondary;
+        }
+
+        public List<Services> getPrimary() {
+            return primary;
+        }
+
+        public void setPrimary(List<Services> primary) {
+            this.primary = primary;
+        }
+    }
 }

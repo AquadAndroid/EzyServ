@@ -78,7 +78,7 @@ public class AddServicesActivity extends CustomActivity {
                 } else if (value.equals("events")) {
                     SingleInstance.getInstance().setEventsCount(adapter.count);
                 }
-//7, 6, 5]16, 15, 14]18, 22]
+
                 String ids = adapter.idMap.keySet().toString();
                 ids = ids.substring(1, ids.length());
                 ids = SingleInstance.getInstance().getServicesId() + ids;

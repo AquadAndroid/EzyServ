@@ -82,9 +82,9 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
 
         public DataHolder(final View itemView) {
             super(itemView);
-            Sname = (TextView) itemView.findViewById(R.id.tv_serv_name);
-            Sadd_remove = (TextView) itemView.findViewById(R.id.tv_add_remove);
-            img_service = (ImageView) itemView.findViewById(R.id.img_service);
+            Sname =  itemView.findViewById(R.id.tv_serv_name);
+            Sadd_remove =  itemView.findViewById(R.id.tv_add_remove);
+            img_service = itemView.findViewById(R.id.img_service);
 
             Sadd_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
