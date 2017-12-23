@@ -5,9 +5,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,9 +49,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -70,6 +68,7 @@ import com.ezyserv.model.Services;
 import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.LocationProvider;
+import com.ezyserv.utills.quickblox_common.QBUserHolder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -107,7 +106,15 @@ import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.OnBoomListener;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.ogaclejapan.arclayout.ArcLayout;
-import com.skyfishjy.library.RippleBackground;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.BaseService;
+import com.quickblox.auth.session.QBSession;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.json.JSONArray;
@@ -118,6 +125,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.ezyserv.application.MyApp.initializeFramworkWithApp;
 
 
 public class MainActivity extends CustomActivity implements FragmentDrawer.FragmentDrawerListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -130,7 +139,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private LatLng sourceLocation = null;
     private LocationProvider locationProvider;
     private FragmentDrawer drawerFragment;
-    //    private TextView txt_location;
+    //private TextView txt_location;
     private NestedScrollView bottom_sheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView bottom_sheet_recycler;
@@ -173,6 +182,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setResponseListener(this);
+
+        // Hector Call
+        initializeFramworkWithApp(this);
+        createSessionForChat(MyApp.getApplication().readUser().getName(), "12345678");
+        //Call End
 
         Log.d("deviceToken", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
 
@@ -430,7 +444,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         //Hector Call
         getMessageFromNotification();
 
+        Log.e(TAG, "onCreate: " + MyApp.getApplication().readUser().getId());
+        Log.e(TAG, "onCreate: " + MyApp.getApplication().readUser().getQbUserID());
     }
+
 
     //Hector Call
     private void getMessageFromNotification() {
@@ -446,7 +463,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 } else if (intent.getAction().equals(MyFirebaseMessagingService.MESSAGE_NOTIFICATION)) {
                     String type = intent.getStringExtra("type");
                     if (type.equals("accepted")) {
-                        startActivity(new Intent(getContext(), ChatActivity.class));
+                        Intent intNotif = new Intent(MainActivity.this, ChatActivity.class);
+                        intNotif.putExtra("comeFrom", "Notif");
+                        startActivity(intNotif);
                     } else if (type.equals("book_no_one")) {
                         MyApp.popMessage("Message", "No one accepted", getContext());
                     } else {
@@ -462,6 +481,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         };
     }
 
+    //End Call
 
     private void updateProviderAvailabilityStatus(boolean isChecked) {
         RequestParams p = new RequestParams();
@@ -1302,7 +1322,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (position == 1) {
             MyApp.showMassage(getContext(), "will go to my service requests");
         } else if (position == 2) {
-            startActivity(new Intent(getContext(), ChatActivity.class));
+            startActivity(new Intent(getContext(), ChattingListActivity.class));
         } else if (position == 3) {
             MyApp.showMassage(getContext(), "will go to History");
         } else if (position == 4) {
@@ -1468,29 +1488,41 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
             }
         } else if (callNumber == 12) {
-
+            if (o.optString("status").equals("true")) {
+                getCreateServiceDetails();
+            }
         } else if (callNumber == 10) {
             removeSearch();
-            // Hector Call
             //startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
             //.putExtra("isShedule", wallet_cash_spiner.getSelectedItemPosition()));
+        } else if (callNumber == 13) {
+            if (o.optString("status").equals("true")) {
+                try {
+                    JSONObject dataJsonObject = o.getJSONObject("data");
+                    Log.e(TAG, "getCreateServiceDetails: Reponse" + dataJsonObject.toString());
+                    Intent intent = new Intent(this, ChatActivity.class);
+                    intent.putExtra("user_id", dataJsonObject.getString("user_id"));
+                    intent.putExtra("serviceman_id", dataJsonObject.getString("serviceman_id"));
+                    intent.putExtra("comeFrom", "Notif");
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
 
     //Hector Call
     //Show Timer Dialog If App Is Open
-    private void showTimerDialog() {
-        Log.e("TAG", "1m Time ypeeeeee ");
-        if (getIntent().getExtras() != null) {
-            String book_serv = getIntent().getExtras().getString("type", "");
-            Log.e("TAG", "1mTypeeeeee = " + book_serv);
-            if (!book_serv.isEmpty() && book_serv.equalsIgnoreCase("book_serv")) {
-                dialogTimer();
-            }
-
-        }
+    void getCreateServiceDetails() {
+        Log.e(TAG, "getCreateServiceDetails: Called" + MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
+        RequestParams p = new RequestParams();
+        p.put("create_service_id", MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
+        postCall(getContext(), AppConstant.BASE_URL + "getCreateServiceDetails", p, "", 13);
     }
+
+    //End Call
 
     private int progress;
 
@@ -1553,7 +1585,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 p.put("createService_id", MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
                 p.put("service_status", "accepted");
                 postCall(getContext(), AppConstant.BASE_URL + "respondService", p, "", 12);
-                startActivity(new Intent(getContext(), ChatActivity.class));
+
             }
         });
         dialog.show();
@@ -1562,6 +1594,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
+    //End Call
 
     @Override
     public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
@@ -1591,4 +1624,59 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         locationProvider = new LocationProvider(this, this, this);
         locationProvider.connect();
     }
+
+
+    //Hector Call
+
+    private void createSessionForChat(String user, String password) {
+
+        Log.e(TAG, "createSessionForChat: " + user);
+
+        //Load All uses and save to cache
+        QBUsers.getUsers(null).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
+            @Override
+            public void onSuccess(ArrayList<QBUser> qbUsers, Bundle bundle) {
+                QBUserHolder.getInstance().putUser(qbUsers);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: " + e.toString());
+            }
+        });
+
+
+        final QBUser qbUser = new QBUser(user, password);
+
+        QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
+            @Override
+            public void onSuccess(QBSession qbSession, Bundle bundle) {
+                qbUser.setId(qbSession.getUserId());
+                try {
+                    qbUser.setPassword(BaseService.getBaseService().getToken());
+                } catch (BaseServiceException e) {
+                    e.printStackTrace();
+                }
+
+                QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
+                    @Override
+                    public void onSuccess(Object o, Bundle bundle) {
+
+                    }
+
+                    @Override
+                    public void onError(QBResponseException e) {
+                        Log.e(TAG, "onError: createSession " + e.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: createSession " + e.toString());
+            }
+        });
+    }
+
+    //Call End
 }

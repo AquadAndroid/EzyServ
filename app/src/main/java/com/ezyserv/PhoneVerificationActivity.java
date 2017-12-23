@@ -32,6 +32,10 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.loopj.android.http.RequestParams;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +44,10 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.ezyserv.application.MyApp.initializeFramworkWithApp;
+
 public class PhoneVerificationActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+    String TAG = "PhoneVerificationActivity";
     private Button btn_verify;
     private String value;
     private TextView mb_no;
@@ -57,6 +64,8 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     private boolean isRegister = false;
     private String countryId = "94";
     private boolean isProvider = false;
+    private String qbUserID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +81,16 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
         setTouchNClick(R.id.txt_change);
         setTouchNClick(R.id.txt_resend);
 
+        initializeFramworkWithApp(this);
+
+
         setResponseListener(this);
 
         isRegister = getIntent().getBooleanExtra("isRegister", false);
         isProvider = getIntent().getBooleanExtra("isProvider", false);
         mb_no.setText(getIntent().getStringExtra("phone"));
         Bundle extras = getIntent().getExtras();
-//
+
         MyApp.getApplication().setSharedPrefString("phone", mb_no.getText().toString());
         value = extras.getString("key").toString();
 
@@ -102,7 +114,8 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     private void verifyPhoneNumberWithCode(String verificationId, String code) {
         if (code.equals("111111")) {
             if (isRegister) {
-                registerUser();
+                Log.e(TAG, "SignUpUserForQBChat: 1");
+                SignUpUserForQBChat();
             } else {
                 Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
                 intent.putExtra("ezy", value);
@@ -229,7 +242,8 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
                             FirebaseUser user = task.getResult().getUser();
                             FirebaseAuth.getInstance().signOut();
                             if (isRegister) {
-                                registerUser();
+                                Log.e(TAG, "SignUpUserForQBChat: 2");
+                                SignUpUserForQBChat();
                             } else {
                                 Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
                                 intent.putExtra("ezy", value);
@@ -239,7 +253,9 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
                         } else {
                             if (edt_otp.getText().toString().equals("111111")) {
                                 if (isRegister) {
-                                    registerUser();
+                                    Log.e(TAG, "SignUpUserForQBChat: 3");
+                                    //AgainCalled
+                                    //SignUpUserForQBChat();
                                 } else {
                                     Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
                                     intent.putExtra("ezy", value);
@@ -285,6 +301,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
         p.put("docs1", "");
         p.put("docs2", "");
         p.put("profilepic", "");
+        p.put("qbUserID", qbUserID);
 
         postCall(getContext(), AppConstant.BASE_URL + "register", p, "Registering...", 1);
     }
@@ -314,7 +331,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
                     e.printStackTrace();
                     MyApp.popMessage("Alert!", "Parsing error.", PhoneVerificationActivity.this);
                     return;
-                } catch (JsonSyntaxException ee){
+                } catch (JsonSyntaxException ee) {
 
                 }
             } else {
@@ -342,4 +359,50 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     private Context getContext() {
         return PhoneVerificationActivity.this;
     }
+
+
+    //Hector Call
+
+    //Register User For QBChat
+    private void SignUpUserForQBChat() {
+        Log.e(TAG, "SignUpUserForQBChat: Called");
+        QBUser qbUser = new QBUser(MyApp.getSharedPrefString("name"), "12345678");
+
+
+        qbUser.setFullName(MyApp.getSharedPrefString("name"));
+        qbUser.setEmail(MyApp.getSharedPrefString("email"));
+
+        QBUsers.signUp(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                Log.e(TAG, "onSuccess register : " + qbUser.getId());
+                qbUserID = String.valueOf(qbUser.getId());
+                SignInUserForQBChat(qbUser.getFullName());
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: register " + e.toString());
+            }
+        });
+    }
+
+    //Login User For QBChat after Register
+    void SignInUserForQBChat(String fullName) {
+        QBUser qbUser = new QBUser(fullName, "12345678");
+
+        QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                Log.e(TAG, "onSuccess Login : " + qbUser.getId());
+                registerUser();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: login " + e.toString());
+            }
+        });
+    }
+    //End Call
 }

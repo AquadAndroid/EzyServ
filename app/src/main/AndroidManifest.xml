@@ -218,28 +218,29 @@
             android:name=".ScheduleServiceActivity"
             android:screenOrientation="sensorPortrait" />
 
-        <!--<provider-->
-        <!--android:name="android.support.v4.content.FileProvider"-->
-        <!--android:authorities="com.ezyserv.provider"-->
-        <!--android:exported="false"-->
-        <!--android:grantUriPermissions="true">-->
-        <!--<meta-data-->
-        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-        <!--android:resource="@xml/file_paths" />-->
-        <!--</provider>-->
+        <!-- <provider -->
+        <!-- android:name="android.support.v4.content.FileProvider" -->
+        <!-- android:authorities="com.ezyserv.provider" -->
+        <!-- android:exported="false" -->
+        <!-- android:grantUriPermissions="true"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
+        <!-- android:resource="@xml/file_paths" /> -->
+        <!-- </provider> -->
 
         <activity android:name=".ProfileUpdateActivity" />
-        <activity android:name=".AddMoneyServicesActivity"></activity>
+        <activity android:name=".AddMoneyServicesActivity" />
 
-
-        <!--Hector Call-->
+        <!-- Hector Call -->
         <receiver android:name=".MyFirebaseMessagingService$AutoDismissReceiver">
             <intent-filter>
                 <action android:name="NO_ACTION" />
             </intent-filter>
         </receiver>
 
-
+        <activity
+            android:name=".ChattingListActivity"
+            android:screenOrientation="sensorPortrait" />
     </application>
 
 </manifest>

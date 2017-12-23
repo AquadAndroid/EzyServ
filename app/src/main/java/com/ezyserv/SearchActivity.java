@@ -115,8 +115,8 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
         mClear = findViewById(R.id.clear);
         mClear.setOnClickListener(this);
 
-        mAdapter = new PlaceAutocompleteAdapter(this, R.layout.view_placesearch,
-                mGoogleApiClient, BOUNDS_INDIA, null);
+        // Hector Call
+        mAdapter = new PlaceAutocompleteAdapter(this, R.layout.view_placesearch, mGoogleApiClient, BOUNDS_INDIA, null);
         mRecyclerView.setAdapter(mAdapter);
 
         mSearchEdittext.addTextChangedListener(new TextWatcher() {

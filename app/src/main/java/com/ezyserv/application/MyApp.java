@@ -23,9 +23,12 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -33,6 +36,9 @@ import com.ezyserv.model.Country;
 import com.ezyserv.model.NearbyServices;
 import com.ezyserv.model.Services;
 import com.ezyserv.model.User;
+import com.ezyserv.utills.AppConstant;
+import com.ezyserv.utills.quickblox_common.FileUtils;
+import com.quickblox.auth.session.QBSettings;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +49,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,6 +68,20 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import cz.msebera.android.httpclient.util.EncodingUtils;
+
+import static com.ezyserv.utills.AppConstant.ACCOUNT_KEY;
+import static com.ezyserv.utills.AppConstant.AUTH_KEY;
+import static com.ezyserv.utills.AppConstant.AUTH_SECRET;
+
 //import io.fabric.sdk.android.Fabric;
 
 
@@ -64,6 +91,10 @@ public class MyApp extends Application {
     public static String SHARED_PREF_NAME = "APP_PREF";
     private static Context ctx;
     private static MyApp myApplication = null;
+
+    //Hector Call
+    SecretKeySpec sks = null;
+
 
     @Override
     public void onLowMemory() {
@@ -805,5 +836,35 @@ public class MyApp extends Application {
 
         return isInBackground;
     }
+
+    /*Register for the QB Backend*/
+    public static void initializeFramworkWithApp(Context context) {
+        QBSettings.getInstance().init(context, AppConstant.APP_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+    }
+
+    //Saving Image File to local Storage
+    public static String saveBitmapToLocal(Bitmap bm, Context context) {
+        String path = null;
+        try {
+            File file = FileUtils.getInstance(context).createTempFile("IMG_", ".jpg");
+            FileOutputStream fos = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos);
+            fos.flush();
+            fos.close();
+            path = file.getAbsolutePath();
+            Log.e("Tag", "Path = " + path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return path;
+    }
+
+    //End Call
 
 }

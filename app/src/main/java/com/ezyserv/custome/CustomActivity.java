@@ -220,7 +220,7 @@ public class CustomActivity extends AppCompatActivity implements
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 MyApp.spinnerStop();
-                Log.d("error message:", throwable.getMessage());
+                //Log.d("error message:", throwable.getMessage());
                 responseCallback.onErrorReceived(getString(R.string.something_wrong));
             }
 
@@ -245,7 +245,7 @@ public class CustomActivity extends AppCompatActivity implements
             public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
                 MyApp.spinnerStop();
                 responseCallback.onJsonObjectResponseReceived(response, callNumber);
-                Log.d("Response:", response.toString());
+                Log.e("Response:", response.toString());
             }
 
             @Override

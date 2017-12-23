@@ -3,13 +3,20 @@ package com.ezyserv;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.AppConstant;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 public class SucessfullLoginActivity extends CustomActivity {
+    String TAG = SucessfullLoginActivity.class.getSimpleName();
     private static final int SPLASH_DURATION_MS = 1000;
     private TextView tv_sucessfull, tv_sucessfull_label;
     private String value;
@@ -24,6 +31,7 @@ public class SucessfullLoginActivity extends CustomActivity {
         Bundle extras = getIntent().getExtras();
 
         value = extras.getString("ezy").toString();
+
 
 
         if (value.equals("customer_login")) {

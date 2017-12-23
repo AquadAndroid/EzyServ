@@ -20,13 +20,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp" />
 
-    <TextView                android:fontFamily="@font/ptsans_regular"
+    <TextView
         android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/img_btn_star"
         android:layout_toRightOf="@+id/image"
+        android:fontFamily="@font/ptsans_regular"
         android:textColor="#000"
         android:textSize="15sp" />
 

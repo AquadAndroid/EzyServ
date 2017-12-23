@@ -9,11 +9,12 @@
     android:paddingRight="@dimen/dim_15"
     android:paddingTop="@dimen/dim_20">
 
-    <TextView                android:fontFamily="@font/ptsans_regular"
+    <TextView
         android:id="@+id/label_att"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/ptsans_regular"
         android:text="Attach"
         android:textColor="@color/black"
         android:textSize="@dimen/dim_17" />
@@ -24,34 +25,53 @@
         android:layout_gravity="center_horizontal"
         android:padding="@dimen/dim_20">
 
-        <ImageButton
-            android:id="@+id/img_pic"
+        <LinearLayout
+            android:id="@+id/layout_attachment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:src="@drawable/add_image" />
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/img_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:background="@null"
+                android:src="@drawable/add_image" />
 
-        <ImageButton
-            android:id="@+id/img_video"
+            <ImageButton
+                android:id="@+id/img_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/add_video" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_send_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dim_70"
-            android:layout_toRightOf="@+id/img_pic"
-            android:background="@null"
-            android:src="@drawable/add_video" />
+            android:layout_below="@+id/layout_attachment"
+            android:layout_marginTop="@dimen/dim_5"
+            android:background="@drawable/rect_white_blue"
+            android:drawableLeft="@drawable/location_blue"
+            android:drawablePadding="@dimen/dim_10"
+            android:fontFamily="@font/ptsans_regular"
+            android:padding="@dimen/dim_10"
+            android:text="Send your Address"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18" />
     </RelativeLayout>
 
     <Button
+        android:id="@+id/diag_btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/dim_20"
         android:background="@null"
         android:text="CANCEL"
-        android:id="@+id/diag_btn_cancel"
         android:textColor="@color/pink"
         android:textSize="@dimen/dim_18" />
 </LinearLayout>

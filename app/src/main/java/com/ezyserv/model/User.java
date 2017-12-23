@@ -30,6 +30,7 @@ public class User implements Serializable {
     private String availability;
     private String currentActive;
     private Service service;
+    private String qbUserID;
 
     public Service getService() {
         return service;
@@ -212,6 +213,14 @@ public class User implements Serializable {
 
     public void setDevice_token(String device_token) {
         this.device_token = device_token;
+    }
+
+    public String getQbUserID() {
+        return qbUserID;
+    }
+
+    public void setQbUserID(String qbUserID) {
+        this.qbUserID = qbUserID;
     }
 
     public class Service implements Serializable {

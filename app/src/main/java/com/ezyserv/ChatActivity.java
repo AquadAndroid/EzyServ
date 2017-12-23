@@ -1,35 +1,167 @@
 package com.ezyserv;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
+import com.ezyserv.utills.AppConstant;
+import com.ezyserv.utills.quickblox_common.Common;
+import com.ezyserv.utills.quickblox_common.FileUtils;
+import com.ezyserv.utills.quickblox_common.QBChatMessageHolder;
+import com.ezyserv.utills.quickblox_common.QBUserHolder;
+import com.github.library.bubbleview.BubbleImageView;
+import com.github.library.bubbleview.BubbleTextView;
+import com.github.rtoshiro.view.video.FullscreenVideoLayout;
+import com.loopj.android.http.RequestParams;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.BaseService;
+import com.quickblox.auth.session.QBSession;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.QBIncomingMessagesManager;
+import com.quickblox.chat.QBRestChatService;
+import com.quickblox.chat.exception.QBChatException;
+import com.quickblox.chat.listeners.QBChatDialogMessageListener;
+import com.quickblox.chat.listeners.QBChatDialogTypingListener;
+import com.quickblox.chat.model.QBAttachment;
+import com.quickblox.chat.model.QBChatDialog;
+import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.chat.request.QBMessageGetBuilder;
+import com.quickblox.chat.utils.DialogUtils;
+import com.quickblox.content.QBContent;
+import com.quickblox.content.model.QBFile;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.QBProgressCallback;
+import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
-public class ChatActivity extends CustomActivity {
+import org.jivesoftware.smack.SmackException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.ezyserv.application.MyApp.initializeFramworkWithApp;
+
+public class ChatActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+    String TAG = ChatActivity.class.getSimpleName();
     private Toolbar toolbar;
     private FloatingActionButton call;
     private TextView send_address;
     private EditText chat_box;
     private ImageButton attach_file, send_msg;
+    int IMAGE_PICK_CODE = 101;
+    int VIDEO_PICK_CODE = 102;
+    QBChatDialog qbChatDialog;
+    MessageListAdapter chatMessageAdaprter;
+    RecyclerView listViewMessages;
+    Uri selectedFile;
+    String filePathProfile;
+    ProgressBar progressBarChatActivity;
+    FullscreenVideoLayout videoLayout;
+    NotificationManager mNotificationManager;
+    String qbChatDialogId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        setResponseListener(this);
 
+        setupuiElement();
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert mNotificationManager != null;
+        mNotificationManager.cancel(1);
+
+
+        setUpToolbar();
+
+        initializeFramworkWithApp(this);
+
+        if (!getIntent().getStringExtra("comeFrom").equals("listing")) {
+            Log.e(TAG, "onCreate: " + getIntent().getStringExtra("serviceman_id"));
+            Log.e(TAG, "onCreate: " + getIntent().getStringExtra("user_id"));
+
+            //First Call to getChatID
+            getChatID(getIntent().getStringExtra("user_id"), getIntent().getStringExtra("serviceman_id"));
+        } else {
+            initChatDialog((QBChatDialog) getIntent().getSerializableExtra(Common.DIALOG_EXTRA));
+        }
+
+
+        retrieveAllMessages();
+    }
+
+    //get the cht id from the local database
+    private void getChatID(String userid, String servicemanid) {
+        RequestParams p = new RequestParams();
+        p.put("user_id", userid);
+        p.put("serviceman_id", servicemanid);
+        postCall(this, AppConstant.BASE_URL + "getChatID", p, "", 0);
+    }
+
+    //Saving the Chat Relation data (userid,servicemanid,chatroomid)
+    private void saveChatRelaction(int user_id, int serviceman_id, String chatRoomId) {
+        RequestParams p = new RequestParams();
+        p.put("serviceman_id", String.valueOf(serviceman_id));
+        p.put("user_id", String.valueOf(user_id));
+        p.put("chatRoomId", chatRoomId);
+        postCall(this, AppConstant.BASE_URL + "saveChatRelaction", p, "", 1);
+    }
+
+    //set up of the toolbar
+    void setUpToolbar() {
         toolbar = (Toolbar) findViewById(R.id.chat_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -39,17 +171,23 @@ public class ChatActivity extends CustomActivity {
         TextView mTitle = (TextView) toolbar.findViewById(R.id.chat_toolbar_title);
         mTitle.setText("Company Name");
         actionBar.setTitle("");
-
-        setupuiElement();
     }
 
+    //set up of UI elements goes here
     private void setupuiElement() {
-
 
         setTouchNClick(R.id.tv_send_address);
         setTouchNClick(R.id.img_btn_attach);
         setTouchNClick(R.id.img_btn_send_msg);
         setTouchNClick(R.id.call_btn);
+
+        progressBarChatActivity = findViewById(R.id.progressBarChatActivity);
+        listViewMessages = findViewById(R.id.listViewMessages);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        listViewMessages.setLayoutManager(layoutManager);
+        listViewMessages.setHasFixedSize(true);
+        listViewMessages.setItemAnimator(new DefaultItemAnimator());
 
         send_address = (TextView) findViewById(R.id.tv_send_address);
         chat_box = (EditText) findViewById(R.id.edt_chat_box);
@@ -57,24 +195,58 @@ public class ChatActivity extends CustomActivity {
         attach_file = (ImageButton) findViewById(R.id.img_btn_attach);
         send_msg = (ImageButton) findViewById(R.id.img_btn_send_msg);
 
+
     }
 
+    //Handle on click event of control
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.tv_send_address) {
             startActivity(new Intent(ChatActivity.this, AddAddressActivity.class));
         } else if (v.getId() == R.id.img_btn_attach) {
-            openImage();
+            openAttachmentSelection();
         } else if (v.getId() == R.id.img_btn_send_msg) {
+            sendTextMessage(chat_box.getText().toString());
             chat_box.setText("");
-            Toast.makeText(this, "Message Send ", Toast.LENGTH_SHORT).show();
-
         } else if (v.getId() == R.id.call_btn) {
             Toast.makeText(this, "Calling.....", Toast.LENGTH_SHORT).show();
+        } else if (v.getId() == R.id.edt_chat_box) {
+            //scrollMyListViewToBottom();
+            Log.e(TAG, "onClick: Scroll to bottom");
         }
     }
 
-    private void openImage() {
+    //Sending text messages
+    private void sendTextMessage(String msg) {
+        QBChatMessage qbChatMessage = new QBChatMessage();
+        qbChatMessage.setBody(msg);
+        qbChatMessage.setSenderId(QBChatService.getInstance().getUser().getId());
+        qbChatMessage.setSaveToHistory(true);
+        qbChatMessage.setMarkable(true);
+
+        try {
+            qbChatDialog.sendMessage(qbChatMessage);
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+
+
+        /*if (getUserById(qbChatDialog.getOccupants().get(1)).equals("offline")) {
+            sendPushMessage();
+        }*/
+        //Put message to catch
+
+        QBChatMessageHolder.getInstance().putMessage(qbChatDialog.getDialogId(), qbChatMessage);
+        ArrayList<QBChatMessage> messages = QBChatMessageHolder.getInstance().getChatMessagesByDialogId(qbChatDialog.getDialogId());
+
+        chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, messages);
+        listViewMessages.setAdapter(chatMessageAdaprter);
+        chatMessageAdaprter.notifyDataSetChanged();
+        //scrollMyListViewToBottom();
+    }
+
+    //Pop up for the attachment selection
+    private void openAttachmentSelection() {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -99,17 +271,646 @@ public class ChatActivity extends CustomActivity {
         select_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ChatActivity.this, "Please Select Image to Send", Toast.LENGTH_SHORT).show();
+                if (isPermissionGranted(IMAGE_PICK_CODE)) {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, IMAGE_PICK_CODE);
+                    dialog.dismiss();
+                }
             }
         });
         select_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(ChatActivity.this, "Please Select Video to send", Toast.LENGTH_SHORT).show();
+                if (isPermissionGranted(VIDEO_PICK_CODE)) {
+                    Intent videoPickerIntent = new Intent();
+                    videoPickerIntent.setType("video/*");
+                    videoPickerIntent.setAction(Intent.ACTION_PICK);
+                    startActivityForResult(videoPickerIntent, VIDEO_PICK_CODE);
+                    dialog.dismiss();
+                }
             }
         });
         dialog.show();
 
     }
+
+    //Checking runtime permission for Accessing the Local Files
+    public boolean isPermissionGranted(int digit) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, digit);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    //Handling the Response taken by the Results
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK) {
+            if (data.getData() != null) {
+                selectedFile = data.getData();
+                String file = FileUtils.getPath(this, selectedFile);
+                Log.e(TAG, "onActivityResult: " + file);
+                if (file.endsWith(".jpg") || file.endsWith(".png")) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedFile);
+                        filePathProfile = saveBitmapToLocal(bitmap, ChatActivity.this);
+                        File sendImageFile = new File(filePathProfile);
+
+                        openDialogImgePreview(sendImageFile, "", "fileSelected");
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(this, "Invalid File Format !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (requestCode == VIDEO_PICK_CODE && resultCode == RESULT_OK) {
+            if (data.getData() != null) {
+                selectedFile = data.getData();
+                String file = FileUtils.getPath(this, selectedFile);
+                Log.e(TAG, "onActivityResult: " + file);
+                if (file.endsWith(".3gp") || file.endsWith(".mp4")) {
+
+                    Uri selectedImage = data.getData();
+                    String[] filePath = {MediaStore.Video.Media.DATA};
+                    Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String videoPath = c.getString(columnIndex);
+                    c.close();
+                    openVideoView(videoPath);
+
+                } else {
+                    Toast.makeText(this, "Invalid File Format !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    //Opening video view
+    private void openVideoView(final String videoPath) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_video_picked);
+        VideoView videoPreview = dialog.findViewById(R.id.videoPreview);
+        ImageButton imgDialogImgSend = dialog.findViewById(R.id.imgDialogImgSend);
+        videoPreview.setVideoPath(videoPath);
+        videoPreview.start();
+        imgDialogImgSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File sendVideoFile = new File(videoPath);
+                sendAttachmentImage(sendVideoFile, "vid");
+                dialog.dismiss();
+            }
+        });
+        dialog.getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+    //Saving the iamge file to local storage and deleting the same
+    public String saveBitmapToLocal(Bitmap bm, Context context) {
+        String path = null;
+        try {
+            File file = FileUtils.getInstance(context).createTempFile("IMG_", ".jpg");
+            FileOutputStream fos = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos);
+            fos.flush();
+            fos.close();
+            path = file.getAbsolutePath();
+            Log.e("Tag", "Path = " + path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return path;
+    }
+
+    //Hector Call
+
+    //Creating private chat dialog for the fist time user going to chat
+    private void createChatPrivate(String qbUserId) {
+
+        final ProgressDialog progressDialog = new ProgressDialog(ChatActivity.this);
+        progressDialog.setMessage("Please Wait. . .");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        QBChatDialog qbChatDialog = DialogUtils.buildPrivateDialog(Integer.parseInt(qbUserId));
+
+        QBRestChatService.createChatDialog(qbChatDialog).performAsync(new QBEntityCallback<QBChatDialog>() {
+            @Override
+            public void onSuccess(QBChatDialog dialog, Bundle bundle) {
+                qbChatDialogId = dialog.getDialogId();
+                progressDialog.dismiss();
+                saveChatRelaction(dialog.getOccupants().get(0), dialog.getOccupants().get(1), qbChatDialogId);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: " + e.toString());
+            }
+        });
+
+    }
+
+    //Loading chat dialog from the id taken from the notification data payload
+    private void loadChatDialogById(String qbChatDialogId) {
+        QBRestChatService.getChatDialogById(qbChatDialogId).performAsync(
+                new QBEntityCallback<QBChatDialog>() {
+                    @Override
+                    public void onSuccess(QBChatDialog dialog, Bundle params) {
+                        initChatDialog(dialog);
+                    }
+
+                    @Override
+                    public void onError(QBResponseException responseException) {
+
+                    }
+                });
+    }
+
+    //Initializing the chat dialog
+    private void initChatDialog(QBChatDialog dialog) {
+
+        if (getIntent().getStringExtra("comeFrom").equals("listing")) {
+            qbChatDialog = (QBChatDialog) getIntent().getSerializableExtra(Common.DIALOG_EXTRA);
+            qbChatDialog.initForChat(QBChatService.getInstance());
+        } else {
+            qbChatDialog = dialog;
+            qbChatDialog.initForChat(QBChatService.getInstance());
+        }
+
+        //Register
+
+        QBIncomingMessagesManager incomingMessages = QBChatService.getInstance().getIncomingMessagesManager();
+        incomingMessages.addDialogMessageListener(new QBChatDialogMessageListener() {
+            @Override
+            public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
+
+                //Catch Message
+                QBChatMessageHolder.getInstance().putMessage(qbChatMessage.getDialogId(), qbChatMessage);
+                ArrayList<QBChatMessage> messages = QBChatMessageHolder.getInstance().getChatMessagesByDialogId(qbChatMessage.getDialogId());
+
+                chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, messages);
+                listViewMessages.setAdapter(chatMessageAdaprter);
+                chatMessageAdaprter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void processError(String s, QBChatException e, QBChatMessage qbChatMessage, Integer integer) {
+                Toast.makeText(ChatActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        registerTypingForCHatDialog(qbChatDialog);
+
+    }
+
+    //Registering the chat dialog for the message Typing status
+    private void registerTypingForCHatDialog(QBChatDialog qbChatDialog) {
+        QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
+            @Override
+            public void processUserIsTyping(String dialogId, Integer senderId) {
+               /* if (txtTypingStatus.getVisibility() == View.INVISIBLE)
+                    txtTypingStatus.setVisibility(View.VISIBLE);*/
+            }
+
+            @Override
+            public void processUserStopTyping(String dialogId, Integer senderId) {
+                /*if (txtTypingStatus.getVisibility() == View.VISIBLE)
+                    txtTypingStatus.setVisibility(View.INVISIBLE);*/
+            }
+        };
+        qbChatDialog.addIsTypingListener(typingListener);
+    }
+
+    //Retrieving the Old Message history
+    private void retrieveAllMessages() {
+        final QBMessageGetBuilder messageGetBuilder = new QBMessageGetBuilder();
+        messageGetBuilder.setLimit(500);
+
+        if (qbChatDialog != null) {
+            QBRestChatService.getDialogMessages(qbChatDialog, messageGetBuilder).performAsync(new QBEntityCallback<ArrayList<QBChatMessage>>() {
+                @Override
+                public void onSuccess(ArrayList<QBChatMessage> qbChatMessages, Bundle bundle) {
+                    //Put message to catch
+                    QBChatMessageHolder.getInstance().putMessage(qbChatDialog.getDialogId(), qbChatMessages);
+
+                    chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, qbChatMessages);
+                    listViewMessages.setAdapter(chatMessageAdaprter);
+                    chatMessageAdaprter.notifyDataSetChanged();
+                    //scrollMyListViewToBottom();
+                }
+
+                @Override
+                public void onError(QBResponseException e) {
+                    Toast.makeText(ChatActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
+
+
+    //Handle API Response in the for of Json Object
+    @Override
+    public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
+        switch (callNumber) {
+            //Result getChildId
+            case 0:
+                if (o.optString("status").equals("true")) {
+                    try {
+                        JSONObject dataJsonObject = o.getJSONObject("data");
+                        dataJsonObject.getString("userQBid");
+                        dataJsonObject.getString("servicemanQBid");
+                        dataJsonObject.getString("chatRoomId");
+                        Log.e(TAG, "Already Chated Data" + dataJsonObject.toString());
+
+                        loadChatDialogById(dataJsonObject.getString("chatRoomId"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (o.optString("status").equals("false")) {
+                    try {
+                        JSONObject dataJsonObject = o.getJSONObject("data");
+                        dataJsonObject.getString("userQBid");
+                        dataJsonObject.getString("servicemanQBid");
+                        dataJsonObject.getString("chatRoomId");
+                        Log.e(TAG, "First Chat: " + dataJsonObject.toString());
+                        createChatPrivate(dataJsonObject.getString("servicemanQBid"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
+            //Response of saveChatRelaction API
+            case 1:
+                if (o.optString("status").equals("true")) {
+                    try {
+                        JSONObject dataJsonObject = o.getJSONObject("data");
+                        Log.e(TAG, "Save Chat Relation : " + dataJsonObject.toString());
+                        loadChatDialogById(dataJsonObject.getString("chatRoomId"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+    }
+
+    //Handle API response in the format of JSONArray
+    @Override
+    public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
+
+    }
+
+    //Handle API error
+    @Override
+    public void onErrorReceived(String error) {
+
+    }
+
+
+    //Opening Image Preview popup Dialog
+    private void openDialogImgePreview(final File sendImageFile, String uri, String from) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_image_picked);
+        ImageView imgViewImagePicked = dialog.findViewById(R.id.imgViewImagePicked);
+        ImageButton imgDialogImgSend = dialog.findViewById(R.id.imgDialogImgSend);
+
+        if (from.equals("show")) {
+            imgDialogImgSend.setVisibility(View.GONE);
+            Glide.with(this).load(uri).into(imgViewImagePicked);
+        } else
+            imgViewImagePicked.setImageURI(Uri.fromFile(sendImageFile));
+
+        imgDialogImgSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendAttachmentImage(sendImageFile, "img");
+                dialog.dismiss();
+            }
+        });
+        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        dialog.show();
+    }
+
+    //Check The Message is Attachment or not
+    private boolean hasAttachments(QBChatMessage chatMessage) {
+        Collection<QBAttachment> attachments = chatMessage.getAttachments();
+        return attachments != null && !attachments.isEmpty();
+    }
+
+    //Send Attachment Message
+    private void sendAttachmentImage(File filePhoto, final String type) {
+
+        progressBarChatActivity.setVisibility(View.VISIBLE);
+
+        QBContent.uploadFileTask(filePhoto, true, null, new QBProgressCallback() {
+            @Override
+            public void onProgressUpdate(int i) {
+                // i - progress in percentages
+            }
+        }).performAsync(new QBEntityCallback<QBFile>() {
+            @Override
+            public void onSuccess(QBFile file, Bundle bundle) {
+                // create a message
+                QBChatMessage chatMessage = new QBChatMessage();
+                chatMessage.setSaveToHistory(true);
+                // Save a message to history
+
+                // attach a Media
+                QBAttachment attachment;
+                if (type.equals("vid")) {
+                    attachment = new QBAttachment(QBAttachment.VIDEO_TYPE);
+                } else {
+                    attachment = new QBAttachment(QBAttachment.IMAGE_TYPE);
+                }
+
+
+                attachment.setId(file.getId().toString());
+                attachment.setUrl(file.getPublicUrl());
+                chatMessage.setSenderId(QBChatService.getInstance().getUser().getId());
+                chatMessage.addAttachment(attachment);
+
+                // send a message
+                try {
+                    qbChatDialog.sendMessage(chatMessage);
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                }
+
+                //Put message to catch
+
+                QBChatMessageHolder.getInstance().putMessage(qbChatDialog.getDialogId(), chatMessage);
+                ArrayList<QBChatMessage> messages = QBChatMessageHolder.getInstance().getChatMessagesByDialogId(qbChatDialog.getDialogId());
+
+                chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, messages);
+                listViewMessages.setAdapter(chatMessageAdaprter);
+                chatMessageAdaprter.notifyDataSetChanged();
+                progressBarChatActivity.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Toast.makeText(ChatActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                progressBarChatActivity.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    //Retrieving the Video File
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath)
+            throws Throwable {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever mediaMetadataRetriever = null;
+        try {
+            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14)
+                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+            else
+                mediaMetadataRetriever.setDataSource(videoPath);
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Throwable(
+                    "Exception in retriveVideoFrameFromVideo(String videoPath)"
+                            + e.getMessage());
+
+        } finally {
+            if (mediaMetadataRetriever != null) {
+                mediaMetadataRetriever.release();
+            }
+        }
+        return bitmap;
+    }
+
+
+    class MessageListAdapter extends RecyclerView.Adapter {
+        private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+        private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
+        private Context mContext;
+        private List<QBChatMessage> mMessageList;
+
+        public MessageListAdapter(Context context, List<QBChatMessage> messageList) {
+            mContext = context;
+            mMessageList = messageList;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view;
+
+            if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_message_sent, parent, false);
+                return new SentMessageHolder(view);
+            } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_message_received, parent, false);
+                return new ReceivedMessageHolder(view);
+            }
+
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            QBChatMessage message = mMessageList.get(position);
+
+            switch (holder.getItemViewType()) {
+                case VIEW_TYPE_MESSAGE_SENT:
+                    ((SentMessageHolder) holder).bind(message);
+                    break;
+                case VIEW_TYPE_MESSAGE_RECEIVED:
+                    ((ReceivedMessageHolder) holder).bind(message);
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+
+
+            if (mMessageList.get(position).getSenderId().equals(QBChatService.getInstance().getUser().getId())) {
+                // If the current user is the sender of the message
+                return VIEW_TYPE_MESSAGE_SENT;
+            } else {
+                // If some other user sent the message
+                return VIEW_TYPE_MESSAGE_RECEIVED;
+            }
+        }
+
+        private class SentMessageHolder extends RecyclerView.ViewHolder {
+            TextView messageText, timeText;
+            ImageView message_content_media, imgActionAttachment;
+            SentMessageHolder(View itemView) {
+                super(itemView);
+
+                messageText = (TextView) itemView.findViewById(R.id.text_message_body);
+                message_content_media = (ImageView) itemView.findViewById(R.id.message_content_media);
+                imgActionAttachment = (ImageView) itemView.findViewById(R.id.imgActionAttachment);
+                timeText = (TextView) itemView.findViewById(R.id.text_message_time);
+            }
+
+            void bind(QBChatMessage message) {
+                timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
+                if (hasAttachments(message)) {
+                    Collection<QBAttachment> attachments = message.getAttachments();
+                    final QBAttachment attachment = attachments.iterator().next();
+                    messageText.setVisibility(View.GONE);
+                    message_content_media.setVisibility(View.VISIBLE);
+                    imgActionAttachment.setVisibility(View.VISIBLE);
+                    if (attachment.getType().equals("video")) {
+                        imgActionAttachment.setImageResource(R.drawable.play_button);
+                        imgActionAttachment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                videoPopUpView(attachment.getUrl());
+                            }
+                        });
+
+                        try {
+                            try {
+                                Bitmap thumbnail = retriveVideoFrameFromVideo(attachment.getUrl());
+                                message_content_media.setImageBitmap(thumbnail);
+                            } catch (Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } else {
+                        imgActionAttachment.setImageResource(R.drawable.full_screen_arrows);
+                        Glide.with(mContext).load(attachment.getUrl()).into(message_content_media);
+                        imgActionAttachment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                openDialogImgePreview(null, attachment.getUrl(), "show");
+                            }
+                        });
+                    }
+                } else {
+                    messageText.setText(message.getBody());
+                    timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
+                }
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return mMessageList.size();
+        }
+
+        private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
+            TextView messageText, timeText;
+            ImageView imgActionAttachment, message_content_media_rcv;
+            ReceivedMessageHolder(View itemView) {
+                super(itemView);
+                messageText = (TextView) itemView.findViewById(R.id.text_message_body);
+                timeText = (TextView) itemView.findViewById(R.id.text_message_time);
+
+                imgActionAttachment = (ImageView) itemView.findViewById(R.id.imgActionAttachment);
+                message_content_media_rcv = (ImageView) itemView.findViewById(R.id.message_content_media_rcv);
+            }
+
+            void bind(QBChatMessage message) {
+                timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
+                if (hasAttachments(message)) {
+
+                    Collection<QBAttachment> attachments = message.getAttachments();
+                    final QBAttachment attachment = attachments.iterator().next();
+                    messageText.setVisibility(View.GONE);
+                    message_content_media_rcv.setVisibility(View.VISIBLE);
+                    imgActionAttachment.setVisibility(View.VISIBLE);
+                    if (attachment.getType().equals("video")) {
+                        imgActionAttachment.setImageResource(R.drawable.play_button);
+                        Glide.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
+                        imgActionAttachment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                videoPopUpView(attachment.getUrl());
+                            }
+                        });
+
+                    } else {
+                        imgActionAttachment.setImageResource(R.drawable.full_screen_arrows);
+                        imgActionAttachment.setVisibility(View.VISIBLE);
+                        Glide.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
+                        imgActionAttachment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                openDialogImgePreview(null, attachment.getUrl(), "show");
+                            }
+                        });
+
+                    }
+
+                } else {
+                    messageText.setText(message.getBody());
+                    timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
+                }
+            }
+        }
+    }
+
+    void videoPopUpView(String videoUri) {
+        Dialog dialog = new Dialog(ChatActivity.this);
+        dialog.setContentView(R.layout.dialog_video_view);
+        videoLayout = dialog.findViewById(R.id.videoview);
+        videoLayout.setActivity(ChatActivity.this);
+
+
+        try {
+            videoLayout.setVideoURI(Uri.parse(videoUri));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        dialog.show();
+    }
+    public String parseDateToHHMM(String time) {
+        Log.e(TAG, "parseDateToHHMM: " + time);
+        String inputPattern = "HHmmsssss";
+        String outputPattern = "h:mm a";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+    //ENd Call
+
+
 }

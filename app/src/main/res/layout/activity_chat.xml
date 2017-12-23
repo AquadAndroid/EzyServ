@@ -5,9 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1E3F2"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.ezyserv.ChatActivity">
 
-    <include layout="@layout/chat_toolbar" />
+    <include
+        android:id="@+id/chat_toolbar"
+        layout="@layout/chat_toolbar" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/call_btn"
@@ -21,20 +25,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/chat_box_rel"
+        android:layout_below="@+id/chat_toolbar"
         android:background="@color/white"
         android:orientation="vertical"
         android:padding="@dimen/dim_10">
 
-        <TextView                android:fontFamily="@font/ptsans_regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dim_50"
-            android:text="13 April 17 "
-            android:textColor="@color/black"
-            android:textSize="@dimen/dim_18" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listViewMessages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <RelativeLayout
@@ -44,7 +46,7 @@
         android:layout_alignParentBottom="true"
         android:padding="@dimen/dim_10">
 
-        <TextView                android:fontFamily="@font/ptsans_regular"
+        <TextView
             android:id="@+id/tv_send_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,13 +54,15 @@
             android:background="@drawable/rect_white_blue"
             android:drawableLeft="@drawable/location_blue"
             android:drawablePadding="@dimen/dim_10"
-
+            android:fontFamily="@font/ptsans_regular"
             android:padding="@dimen/dim_10"
 
             android:text="Send your Address"
-            android:textColor="@color/blue"
 
-            android:textSize="@dimen/dim_18" />
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dim_18"
+
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -77,7 +81,7 @@
                 android:background="@null"
                 android:src="@drawable/attachment" />
 
-            <EditText                android:fontFamily="@font/ptsans_regular"
+            <EditText
                 android:id="@+id/edt_chat_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,6 +89,7 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:backgroundTint="@null"
+                android:fontFamily="@font/ptsans_regular"
                 android:hint="Send message to serviceman"
                 android:maxLines="1"
                 android:padding="@dimen/dim_10"
@@ -101,4 +106,12 @@
                 android:src="@drawable/btn_send_msg" />
         </RelativeLayout>
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarChatActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
 </RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/incoming_message_bg">
+
+    <TextView
+        android:id="@+id/text_message_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="hi man, how are you?" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/message_content_media_rcv"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/imgActionAttachment"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_message_body"
+        android:layout_marginLeft="4dp"
+        android:text="11:40"
+        android:textSize="10sp" />
+
+</RelativeLayout>

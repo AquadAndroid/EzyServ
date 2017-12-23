@@ -55,7 +55,7 @@
                         android:layout_toRightOf="@+id/view_search_one"
                         android:background="@color/pink" />
 
-                    <EditText                android:fontFamily="@font/ptsans_regular"
+                    <EditText
                         android:id="@+id/search_et"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -63,6 +63,7 @@
                         android:layout_toRightOf="@+id/view_search_two"
                         android:background="@null"
                         android:drawablePadding="@dimen/dim_10"
+                        android:fontFamily="@font/ptsans_regular"
                         android:hint="Search"
                         android:imeOptions="actionSearch"
                         android:maxLines="1"
@@ -83,20 +84,20 @@
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
-        <TextView                android:fontFamily="@font/ptsans_regular"
+        <TextView
             android:id="@+id/tv_saved_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/search_layout"
             android:layout_margin="@dimen/dim_10"
-            android:textSize="@dimen/dim_16"
-            android:visibility="gone"
+            android:fontFamily="@font/ptsans_regular"
             android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dim_7"
             android:paddingLeft="@dimen/dim_10"
             android:paddingRight="@dimen/dim_10"
             android:paddingTop="@dimen/dim_7"
-            android:paddingBottom="@dimen/dim_7"
-            />
+            android:textSize="@dimen/dim_16"
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_search"

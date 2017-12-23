@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -23,16 +24,23 @@ import com.ezyserv.utills.AppConstant;
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.ezyserv.application.MyApp.initializeFramworkWithApp;
+
 public class ServiceLoginActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+    String TAG = "ServiceLoginActivity";
     private Toolbar toolbar;
     private EditText cust_mobile_no;
     private Button cust_login;
-//    private CheckBox checkBox;
+    //    private CheckBox checkBox;
     private CountryCodePicker countryCodePicker;
     private TextView cust_term_cond;
 
@@ -52,6 +60,9 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
         actionBar.setTitle("");
 
         setupuiElement();
+
+        //Initializing the App with QB
+        initializeFramworkWithApp(this);
     }
 
     private void setupuiElement() {
@@ -145,7 +156,7 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
                                 " You can login as a customer and select option to become service provider." +
                                 "\nThank you", getContext());
                     } else
-                        phVerification();
+                        SignInUserForQBChat(u.getName());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -164,5 +175,23 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
     @Override
     public void onErrorReceived(String error) {
         MyApp.popMessage("Error", error, getContext());
+    }
+
+    //Login Service Man For Chat the user is trying to login
+    void SignInUserForQBChat(String fullName) {
+        QBUser qbUser = new QBUser(fullName, "12345678");
+
+        QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                Log.e(TAG, "onSuccess Login : " + qbUser.getId());
+                phVerification();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: login " + e.toString());
+            }
+        });
     }
 }

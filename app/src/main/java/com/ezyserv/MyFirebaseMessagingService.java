@@ -40,10 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         //Hector Call
-        Log.e(TAG, "onMessageReceived: message: " + remoteMessage.getData().get("message"));
-        Log.e(TAG, "onMessageReceived: Title: " + remoteMessage.getData().get("title"));
-        Log.e(TAG, "onMessageReceived: mType: " + remoteMessage.getData().get("mType"));
-        Log.e(TAG, "onMessageReceived: " + MyApp.getApplication().readUser().getIsServicemen());
+        Log.e(TAG, "onMessageReceived: data: " + remoteMessage.getData());
         MyApp.setSharedPrefString(AppConstant.REQUESTED_SERVICE_ID, remoteMessage.getData().get("createService_id"));
 
 
@@ -73,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(registrationCompletef);
                     break;
                 case "noOneAccept": // gives alert to user when no one accept the request
-//                    if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
+                    //if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
                     sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
                     Intent registrationComplete = null;
                     try {
@@ -85,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     //Sending the broadcast that registration is completed
                     LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
-//                    }
+                    //}
                     break;
                 case "createService":   // this will pop up the accept reject option at provider side
                     if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {

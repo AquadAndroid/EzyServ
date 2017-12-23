@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -23,13 +24,19 @@ import com.ezyserv.utills.AppConstant;
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CustomerLoginActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+import static com.ezyserv.application.MyApp.initializeFramworkWithApp;
 
+public class CustomerLoginActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+    String TAG = "CustomerLoginActivity";
     private Toolbar toolbar;
     private EditText cust_mobile_no;
     private Button btn_login;
@@ -52,6 +59,9 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
         mTitle.setText("Log In as Customer");
         actionBar.setTitle("");
         setupUiElement();
+
+        //Initializing the App with QB
+        initializeFramworkWithApp(this);
 
     }
 
@@ -79,6 +89,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
                 return;
             }*/
+
             callLogin();
 
         } else if (v.getId() == R.id.custom_term_cond) {
@@ -135,7 +146,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
                 User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
                 MyApp.getApplication().writeUser(u);
                 if (u.getId().length() > 0) {
-                    phVerification();
+                    SignInUserForQBChat(u.getName());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -158,5 +169,24 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
 
     private Context getContext() {
         return CustomerLoginActivity.this;
+    }
+
+
+    //LoginUser For Chat the user is trying to login
+    void SignInUserForQBChat(String fullName) {
+        QBUser qbUser = new QBUser(fullName, "12345678");
+
+        QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                Log.e(TAG, "onSuccess Login : " + qbUser.getId());
+                phVerification();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: login " + e.toString());
+            }
+        });
     }
 }

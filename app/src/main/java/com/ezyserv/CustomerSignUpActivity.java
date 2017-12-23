@@ -292,4 +292,6 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
     public void onErrorReceived(String error) {
         MyApp.popMessage("Error", error, getContext());
     }
+
+
 }
