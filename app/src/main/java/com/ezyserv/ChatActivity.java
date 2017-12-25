@@ -14,8 +14,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,7 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.AppConstant;
@@ -72,8 +73,11 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBProgressCallback;
 import com.quickblox.core.exception.BaseServiceException;
 import com.quickblox.core.exception.QBResponseException;
+
+import com.quickblox.ui.kit.chatmessage.adapter.utils.LocationUtils;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
+import com.squareup.picasso.Picasso;
 
 import org.jivesoftware.smack.SmackException;
 import org.json.JSONArray;
@@ -98,11 +102,12 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     String TAG = ChatActivity.class.getSimpleName();
     private Toolbar toolbar;
     private FloatingActionButton call;
-    private TextView send_address;
+
     private EditText chat_box;
     private ImageButton attach_file, send_msg;
     int IMAGE_PICK_CODE = 101;
     int VIDEO_PICK_CODE = 102;
+    int LOCATION_PICK_CODE = 103;
     QBChatDialog qbChatDialog;
     MessageListAdapter chatMessageAdaprter;
     RecyclerView listViewMessages;
@@ -189,7 +194,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         listViewMessages.setHasFixedSize(true);
         listViewMessages.setItemAnimator(new DefaultItemAnimator());
 
-        send_address = (TextView) findViewById(R.id.tv_send_address);
+        //send_address = (TextView) findViewById(R.id.tv_send_address);
         chat_box = (EditText) findViewById(R.id.edt_chat_box);
         call = (FloatingActionButton) findViewById(R.id.call_btn);
         attach_file = (ImageButton) findViewById(R.id.img_btn_attach);
@@ -206,7 +211,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         } else if (v.getId() == R.id.img_btn_attach) {
             openAttachmentSelection();
         } else if (v.getId() == R.id.img_btn_send_msg) {
-            sendTextMessage(chat_box.getText().toString());
+            sendMessage("text", null);
             chat_box.setText("");
         } else if (v.getId() == R.id.call_btn) {
             Toast.makeText(this, "Calling.....", Toast.LENGTH_SHORT).show();
@@ -217,13 +222,19 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     }
 
     //Sending text messages
-    private void sendTextMessage(String msg) {
+    private void sendMessage(String type, Object attachmentObject) {
         QBChatMessage qbChatMessage = new QBChatMessage();
-        qbChatMessage.setBody(msg);
+        if (type.equals("text"))
+            qbChatMessage.setBody(chat_box.getText().toString());
+        else {
+            // attach a Location
+            QBAttachment attachment;
+            attachment = getAttachmentLocation((String) attachmentObject);
+            qbChatMessage.addAttachment(attachment);
+        }
         qbChatMessage.setSenderId(QBChatService.getInstance().getUser().getId());
         qbChatMessage.setSaveToHistory(true);
         qbChatMessage.setMarkable(true);
-
         try {
             qbChatDialog.sendMessage(qbChatMessage);
         } catch (SmackException.NotConnectedException e) {
@@ -259,6 +270,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         dialog.getWindow().setAttributes(lp);
 
         Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.diag_btn_cancel);
+        TextView tv_send_address = (TextView) dialog.findViewById(R.id.tv_send_address);
         ImageButton select_pic = (ImageButton) dialog.findViewById(R.id.img_pic);
         final ImageButton select_video = (ImageButton) dialog.findViewById(R.id.img_video);
         dialog_cancel_Button.setOnClickListener(new View.OnClickListener() {
@@ -291,8 +303,25 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                 }
             }
         });
+        tv_send_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
+                intent.putExtra("from", "selection");
+                startActivityForResult(intent, LOCATION_PICK_CODE);
+                dialog.dismiss();
+            }
+        });
         dialog.show();
 
+    }
+
+    private QBAttachment getAttachmentLocation(String location) {
+        QBAttachment attachment = new QBAttachment("location");
+        attachment.setData(location);
+        attachment.setId(String.valueOf(location.hashCode()));
+
+        return attachment;
     }
 
     //Checking runtime permission for Accessing the Local Files
@@ -356,6 +385,13 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     Toast.makeText(this, "Invalid File Format !", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else if (requestCode == LOCATION_PICK_CODE && resultCode == RESULT_OK) {
+            Bundle bundle = data.getExtras();
+            double latitude = bundle.getDouble("getLatitude");
+            double longitude = bundle.getDouble("getLongitude");
+            String location = LocationUtils.generateLocationJson(new Pair<>("lat", latitude),
+                    new Pair<>("lng", longitude));
+            sendMessage("location", location);
         }
     }
 
@@ -599,7 +635,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
         if (from.equals("show")) {
             imgDialogImgSend.setVisibility(View.GONE);
-            Glide.with(this).load(uri).into(imgViewImagePicked);
+            Picasso.with(this).load(uri).into(imgViewImagePicked);
         } else
             imgViewImagePicked.setImageURI(Uri.fromFile(sendImageFile));
 
@@ -679,12 +715,15 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     }
 
     //Retrieving the Video File
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
     public static Bitmap retriveVideoFrameFromVideo(String videoPath)
             throws Throwable {
         Bitmap bitmap = null;
         MediaMetadataRetriever mediaMetadataRetriever = null;
         try {
-            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD_MR1) {
+                mediaMetadataRetriever = new MediaMetadataRetriever();
+            }
             if (Build.VERSION.SDK_INT >= 14)
                 mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
             else
@@ -763,6 +802,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         private class SentMessageHolder extends RecyclerView.ViewHolder {
             TextView messageText, timeText;
             ImageView message_content_media, imgActionAttachment;
+
             SentMessageHolder(View itemView) {
                 super(itemView);
 
@@ -772,6 +812,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                 timeText = (TextView) itemView.findViewById(R.id.text_message_time);
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
             void bind(QBChatMessage message) {
                 timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
                 if (hasAttachments(message)) {
@@ -780,7 +821,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     messageText.setVisibility(View.GONE);
                     message_content_media.setVisibility(View.VISIBLE);
                     imgActionAttachment.setVisibility(View.VISIBLE);
-                    if (attachment.getType().equals("video")) {
+                    if (attachment.getType().equals(QBAttachment.VIDEO_TYPE)) {
                         imgActionAttachment.setImageResource(R.drawable.play_button);
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -802,15 +843,40 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         }
 
 
-                    } else {
+                    } else if (attachment.getType().equals(QBAttachment.IMAGE_TYPE)) {
                         imgActionAttachment.setImageResource(R.drawable.full_screen_arrows);
-                        Glide.with(mContext).load(attachment.getUrl()).into(message_content_media);
+                        Picasso.with(mContext).load(attachment.getUrl()).into(message_content_media);
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 openDialogImgePreview(null, attachment.getUrl(), "show");
                             }
                         });
+                    } else if (attachment.getType().equals(QBAttachment.LOCATION_TYPE)) {
+                        String receivedLocation = attachment.getData();
+                        Pair<Double, Double> latLngPair = LocationUtils.getLatLngFromJson(receivedLocation);
+                        String locationUrl = getLocationUrl(attachment, mContext);
+                        Picasso.with(mContext).load(locationUrl.replaceAll("YOUR_KEY", getResources().getString(R.string.google_api_key))).into(imgActionAttachment);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(attachment.getData());
+                            final String lat = jsonObject.getString("lat");
+                            final String lng = jsonObject.getString("lng");
+                            imgActionAttachment.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
+                                    intent.putExtra("from", "SeeLocation");
+                                    intent.putExtra("lat", lat);
+                                    intent.putExtra("lng", lng);
+                                    startActivity(intent);
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 } else {
                     messageText.setText(message.getBody());
@@ -827,6 +893,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
             TextView messageText, timeText;
             ImageView imgActionAttachment, message_content_media_rcv;
+
             ReceivedMessageHolder(View itemView) {
                 super(itemView);
                 messageText = (TextView) itemView.findViewById(R.id.text_message_body);
@@ -845,9 +912,9 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     messageText.setVisibility(View.GONE);
                     message_content_media_rcv.setVisibility(View.VISIBLE);
                     imgActionAttachment.setVisibility(View.VISIBLE);
-                    if (attachment.getType().equals("video")) {
+                    if (attachment.getType().equals(QBAttachment.VIDEO_TYPE)) {
                         imgActionAttachment.setImageResource(R.drawable.play_button);
-                        Glide.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
+                        Picasso.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -855,10 +922,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                             }
                         });
 
-                    } else {
+                    } else if (attachment.getType().equals(QBAttachment.IMAGE_TYPE)) {
                         imgActionAttachment.setImageResource(R.drawable.full_screen_arrows);
                         imgActionAttachment.setVisibility(View.VISIBLE);
-                        Glide.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
+                        Picasso.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -866,6 +933,20 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                             }
                         });
 
+                    } else if (attachment.getType().equals(QBAttachment.LOCATION_TYPE)) {
+                        String receivedLocation = attachment.getData();
+                        Pair<Double, Double> latLngPair = LocationUtils.getLatLngFromJson(receivedLocation);
+                        String locationUrl = getLocationUrl(attachment, mContext);
+                        Picasso.with(mContext).load(locationUrl.replaceAll("YOUR_KEY", getResources().getString(R.string.google_api_key))).into(imgActionAttachment);
+
+                        imgActionAttachment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
+                                intent.putExtra("from", "SeeLocation");
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                 } else {
@@ -892,6 +973,16 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
         dialog.show();
     }
+
+
+    public String getLocationUrl(QBAttachment attachmentLocation, Context context) {
+        QBAttachment attachment = attachmentLocation;
+
+        LocationUtils.BuilderParams params = LocationUtils.defaultUrlLocationParams(context);
+
+        return LocationUtils.getRemoteUri(attachment.getData(), params);
+    }
+
     public String parseDateToHHMM(String time) {
         Log.e(TAG, "parseDateToHHMM: " + time);
         String inputPattern = "HHmmsssss";

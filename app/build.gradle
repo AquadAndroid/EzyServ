@@ -94,7 +94,8 @@ dependencies {
     compile 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
     compile 'com.nightonke:boommenu:2.1.1'
 
-    implementation 'com.github.bumptech.glide:glide:3.8.0' // Hector
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
     implementation 'com.github.rtoshiro.fullscreenvideoview:fullscreenvideoview:1.1.2' // Hector
     implementation 'com.github.lguipeng:BubbleView:1.0.1' // Hector
 
@@ -104,6 +105,7 @@ dependencies {
     implementation "com.quickblox:quickblox-android-sdk-content:3.5.2"
     implementation "com.quickblox:quickblox-android-sdk-location:3.5.2"
     implementation "com.quickblox:quickblox-android-sdk-messages:3.5.2"
+    implementation 'com.quickblox:chat-message-adapter:2.0'
 
     //compile 'com.sendbird.sdk:sendbird-android-sdk:3.0.42'
     testCompile 'junit:junit:4.12'

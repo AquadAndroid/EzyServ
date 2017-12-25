@@ -27,6 +27,7 @@ import com.ezyserv.SignUpSelection;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.utills.AppConstant;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,8 +104,8 @@ public class FragmentDrawer extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer,
                 container, false);
         //  recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
-        profile_name =  layout.findViewById(R.id.profile_name);
-        txt_logout =  layout.findViewById(R.id.txt_logout);
+        profile_name = layout.findViewById(R.id.profile_name);
+        txt_logout = layout.findViewById(R.id.txt_logout);
         profile_name.setText(MyApp.getApplication().readUser().getName());
         profile_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,22 +115,22 @@ public class FragmentDrawer extends Fragment {
         });
 
 
-        nav_item_scheduled =  layout.findViewById(R.id.nav_item_scheduled);
-        nav_item_invite_friends =  layout.findViewById(R.id.nav_item_invite_friends);
-        nav_item_fav =  layout.findViewById(R.id.nav_item_fav);
-        nav_item_switch_profile =  layout.findViewById(R.id.nav_item_switch_profile);
-        nav_item_promo_offer =  layout.findViewById(R.id.nav_item_promo_offer);
-        nav_item_service_request =  layout.findViewById(R.id.nav_item_service_request);
-        ll_menu =   layout.findViewById(R.id.ll_menu);
-        nav_item_chats =  layout.findViewById(R.id.nav_item_chats);
-        rl_profile =  layout.findViewById(R.id.rl_profile);
-        nav_item_notification =  layout.findViewById(R.id.nav_item_notification);
-        nav_item_wallet =  layout.findViewById(R.id.nav_item_wallet);
+        nav_item_scheduled = layout.findViewById(R.id.nav_item_scheduled);
+        nav_item_invite_friends = layout.findViewById(R.id.nav_item_invite_friends);
+        nav_item_fav = layout.findViewById(R.id.nav_item_fav);
+        nav_item_switch_profile = layout.findViewById(R.id.nav_item_switch_profile);
+        nav_item_promo_offer = layout.findViewById(R.id.nav_item_promo_offer);
+        nav_item_service_request = layout.findViewById(R.id.nav_item_service_request);
+        ll_menu = layout.findViewById(R.id.ll_menu);
+        nav_item_chats = layout.findViewById(R.id.nav_item_chats);
+        rl_profile = layout.findViewById(R.id.rl_profile);
+        nav_item_notification = layout.findViewById(R.id.nav_item_notification);
+        nav_item_wallet = layout.findViewById(R.id.nav_item_wallet);
 
-        if(MyApp.getApplication().readUser().getIsServicemen().equals("0")){
+        if (MyApp.getApplication().readUser().getIsServicemen().equals("0")) {
             nav_item_switch_profile.setVisibility(View.GONE);
         }
-        img_profile =  layout.findViewById(R.id.img_profile);
+        img_profile = layout.findViewById(R.id.img_profile);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) img_profile.getLayoutParams();
         if (Build.VERSION.SDK_INT >= 21) {
             lp.setMargins(0, getStatusBarHeight() + 5, 0, 0);
@@ -138,11 +139,11 @@ public class FragmentDrawer extends Fragment {
         }
 
 
-     //
+        //
         if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
-            Glide.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
-        }else if(MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
-            Glide.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+        } else if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
+            Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
         }
         rl_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,12 +355,13 @@ public class FragmentDrawer extends Fragment {
     public void onResume() {
         super.onResume();
         if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
-            Glide.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
-        }else if(MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
-            Glide.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+            //Glide.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+        } else if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
+            Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
         }
-      //  Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
-       // Picasso.with(getContext()).load("https://graph.facebook.com/"+MyApp.getSharedPrefString(AppConstant.FB_ID)+"/picture?type=large").into(img_profile);
+        //  Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
+        // Picasso.with(getContext()).load("https://graph.facebook.com/"+MyApp.getSharedPrefString(AppConstant.FB_ID)+"/picture?type=large").into(img_profile);
 
     }
 
