@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.quickblox_common.Common;
@@ -126,7 +127,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             Log.e(TAG, "onCreate: " + getIntent().getStringExtra("user_id"));
 
             //First Call to getChatID
-            getChatID(getIntent().getStringExtra("user_id"), getIntent().getStringExtra("serviceman_id"));
+            getChatID(MyApp.getApplication().readUser().getId(), MyApp.getSharedPrefString(AppConstant.SERVICES_MAN_ID));
         } else {
             initChatDialog((QBChatDialog) getIntent().getSerializableExtra(Common.DIALOG_EXTRA));
         }
@@ -137,6 +138,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     //get the cht id from the local database
     private void getChatID(String userid, String servicemanid) {
+        Log.e(TAG, "getChatID: " + userid + " : " + servicemanid);
         RequestParams p = new RequestParams();
         p.put("user_id", userid);
         p.put("serviceman_id", servicemanid);

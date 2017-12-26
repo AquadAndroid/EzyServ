@@ -146,7 +146,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
                 User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
                 MyApp.getApplication().writeUser(u);
                 if (u.getId().length() > 0) {
-                    SignInUserForQBChat(u.getName().replaceAll(" ", ""));
+                    SignInUserForQBChat(u.getName().replaceAll(" ",""));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

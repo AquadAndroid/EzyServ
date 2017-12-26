@@ -88,6 +88,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
                         SendMessageNotificationBook();
                         sendNotificationBookServiceBackGround(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
+
+                        MyApp.setSharedPrefString(AppConstant.SERVICES_MAN_ID, remoteMessage.getData().get("createService_id"));
+
                     }
                     break;
             }

@@ -185,7 +185,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         // Hector Call
         initializeFramworkWithApp(this);
-        createSessionForChat(MyApp.getApplication().readUser().getName().replace(" ", ""), "12345678");
+        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
         //Call End
 
         Log.d("deviceToken", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
@@ -1490,9 +1490,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
             }
         } else if (callNumber == 12) {
-            if (o.optString("status").equals("true")) {
+            /*if (o.optString("status").equals("true")) {
                 getCreateServiceDetails();
-            }
+            }*/
+            getCreateServiceDetails();
         } else if (callNumber == 10) {
             removeSearch();
             //startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
@@ -1505,6 +1506,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     Intent intent = new Intent(this, ChatActivity.class);
                     intent.putExtra("user_id", dataJsonObject.getString("user_id"));
                     intent.putExtra("serviceman_id", dataJsonObject.getString("serviceman_id"));
+
                     intent.putExtra("comeFrom", "Notif");
                     startActivity(intent);
                 } catch (JSONException e) {
@@ -1654,21 +1656,23 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             @Override
             public void onSuccess(QBSession qbSession, Bundle bundle) {
                 qbUser.setId(qbSession.getUserId());
+
                 try {
                     qbUser.setPassword(BaseService.getBaseService().getToken());
                 } catch (BaseServiceException e) {
                     e.printStackTrace();
                 }
+                Log.e(TAG, "onSuccess: " + qbUser.getPassword());
 
                 QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
                     @Override
                     public void onSuccess(Object o, Bundle bundle) {
-
+                        Log.e(TAG, "onSuccess: Session Created");
                     }
 
                     @Override
                     public void onError(QBResponseException e) {
-                        Log.e(TAG, "onError: createSession " + e.toString());
+                        Log.e(TAG, "onError: QBChatService " + e.toString());
                     }
                 });
             }
