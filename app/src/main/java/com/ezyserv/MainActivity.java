@@ -185,7 +185,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         // Hector Call
         initializeFramworkWithApp(this);
-        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
+        //createSessionForChat(MyApp.getApplication().readUser().getName().replaceAll(" ", ""), "12345678");
         //Call End
 
         Log.d("deviceToken", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
@@ -1490,10 +1490,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
             }
         } else if (callNumber == 12) {
-            /*if (o.optString("status").equals("true")) {
+            if (o.optString("status").equals("true")) {
                 getCreateServiceDetails();
-            }*/
-            getCreateServiceDetails();
+            }
         } else if (callNumber == 10) {
             removeSearch();
             //startActivity(new Intent(MainActivity.this, PaymentSelectionActivity.class)
@@ -1506,7 +1505,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     Intent intent = new Intent(this, ChatActivity.class);
                     intent.putExtra("user_id", dataJsonObject.getString("user_id"));
                     intent.putExtra("serviceman_id", dataJsonObject.getString("serviceman_id"));
-
                     intent.putExtra("comeFrom", "Notif");
                     startActivity(intent);
                 } catch (JSONException e) {

@@ -15,13 +15,22 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.quickblox_common.Common;
+import com.ezyserv.utills.quickblox_common.QBUserHolder;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.BaseService;
+import com.quickblox.auth.session.QBSession;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBRestChatService;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.BaseServiceException;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +56,8 @@ public class ChattingListActivity extends CustomActivity {
         setUpToolBar();
 
         stringListUserChat = new ArrayList<>();
+
+        createSessionForChat(MyApp.getApplication().readUser().getName().replaceAll(" ", ""), "12345678");
 
         loadChatDialogs();
 
@@ -150,4 +161,57 @@ public class ChattingListActivity extends CustomActivity {
             }
         }
     }
+
+    private void createSessionForChat(String user, String password) {
+
+        Log.e(TAG, "createSessionForChat: " + user);
+
+        //Load All uses and save to cache
+        QBUsers.getUsers(null).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
+            @Override
+            public void onSuccess(ArrayList<QBUser> qbUsers, Bundle bundle) {
+                QBUserHolder.getInstance().putUser(qbUsers);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: " + e.toString());
+            }
+        });
+
+
+        final QBUser qbUser = new QBUser(user, password);
+
+        QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
+            @Override
+            public void onSuccess(QBSession qbSession, Bundle bundle) {
+                qbUser.setId(qbSession.getUserId());
+
+                try {
+                    qbUser.setPassword(BaseService.getBaseService().getToken());
+                } catch (BaseServiceException e) {
+                    e.printStackTrace();
+                }
+                Log.e(TAG, "onSuccess: " + qbUser.getPassword());
+
+                QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
+                    @Override
+                    public void onSuccess(Object o, Bundle bundle) {
+                        Log.e(TAG, "onSuccess: Session Created");
+                    }
+
+                    @Override
+                    public void onError(QBResponseException e) {
+                        Log.e(TAG, "onError: QBChatService " + e.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: createSession " + e.toString());
+            }
+        });
+    }
+
 }

@@ -46,8 +46,12 @@ import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.quickblox_common.Common;
 import com.ezyserv.utills.quickblox_common.FileUtils;
 import com.ezyserv.utills.quickblox_common.QBChatMessageHolder;
+import com.ezyserv.utills.quickblox_common.QBUserHolder;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 import com.loopj.android.http.RequestParams;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.BaseService;
+import com.quickblox.auth.session.QBSession;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBIncomingMessagesManager;
 import com.quickblox.chat.QBRestChatService;
@@ -63,8 +67,11 @@ import com.quickblox.content.QBContent;
 import com.quickblox.content.model.QBFile;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBProgressCallback;
+import com.quickblox.core.exception.BaseServiceException;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.ui.kit.chatmessage.adapter.utils.LocationUtils;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 import com.squareup.picasso.Picasso;
 
 import org.jivesoftware.smack.SmackException;
@@ -127,11 +134,11 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             Log.e(TAG, "onCreate: " + getIntent().getStringExtra("user_id"));
 
             //First Call to getChatID
-            getChatID(MyApp.getApplication().readUser().getId(), MyApp.getSharedPrefString(AppConstant.SERVICES_MAN_ID));
+            getChatID(getIntent().getStringExtra("user_id"), getIntent().getStringExtra("serviceman_id"));
         } else {
-            initChatDialog((QBChatDialog) getIntent().getSerializableExtra(Common.DIALOG_EXTRA));
+            initChatDialog();
         }
-
+        //initChatDialog();
 
         retrieveAllMessages();
     }
@@ -210,8 +217,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         }
     }
 
-    //Sending text messages
-    private void sendMessage(String type, Object attachmentObject) {
+
+    void sendMessage(String type, Object attachmentObject) {
         QBChatMessage qbChatMessage = new QBChatMessage();
         if (type.equals("text"))
             qbChatMessage.setBody(chat_box.getText().toString());
@@ -224,6 +231,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         qbChatMessage.setSenderId(QBChatService.getInstance().getUser().getId());
         qbChatMessage.setSaveToHistory(true);
         qbChatMessage.setMarkable(true);
+
         try {
             qbChatDialog.sendMessage(qbChatMessage);
         } catch (SmackException.NotConnectedException e) {
@@ -242,7 +250,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, messages);
         listViewMessages.setAdapter(chatMessageAdaprter);
         chatMessageAdaprter.notifyDataSetChanged();
-        //scrollMyListViewToBottom();
+
     }
 
     //Pop up for the attachment selection
@@ -460,7 +468,9 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                 new QBEntityCallback<QBChatDialog>() {
                     @Override
                     public void onSuccess(QBChatDialog dialog, Bundle params) {
-                        initChatDialog(dialog);
+                        qbChatDialog = dialog;
+                        qbChatDialog.initForChat(QBChatService.getInstance());
+                        initChatDialog();
                     }
 
                     @Override
@@ -471,16 +481,12 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     }
 
     //Initializing the chat dialog
-    private void initChatDialog(QBChatDialog dialog) {
+    private void initChatDialog() {
 
         if (getIntent().getStringExtra("comeFrom").equals("listing")) {
             qbChatDialog = (QBChatDialog) getIntent().getSerializableExtra(Common.DIALOG_EXTRA);
             qbChatDialog.initForChat(QBChatService.getInstance());
-        } else {
-            qbChatDialog = dialog;
-            qbChatDialog.initForChat(QBChatService.getInstance());
         }
-
         //Register
 
         QBIncomingMessagesManager incomingMessages = QBChatService.getInstance().getIncomingMessagesManager();
@@ -580,7 +586,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         dataJsonObject.getString("servicemanQBid");
                         dataJsonObject.getString("chatRoomId");
                         Log.e(TAG, "First Chat: " + dataJsonObject.toString());
-                        createChatPrivate(dataJsonObject.getString("servicemanQBid"));
+                        createChatPrivate(dataJsonObject.getString("userQBid"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -833,7 +839,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
 
                     } else if (attachment.getType().equals(QBAttachment.IMAGE_TYPE)) {
-                        imgActionAttachment.setImageResource(R.drawable.full_screen_arrows);
                         Picasso.with(mContext).load(attachment.getUrl()).into(message_content_media);
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -912,7 +917,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         });
 
                     } else if (attachment.getType().equals(QBAttachment.IMAGE_TYPE)) {
-                        imgActionAttachment.setImageResource(R.drawable.full_screen_arrows);
                         imgActionAttachment.setVisibility(View.VISIBLE);
                         Picasso.with(mContext).load(attachment.getUrl()).into(message_content_media_rcv);
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
@@ -991,6 +995,5 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         return str;
     }
     //ENd Call
-
 
 }

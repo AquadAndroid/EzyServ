@@ -15,6 +15,7 @@ import com.ezyserv.AddServicesActivity;
 import com.ezyserv.R;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.model.Services;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -62,7 +63,7 @@ public class AddServiceAdapter extends RecyclerView.Adapter<AddServiceAdapter.Da
             holder.Sadd_remove.setText("Add");
         }
 
-        Glide.with(c)
+        Picasso.with(c)
                 .load(item.getImage())
 //                .placeholder(R.drawable.ic_not_loaded) // optional
 //                .error(R.drawable.ic_not_loaded)         // optional
