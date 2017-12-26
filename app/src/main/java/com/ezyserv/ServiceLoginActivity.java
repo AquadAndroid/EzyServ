@@ -156,7 +156,7 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
                                 " You can login as a customer and select option to become service provider." +
                                 "\nThank you", getContext());
                     } else
-                        SignInUserForQBChat(u.getName());
+                        SignInUserForQBChat(u.getName().replaceAll(" ", ""));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

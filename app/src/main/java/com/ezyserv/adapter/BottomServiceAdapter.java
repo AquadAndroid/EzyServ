@@ -2,16 +2,15 @@ package com.ezyserv.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.ezyserv.MainActivity;
 import com.ezyserv.R;
 import com.ezyserv.model.Services;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +53,7 @@ public class BottomServiceAdapter extends RecyclerView.Adapter<BottomServiceAdap
     public void onBindViewHolder(DataHolder holder, int position) {
         Services.Data item = servicelist.get(position);
         holder.tv_service_name.setText(item.getName());
-        Glide.with(c)
+        Picasso.with(c)
                 .load(item.getImage())
                 .into(holder.img_service);
     }

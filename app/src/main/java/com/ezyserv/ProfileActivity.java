@@ -95,6 +95,7 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         ll_services = findViewById(R.id.ll_services);
 
 
+
         Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
         Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
 

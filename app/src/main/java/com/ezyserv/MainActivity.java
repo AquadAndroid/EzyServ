@@ -185,7 +185,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         // Hector Call
         initializeFramworkWithApp(this);
-        createSessionForChat(MyApp.getApplication().readUser().getName(), "12345678");
+        createSessionForChat(MyApp.getApplication().readUser().getName().replace(" ", ""), "12345678");
         //Call End
 
         Log.d("deviceToken", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
@@ -257,11 +257,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         mapFragment.getMapAsync(this);
         drawer = findViewById(R.id.drawer_layout);
 
-        drawerFragment = (FragmentDrawer) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment = (FragmentDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+
         drawerFragment.setUp(R.id.fragment_navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout), null);
+
         drawerFragment.setDrawerListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);

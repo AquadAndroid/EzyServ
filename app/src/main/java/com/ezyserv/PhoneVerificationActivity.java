@@ -377,7 +377,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
             public void onSuccess(QBUser qbUser, Bundle bundle) {
                 Log.e(TAG, "onSuccess register : " + qbUser.getId());
                 qbUserID = String.valueOf(qbUser.getId());
-                SignInUserForQBChat(qbUser.getFullName());
+                SignInUserForQBChat(qbUser.getFullName().replaceAll(" ",""));
             }
 
             @Override

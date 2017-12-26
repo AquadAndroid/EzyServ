@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.ezyserv.ProfileActivity;
 import com.ezyserv.R;
 import com.ezyserv.SignUpSelection;
@@ -138,8 +137,6 @@ public class FragmentDrawer extends Fragment {
             lp.setMargins(0, getStatusBarHeight(), 0, 0);
         }
 
-
-        //
         if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
             Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
         } else if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
@@ -355,7 +352,7 @@ public class FragmentDrawer extends Fragment {
     public void onResume() {
         super.onResume();
         if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
-            //Glide.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
+            //Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
             Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApp.getSharedPrefString(AppConstant.FB_ID) + "/picture?type=large").into(img_profile);
         } else if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("NORMAL")) {
             Picasso.with(getContext()).load(MyApp.getApplication().readUser().getProfilepic()).into(img_profile);
