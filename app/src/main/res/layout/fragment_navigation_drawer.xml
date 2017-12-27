@@ -67,7 +67,6 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/nav_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -123,7 +122,6 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/count_chat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -196,7 +194,6 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/nav_wallet_amt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -290,7 +287,6 @@
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/nav_item_switch_profilew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"

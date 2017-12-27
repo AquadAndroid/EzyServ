@@ -87,6 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (from.equals("SeeLocation")) {
             String lat = getIntent().getStringExtra("lat");
             String lng = getIntent().getStringExtra("lng");
+            Log.e(TAG, "onMapReady: " + lat + " : " + lng);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(Double.valueOf(lat),
                             Double.valueOf(lng)), 15));

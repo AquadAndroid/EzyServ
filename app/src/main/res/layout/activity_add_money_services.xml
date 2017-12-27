@@ -64,7 +64,6 @@
             android:theme="@style/MyTextInputLayout">
 
             <EditText
-                android:id="@+id/edt_service_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="false"
@@ -96,7 +95,6 @@
             android:layout_marginTop="@dimen/dim_12">
 
             <RadioButton
-                android:id="@+id/rb_net_banking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dim_15"
@@ -113,7 +111,6 @@
                 android:background="#E8E8E8" />
 
             <RadioButton
-                android:id="@+id/rb_debit_credit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dim_15"
@@ -131,7 +128,6 @@
                 android:background="#E8E8E8" />
 
             <RadioButton
-                android:id="@+id/rb_other_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dim_15"

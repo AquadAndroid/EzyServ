@@ -32,7 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static final String MESSAGE_NOTIFICATION = "MessageNotification";
     public static final String MESAGE_ERROR = "MessageError";
 
-    String mType, message, title;
+    String mType, message, title, userid, providerid;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -47,6 +47,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mType = remoteMessage.getData().get("mType");
         message = remoteMessage.getData().get("message");
         title = remoteMessage.getData().get("title");
+        userid = remoteMessage.getData().get("userid");
+        providerid = remoteMessage.getData().get("providerid");
 
         //Hector Call
         if (!TextUtils.isEmpty(mType)) {
@@ -147,6 +149,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent acceptIntent = new Intent(this, ChatActivity.class);
         acceptIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        acceptIntent.putExtra("user_id", userid);
+        acceptIntent.putExtra("serviceman_id", providerid);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, acceptIntent, PendingIntent.FLAG_ONE_SHOT);
 
 

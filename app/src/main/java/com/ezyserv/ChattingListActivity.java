@@ -57,7 +57,7 @@ public class ChattingListActivity extends CustomActivity {
 
         stringListUserChat = new ArrayList<>();
 
-        createSessionForChat(MyApp.getApplication().readUser().getName().replaceAll(" ", ""), "12345678");
+        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
 
         loadChatDialogs();
 
@@ -95,7 +95,6 @@ public class ChattingListActivity extends CustomActivity {
         QBRestChatService.getChatDialogs(null, qbRequestBuilder).performAsync(new QBEntityCallback<ArrayList<QBChatDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBChatDialog> qbChatDialogs, Bundle bundle) {
-                progressBarChatList.setVisibility(View.GONE);
                 AdapterUserChat adapterUserChat = new AdapterUserChat(getBaseContext(), qbChatDialogs);
                 recyclerViewUserChat.setAdapter(adapterUserChat);
                 adapterUserChat.notifyDataSetChanged();
@@ -103,7 +102,6 @@ public class ChattingListActivity extends CustomActivity {
 
             @Override
             public void onError(QBResponseException e) {
-                progressBarChatList.setVisibility(View.GONE);
                 Log.e(TAG, "onError: loadChatDialog " + e.toString());
             }
         });
@@ -163,9 +161,7 @@ public class ChattingListActivity extends CustomActivity {
     }
 
     private void createSessionForChat(String user, String password) {
-
         Log.e(TAG, "createSessionForChat: " + user);
-
         //Load All uses and save to cache
         QBUsers.getUsers(null).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
             @Override
@@ -198,6 +194,7 @@ public class ChattingListActivity extends CustomActivity {
                     @Override
                     public void onSuccess(Object o, Bundle bundle) {
                         Log.e(TAG, "onSuccess: Session Created");
+                        progressBarChatList.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -213,5 +210,4 @@ public class ChattingListActivity extends CustomActivity {
             }
         });
     }
-
 }

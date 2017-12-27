@@ -366,7 +366,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     //Register User For QBChat
     private void SignUpUserForQBChat() {
         Log.e(TAG, "SignUpUserForQBChat: Called");
-        QBUser qbUser = new QBUser(MyApp.getSharedPrefString("name").replaceAll(" ", ""), "12345678");
+        QBUser qbUser = new QBUser(MyApp.getSharedPrefString("email"), "12345678");
 
 
         qbUser.setFullName(MyApp.getSharedPrefString("name"));
@@ -377,7 +377,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
             public void onSuccess(QBUser qbUser, Bundle bundle) {
                 Log.e(TAG, "onSuccess register : " + qbUser.getId());
                 qbUserID = String.valueOf(qbUser.getId());
-                SignInUserForQBChat(qbUser.getFullName());
+                SignInUserForQBChat(qbUser.getLogin());
             }
 
             @Override
@@ -389,6 +389,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
 
     //Login User For QBChat after Register
     void SignInUserForQBChat(String fullName) {
+        Log.e(TAG, "SignInUserForQBChat: " + fullName);
         QBUser qbUser = new QBUser(fullName, "12345678");
 
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {

@@ -156,7 +156,7 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
                                 " You can login as a customer and select option to become service provider." +
                                 "\nThank you", getContext());
                     } else
-                        SignInUserForQBChat(u.getName().replaceAll(" ", ""));
+                        SignInUserForQBChat(u.getEmail());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -179,6 +179,7 @@ public class ServiceLoginActivity extends CustomActivity implements CustomActivi
 
     //Login Service Man For Chat the user is trying to login
     void SignInUserForQBChat(String fullName) {
+        Log.e(TAG, "SignInUserForQBChat: " + fullName);
         QBUser qbUser = new QBUser(fullName, "12345678");
 
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {

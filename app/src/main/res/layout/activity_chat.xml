@@ -9,6 +9,7 @@
     android:focusableInTouchMode="true"
     tools:context="com.ezyserv.ChatActivity">
 
+
     <include
         android:id="@+id/chat_toolbar"
         layout="@layout/chat_toolbar" />

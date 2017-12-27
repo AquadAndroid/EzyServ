@@ -28,11 +28,12 @@
             android:layout_marginLeft="@dimen/dim_10"
             android:layout_toRightOf="@+id/img_profile"
             android:fontFamily="@font/ptsans_bold"
-            android:text=""
+            android:text="Hector"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/txtTypingStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chat_toolbar_title"
@@ -45,5 +46,20 @@
             android:text="4.5"
             android:textColor="@color/white"
             android:textSize="@dimen/dim_18" />
+
+       <!-- <TextView
+            android:id="@+id/txtTypingStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chat_toolbar_title"
+            android:layout_marginLeft="@dimen/dim_20"
+            android:layout_marginTop="@dimen/dim_3"
+            android:layout_toRightOf="@+id/rating"
+            android:text="Typing..."
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dim_18"
+            android:textStyle="italic"
+            android:visibility="invisible" />-->
+
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

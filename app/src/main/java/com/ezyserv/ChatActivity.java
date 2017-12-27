@@ -13,6 +13,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +78,7 @@ import com.quickblox.users.model.QBUser;
 import com.squareup.picasso.Picasso;
 
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,6 +103,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     private FloatingActionButton call;
 
     private EditText chat_box;
+    TextView txtTypingStatus;
     private ImageButton attach_file, send_msg;
     int IMAGE_PICK_CODE = 101;
     int VIDEO_PICK_CODE = 102;
@@ -111,7 +116,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     ProgressBar progressBarChatActivity;
     FullscreenVideoLayout videoLayout;
     NotificationManager mNotificationManager;
-    String qbChatDialogId;
+    String qbChatDialogId, chatRoomId, userIdLocal, servicemanIdLocal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,17 +135,16 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         initializeFramworkWithApp(this);
 
         if (!getIntent().getStringExtra("comeFrom").equals("listing")) {
-            Log.e(TAG, "onCreate: " + getIntent().getStringExtra("serviceman_id"));
-            Log.e(TAG, "onCreate: " + getIntent().getStringExtra("user_id"));
-
+            userIdLocal = getIntent().getStringExtra("user_id");
+            servicemanIdLocal = getIntent().getStringExtra("serviceman_id");
             //First Call to getChatID
-            getChatID(getIntent().getStringExtra("user_id"), getIntent().getStringExtra("serviceman_id"));
+            getChatID(userIdLocal, servicemanIdLocal);
         } else {
             initChatDialog();
+            retrieveAllMessages();
         }
-        //initChatDialog();
 
-        retrieveAllMessages();
+        //retrieveAllMessages();
     }
 
     //get the cht id from the local database
@@ -153,10 +157,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     }
 
     //Saving the Chat Relation data (userid,servicemanid,chatroomid)
-    private void saveChatRelaction(int user_id, int serviceman_id, String chatRoomId) {
+    private void saveChatRelaction(String chatRoomId) {
         RequestParams p = new RequestParams();
-        p.put("serviceman_id", String.valueOf(serviceman_id));
-        p.put("user_id", String.valueOf(user_id));
+        p.put("serviceman_id", servicemanIdLocal);
+        p.put("user_id", userIdLocal);
         p.put("chatRoomId", chatRoomId);
         postCall(this, AppConstant.BASE_URL + "saveChatRelaction", p, "", 1);
     }
@@ -185,17 +189,44 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         progressBarChatActivity = findViewById(R.id.progressBarChatActivity);
         listViewMessages = findViewById(R.id.listViewMessages);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true);
         listViewMessages.setLayoutManager(layoutManager);
-        listViewMessages.setHasFixedSize(true);
+        layoutManager.setStackFromEnd(true);
         listViewMessages.setItemAnimator(new DefaultItemAnimator());
 
         //send_address = (TextView) findViewById(R.id.tv_send_address);
         chat_box = (EditText) findViewById(R.id.edt_chat_box);
+        txtTypingStatus = findViewById(R.id.txtTypingStatus);
         call = (FloatingActionButton) findViewById(R.id.call_btn);
         attach_file = (ImageButton) findViewById(R.id.img_btn_attach);
         send_msg = (ImageButton) findViewById(R.id.img_btn_send_msg);
 
+
+        chat_box.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    qbChatDialog.sendIsTypingNotification();
+                } catch (XMPPException | SmackException.NotConnectedException e) {
+                    Log.e(TAG, "onTextChanged: typing " + e.toString());
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                try {
+                    qbChatDialog.sendStopTypingNotification();
+                } catch (XMPPException e) {
+                    e.printStackTrace();
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -211,9 +242,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             chat_box.setText("");
         } else if (v.getId() == R.id.call_btn) {
             Toast.makeText(this, "Calling.....", Toast.LENGTH_SHORT).show();
-        } else if (v.getId() == R.id.edt_chat_box) {
-            //scrollMyListViewToBottom();
-            Log.e(TAG, "onClick: Scroll to bottom");
         }
     }
 
@@ -449,9 +477,9 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         QBRestChatService.createChatDialog(qbChatDialog).performAsync(new QBEntityCallback<QBChatDialog>() {
             @Override
             public void onSuccess(QBChatDialog dialog, Bundle bundle) {
-                qbChatDialogId = dialog.getDialogId();
                 progressDialog.dismiss();
-                saveChatRelaction(dialog.getOccupants().get(0), dialog.getOccupants().get(1), qbChatDialogId);
+                qbChatDialogId = dialog.getDialogId();
+                saveChatRelaction(qbChatDialogId);
             }
 
             @Override
@@ -464,18 +492,21 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     //Loading chat dialog from the id taken from the notification data payload
     private void loadChatDialogById(String qbChatDialogId) {
+        Log.e(TAG, "loadChatDialogById: ");
         QBRestChatService.getChatDialogById(qbChatDialogId).performAsync(
                 new QBEntityCallback<QBChatDialog>() {
                     @Override
                     public void onSuccess(QBChatDialog dialog, Bundle params) {
+                        Log.e(TAG, "onSuccess: ");
                         qbChatDialog = dialog;
                         qbChatDialog.initForChat(QBChatService.getInstance());
                         initChatDialog();
+                        retrieveAllMessages();
                     }
 
                     @Override
                     public void onError(QBResponseException responseException) {
-
+                        Log.e(TAG, "onError: " + responseException.toString());
                     }
                 });
     }
@@ -510,6 +541,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             }
         });
 
+        //Registering for the typing
         registerTypingForCHatDialog(qbChatDialog);
 
     }
@@ -519,14 +551,12 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
             @Override
             public void processUserIsTyping(String dialogId, Integer senderId) {
-               /* if (txtTypingStatus.getVisibility() == View.INVISIBLE)
-                    txtTypingStatus.setVisibility(View.VISIBLE);*/
+                Log.e(TAG, "processUserIsTyping: ");
             }
 
             @Override
             public void processUserStopTyping(String dialogId, Integer senderId) {
-                /*if (txtTypingStatus.getVisibility() == View.VISIBLE)
-                    txtTypingStatus.setVisibility(View.INVISIBLE);*/
+                Log.e(TAG, "processUserStopTyping: ");
             }
         };
         qbChatDialog.addIsTypingListener(typingListener);
@@ -534,6 +564,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     //Retrieving the Old Message history
     private void retrieveAllMessages() {
+        Log.e(TAG, "retrieveAllMessages: ");
         final QBMessageGetBuilder messageGetBuilder = new QBMessageGetBuilder();
         messageGetBuilder.setLimit(500);
 
@@ -543,11 +574,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                 public void onSuccess(ArrayList<QBChatMessage> qbChatMessages, Bundle bundle) {
                     //Put message to catch
                     QBChatMessageHolder.getInstance().putMessage(qbChatDialog.getDialogId(), qbChatMessages);
-
+                    Log.e(TAG, "onSuccess: getDialogMessages");
                     chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, qbChatMessages);
                     listViewMessages.setAdapter(chatMessageAdaprter);
                     chatMessageAdaprter.notifyDataSetChanged();
-                    //scrollMyListViewToBottom();
                 }
 
                 @Override
@@ -555,10 +585,11 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     Toast.makeText(ChatActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else {
+            Log.e(TAG, "retrieveAllMessages: qbChatDialog == null");
         }
 
     }
-
 
     //Handle API Response in the for of Json Object
     @Override
@@ -568,25 +599,21 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             case 0:
                 if (o.optString("status").equals("true")) {
                     try {
-                        JSONObject dataJsonObject = o.getJSONObject("data");
-                        dataJsonObject.getString("userQBid");
-                        dataJsonObject.getString("servicemanQBid");
-                        dataJsonObject.getString("chatRoomId");
-                        Log.e(TAG, "Already Chated Data" + dataJsonObject.toString());
 
-                        loadChatDialogById(dataJsonObject.getString("chatRoomId"));
+                        JSONObject dataJsonObject = o.getJSONObject("data");
+                        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
+                        chatRoomId = dataJsonObject.getString("chatRoomId");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else if (o.optString("status").equals("false")) {
                     try {
+
                         JSONObject dataJsonObject = o.getJSONObject("data");
-                        dataJsonObject.getString("userQBid");
-                        dataJsonObject.getString("servicemanQBid");
-                        dataJsonObject.getString("chatRoomId");
                         Log.e(TAG, "First Chat: " + dataJsonObject.toString());
                         createChatPrivate(dataJsonObject.getString("userQBid"));
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -599,13 +626,55 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     try {
                         JSONObject dataJsonObject = o.getJSONObject("data");
                         Log.e(TAG, "Save Chat Relation : " + dataJsonObject.toString());
-                        loadChatDialogById(dataJsonObject.getString("chatRoomId"));
+
+                        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
+                        chatRoomId = dataJsonObject.getString("chatRoomId");
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
                 break;
         }
+    }
+
+    //Creating Session for chat to make Both valid Sender and Recipient
+    private void createSessionForChat(String user, String password) {
+
+        final QBUser qbUser = new QBUser(user, password);
+
+        QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
+            @Override
+            public void onSuccess(QBSession qbSession, Bundle bundle) {
+                qbUser.setId(qbSession.getUserId());
+
+                try {
+                    qbUser.setPassword(BaseService.getBaseService().getToken());
+                } catch (BaseServiceException e) {
+                    e.printStackTrace();
+                }
+                Log.e(TAG, "onSuccess: " + qbUser.getPassword());
+
+                QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
+                    @Override
+                    public void onSuccess(Object o, Bundle bundle) {
+                        Log.e(TAG, "onSuccess: Session Created");
+                        loadChatDialogById(chatRoomId);
+                    }
+
+                    @Override
+                    public void onError(QBResponseException e) {
+                        Log.e(TAG, "onError: QBChatService " + e.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: createSession " + e.toString());
+            }
+        });
     }
 
     //Handle API response in the format of JSONArray
@@ -619,7 +688,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     public void onErrorReceived(String error) {
 
     }
-
 
     //Opening Image Preview popup Dialog
     private void openDialogImgePreview(final File sendImageFile, String uri, String from) {
@@ -739,7 +807,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         return bitmap;
     }
 
-
+    //Messages Adapter
     class MessageListAdapter extends RecyclerView.Adapter {
         private static final int VIEW_TYPE_MESSAGE_SENT = 1;
         private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
@@ -809,7 +877,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
             @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
             void bind(QBChatMessage message) {
-                timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
+
                 if (hasAttachments(message)) {
                     Collection<QBAttachment> attachments = message.getAttachments();
                     final QBAttachment attachment = attachments.iterator().next();
@@ -854,6 +922,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
                         try {
                             JSONObject jsonObject = new JSONObject(attachment.getData());
+                            Log.e(TAG, "bind: " + attachment.getData());
                             final String lat = jsonObject.getString("lat");
                             final String lng = jsonObject.getString("lng");
                             imgActionAttachment.setOnClickListener(new View.OnClickListener() {
@@ -869,11 +938,11 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
+                    timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
                 } else {
                     messageText.setText(message.getBody());
+                    Log.e(TAG, "bind: " + message.getDateSent());
                     timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
                 }
             }
@@ -898,7 +967,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             }
 
             void bind(QBChatMessage message) {
-                timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
+
                 if (hasAttachments(message)) {
 
                     Collection<QBAttachment> attachments = message.getAttachments();
@@ -941,7 +1010,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                             }
                         });
                     }
-
+                    timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
                 } else {
                     messageText.setText(message.getBody());
                     timeText.setText(parseDateToHHMM(String.valueOf(message.getDateSent())));
@@ -950,6 +1019,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         }
     }
 
+    //Video Pop up view To show the Video Preview
     void videoPopUpView(String videoUri) {
         Dialog dialog = new Dialog(ChatActivity.this);
         dialog.setContentView(R.layout.dialog_video_view);
@@ -967,7 +1037,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         dialog.show();
     }
 
-
+    //Getting location Url to preview the Location
     public String getLocationUrl(QBAttachment attachmentLocation, Context context) {
         QBAttachment attachment = attachmentLocation;
 
@@ -976,6 +1046,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         return LocationUtils.getRemoteUri(attachment.getData(), params);
     }
 
+    //Parsing date to HH:MM formate (i.e. 03:15 pm)
     public String parseDateToHHMM(String time) {
         Log.e(TAG, "parseDateToHHMM: " + time);
         String inputPattern = "HHmmsssss";
@@ -994,6 +1065,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         }
         return str;
     }
-    //ENd Call
+
+    //End Call
 
 }

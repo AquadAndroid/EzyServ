@@ -39,7 +39,6 @@
                     android:textSize="@dimen/dim_15" />
 
                 <TextView
-                    android:id="@+id/tv_skip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -226,7 +225,6 @@
                     android:background="#959595" />
 
                 <TextView
-                    android:id="@+id/txt2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"

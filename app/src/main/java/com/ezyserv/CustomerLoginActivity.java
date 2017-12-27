@@ -146,7 +146,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
                 User u = new Gson().fromJson(o.getJSONObject("data").toString(), User.class);
                 MyApp.getApplication().writeUser(u);
                 if (u.getId().length() > 0) {
-                    SignInUserForQBChat(u.getName().replaceAll(" ",""));
+                    SignInUserForQBChat(u.getEmail());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -174,6 +174,7 @@ public class CustomerLoginActivity extends CustomActivity implements CustomActiv
 
     //LoginUser For Chat the user is trying to login
     void SignInUserForQBChat(String fullName) {
+        Log.e(TAG, "SignInUserForQBChat: " + fullName);
         QBUser qbUser = new QBUser(fullName, "12345678");
 
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
