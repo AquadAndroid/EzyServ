@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
@@ -114,7 +115,6 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     private void verifyPhoneNumberWithCode(String verificationId, String code) {
         if (code.equals("111111")) {
             if (isRegister) {
-                Log.e(TAG, "SignUpUserForQBChat: 1");
                 SignUpUserForQBChat();
             } else {
                 Intent intent = new Intent(PhoneVerificationActivity.this, SucessfullLoginActivity.class);
@@ -365,8 +365,11 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
 
     //Register User For QBChat
     private void SignUpUserForQBChat() {
-        Log.e(TAG, "SignUpUserForQBChat: Called");
-        QBUser qbUser = new QBUser(MyApp.getSharedPrefString("email"), "12345678");
+
+        String email = MyApp.getSharedPrefString("email");
+        String pwd = "12345678";
+
+        QBUser qbUser = new QBUser(email, pwd);
 
 
         qbUser.setFullName(MyApp.getSharedPrefString("name"));
@@ -383,6 +386,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
             @Override
             public void onError(QBResponseException e) {
                 Log.e(TAG, "onError: register " + e.toString());
+                Toast.makeText(PhoneVerificationActivity.this, "Error While Register, Try After Sometime", Toast.LENGTH_SHORT).show();
             }
         });
     }

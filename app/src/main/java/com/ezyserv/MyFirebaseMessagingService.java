@@ -50,6 +50,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         userid = remoteMessage.getData().get("userid");
         providerid = remoteMessage.getData().get("providerid");
 
+        Log.e(TAG, "onMessageReceived:  userid : " + userid + "  providerid :  " + providerid);
+
         //Hector Call
         if (!TextUtils.isEmpty(mType)) {
             switch (mType) {
@@ -62,7 +64,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
                     Intent registrationCompletef = null;
                     try {
-                        registrationCompletef = new Intent(MESSAGE_NOTIFICATION).putExtra("type", "accepted");
+                        registrationCompletef = new Intent(MESSAGE_NOTIFICATION)
+                                .putExtra("type", "accepted")
+                                .putExtra("userid", userid)
+                                .putExtra("providerid", providerid);
                     } catch (Exception e) {
                         //If any error occurred
                         Log.e("FCMRegIntentService", "Registration error");

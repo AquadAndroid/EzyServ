@@ -446,8 +446,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         //Hector Call
         getMessageFromNotification();
 
-        Log.e(TAG, "onCreate: " + MyApp.getApplication().readUser().getId());
-        Log.e(TAG, "onCreate: " + MyApp.getApplication().readUser().getQbUserID());
     }
 
 
@@ -463,7 +461,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 if (intent.getAction().equals(MyFirebaseMessagingService.MESAGE_ERROR)) {
                     Toast.makeText(context, "MESSAGE_ERROR", Toast.LENGTH_SHORT).show();
                 } else if (intent.getAction().equals(MyFirebaseMessagingService.MESSAGE_NOTIFICATION)) {
+
                     String type = intent.getStringExtra("type");
+                    Log.e(TAG, "onReceive: " + intent.getStringExtra("type"));
                     Log.e(TAG, "onReceive: " + intent.getStringExtra("userid"));
                     Log.e(TAG, "onReceive: " + intent.getStringExtra("providerid"));
 
@@ -1197,7 +1197,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         p.put("service_id", serviceId);
         p.put("current_lat", lat);
         p.put("current_lng", lng);
-        p.put("radius", "10000");
+        p.put("radius", radius);
         postCall(getContext(), AppConstant.BASE_URL + "Autoassign", p, "Collecting data...", 1);
     }
 

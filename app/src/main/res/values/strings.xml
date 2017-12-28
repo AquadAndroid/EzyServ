@@ -1,28 +1,9 @@
 <resources>
     <string name="app_name">EnolAsia</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="fb_connect">Facebook Connect </string>
     <string name="term">terms and condition </string>
-    <string name="title_activity_dummylogin">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="drawer_open">openDrawer</string>
-    <string name="drawer_close">closeDrawer</string>
 
     <string-array name="nav_drawer_labels">
         <item>Home</item>
@@ -32,18 +13,22 @@
         <item>Wallet</item>
         <item>Switch To Service Provider</item>
     </string-array>
-    <string name="title_activity_main4">Main4Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="drawer_open">openDrawer</string>
+    <string name="drawer_close">closeDrawer</string>
+
+
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main5">Main5Activity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="facebook_app_id">791987927637895</string>
+    <string name="google_api_key">AIzaSyCQ4-nqC85wyQtTBd9ZqrAxJ9t1SBRz-0U</string>
+
     <string name="fb_login_protocol_scheme">fb791987927637895</string>
     <string name="loading">Please wait...</string>
     <string name="alert">Alert</string>
@@ -54,6 +39,5 @@
     <string name="text_ham_button_handyman">Handyman</string>
     <string name="text_ham_button_events">Events</string>
     <string name="text_ham_button_my_care">My Care</string>
-    <string name="services">Services</string>
 
 </resources>

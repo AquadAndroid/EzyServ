@@ -137,12 +137,19 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         if (!getIntent().getStringExtra("comeFrom").equals("listing")) {
             userIdLocal = getIntent().getStringExtra("user_id");
             servicemanIdLocal = getIntent().getStringExtra("serviceman_id");
-            //First Call to getChatID
-            getChatID(userIdLocal, servicemanIdLocal);
+            //First Call to respondService
+            respondService();
         } else {
             initChatDialog();
             retrieveAllMessages();
         }
+    }
+
+    void respondService() {
+        RequestParams p = new RequestParams();
+        p.put("createService_id", MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
+        p.put("service_status", "accepted");
+        postCall(this, AppConstant.BASE_URL + "respondService", p, "", 2);
     }
 
     //get the cht id from the local database
@@ -504,6 +511,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         Log.e(TAG, "onError: " + responseException.toString());
                     }
                 });
+
     }
 
     //Initializing the chat dialog
@@ -634,6 +642,13 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+                break;
+            case 2:
+                if (o.optString("status").equals("true")) {
+                    getChatID(userIdLocal, servicemanIdLocal);
+                } else {
+                    Toast.makeText(this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -916,7 +931,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         Pair<Double, Double> latLngPair = LocationUtils.getLatLngFromJson(receivedLocation);
                         String locationUrl = getLocationUrl(attachment, mContext);
                         Picasso.with(mContext).load(locationUrl.replaceAll("YOUR_KEY", getResources().getString(R.string.google_api_key))).into(imgActionAttachment);
-
+                        Log.e(TAG, "bind: " + locationUrl.replaceAll("YOUR_KEY", getResources().getString(R.string.google_api_key)));
                         try {
                             JSONObject jsonObject = new JSONObject(attachment.getData());
                             Log.e(TAG, "bind: " + attachment.getData());
@@ -997,6 +1012,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         Pair<Double, Double> latLngPair = LocationUtils.getLatLngFromJson(receivedLocation);
                         String locationUrl = getLocationUrl(attachment, mContext);
                         Picasso.with(mContext).load(locationUrl.replaceAll("YOUR_KEY", getResources().getString(R.string.google_api_key))).into(imgActionAttachment);
+                        Log.e(TAG, "bind: " + locationUrl.replaceAll("YOUR_KEY", getResources().getString(R.string.google_api_key)));
 
                         imgActionAttachment.setOnClickListener(new View.OnClickListener() {
                             @Override
