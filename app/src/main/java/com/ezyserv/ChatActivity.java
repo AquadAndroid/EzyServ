@@ -103,7 +103,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     private FloatingActionButton call;
 
     private EditText chat_box;
-    TextView txtTypingStatus;
+    TextView txtTypingStatus, txtChatToolbarTitle;
     private ImageButton attach_file, send_msg;
     int IMAGE_PICK_CODE = 101;
     int VIDEO_PICK_CODE = 102;
@@ -140,11 +140,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             //First Call to getChatID
             getChatID(userIdLocal, servicemanIdLocal);
         } else {
+            //txtChatToolbarTitle.setText(getIntent().getStringExtra("chatDialogName"));
             initChatDialog();
             retrieveAllMessages();
         }
-
-        //retrieveAllMessages();
     }
 
     //get the cht id from the local database
@@ -173,8 +172,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.chat_toolbar_title);
-        mTitle.setText("Company Name");
+        txtChatToolbarTitle = toolbar.findViewById(R.id.txtChatToolbarTitle);
+        txtTypingStatus = toolbar.findViewById(R.id.txtTypingStatus);
         actionBar.setTitle("");
     }
 
@@ -195,7 +194,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
         //send_address = (TextView) findViewById(R.id.tv_send_address);
         chat_box = (EditText) findViewById(R.id.edt_chat_box);
-        txtTypingStatus = findViewById(R.id.txtTypingStatus);
         call = (FloatingActionButton) findViewById(R.id.call_btn);
         attach_file = (ImageButton) findViewById(R.id.img_btn_attach);
         send_msg = (ImageButton) findViewById(R.id.img_btn_send_msg);
@@ -217,13 +215,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
             @Override
             public void afterTextChanged(Editable editable) {
-
                 try {
                     qbChatDialog.sendStopTypingNotification();
-                } catch (XMPPException e) {
-                    e.printStackTrace();
-                } catch (SmackException.NotConnectedException e) {
-                    e.printStackTrace();
+                } catch (XMPPException | SmackException.NotConnectedException e) {
+                    Log.e(TAG, "onTextChanged: stop typing " + e.toString());
                 }
             }
         });
@@ -551,12 +546,14 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
             @Override
             public void processUserIsTyping(String dialogId, Integer senderId) {
-                Log.e(TAG, "processUserIsTyping: ");
+                if (txtTypingStatus.getVisibility() != View.VISIBLE)
+                    txtTypingStatus.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void processUserStopTyping(String dialogId, Integer senderId) {
-                Log.e(TAG, "processUserStopTyping: ");
+                if (txtTypingStatus.getVisibility() != View.INVISIBLE)
+                    txtTypingStatus.setVisibility(View.INVISIBLE);
             }
         };
         qbChatDialog.addIsTypingListener(typingListener);
@@ -630,7 +627,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
                         chatRoomId = dataJsonObject.getString("chatRoomId");
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -654,8 +650,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                 } catch (BaseServiceException e) {
                     e.printStackTrace();
                 }
-                Log.e(TAG, "onSuccess: " + qbUser.getPassword());
-
                 QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
                     @Override
                     public void onSuccess(Object o, Bundle bundle) {
@@ -779,8 +773,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     //Retrieving the Video File
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
-    public static Bitmap retriveVideoFrameFromVideo(String videoPath)
-            throws Throwable {
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath) throws Throwable {
         Bitmap bitmap = null;
         MediaMetadataRetriever mediaMetadataRetriever = null;
         try {
@@ -1067,5 +1060,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     }
 
     //End Call
+
 
 }

@@ -57,7 +57,8 @@ public class ChattingListActivity extends CustomActivity {
 
         stringListUserChat = new ArrayList<>();
 
-        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
+        if (!QBChatService.getInstance().isLoggedIn())
+            createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
 
         loadChatDialogs();
 
@@ -98,6 +99,7 @@ public class ChattingListActivity extends CustomActivity {
                 AdapterUserChat adapterUserChat = new AdapterUserChat(getBaseContext(), qbChatDialogs);
                 recyclerViewUserChat.setAdapter(adapterUserChat);
                 adapterUserChat.notifyDataSetChanged();
+                progressBarChatList.setVisibility(View.GONE);
             }
 
             @Override
@@ -138,6 +140,7 @@ public class ChattingListActivity extends CustomActivity {
                     Intent intent = new Intent(ChattingListActivity.this, ChatActivity.class);
                     intent.putExtra(Common.DIALOG_EXTRA, qbChatDialogs.get(position));
                     intent.putExtra("comeFrom", "listing");
+                    //intent.putExtra("chatDialogName", qbChatDialogs.get(position).getName());
                     startActivity(intent);
                 }
             });
@@ -210,4 +213,24 @@ public class ChattingListActivity extends CustomActivity {
             }
         });
     }
+
+    /*@Override
+    protected void onPause() {
+        super.onPause();
+        SignOutFromChat();
+    }
+
+    void SignOutFromChat() {
+        QBUsers.signOut().performAsync(new QBEntityCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid, Bundle bundle) {
+                Log.e(TAG, "onSuccess: Sign Out");
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: " + e.toString());
+            }
+        });
+    }*/
 }

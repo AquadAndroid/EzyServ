@@ -464,8 +464,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     Toast.makeText(context, "MESSAGE_ERROR", Toast.LENGTH_SHORT).show();
                 } else if (intent.getAction().equals(MyFirebaseMessagingService.MESSAGE_NOTIFICATION)) {
                     String type = intent.getStringExtra("type");
+                    Log.e(TAG, "onReceive: " + intent.getData());
                     if (type.equals("accepted")) {
                         Intent intNotif = new Intent(MainActivity.this, ChatActivity.class);
+                        intent.putExtra("user_id", intent.getStringExtra("userid"));
+                        intent.putExtra("serviceman_id", intent.getStringExtra("providerid"));
                         intNotif.putExtra("comeFrom", "Notif");
                         startActivity(intNotif);
                     } else if (type.equals("book_no_one")) {
@@ -477,7 +480,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                             dialogTimer();
                         }
                     }
-
                 }
             }
         };
@@ -1193,7 +1195,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         p.put("service_id", serviceId);
         p.put("current_lat", lat);
         p.put("current_lng", lng);
-        p.put("radius", radius);
+        p.put("radius", "10000");
         postCall(getContext(), AppConstant.BASE_URL + "Autoassign", p, "Collecting data...", 1);
     }
 
