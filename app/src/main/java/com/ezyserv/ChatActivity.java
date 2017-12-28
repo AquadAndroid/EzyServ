@@ -140,7 +140,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             //First Call to getChatID
             getChatID(userIdLocal, servicemanIdLocal);
         } else {
-            //txtChatToolbarTitle.setText(getIntent().getStringExtra("chatDialogName"));
             initChatDialog();
             retrieveAllMessages();
         }
@@ -174,6 +173,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         actionBar.setDisplayHomeAsUpEnabled(true);
         txtChatToolbarTitle = toolbar.findViewById(R.id.txtChatToolbarTitle);
         txtTypingStatus = toolbar.findViewById(R.id.txtTypingStatus);
+        txtTypingStatus.setVisibility(View.INVISIBLE);
         actionBar.setTitle("");
     }
 
@@ -513,8 +513,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             qbChatDialog = (QBChatDialog) getIntent().getSerializableExtra(Common.DIALOG_EXTRA);
             qbChatDialog.initForChat(QBChatService.getInstance());
         }
-        //Register
 
+        txtChatToolbarTitle.setText(qbChatDialog.getName());
+
+        //Register
         QBIncomingMessagesManager incomingMessages = QBChatService.getInstance().getIncomingMessagesManager();
         incomingMessages.addDialogMessageListener(new QBChatDialogMessageListener() {
             @Override
@@ -546,12 +548,14 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
             @Override
             public void processUserIsTyping(String dialogId, Integer senderId) {
+                Log.e(TAG, "processUserIsTyping: ");
                 if (txtTypingStatus.getVisibility() != View.VISIBLE)
                     txtTypingStatus.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void processUserStopTyping(String dialogId, Integer senderId) {
+                Log.e(TAG, "processUserStopTyping: ");
                 if (txtTypingStatus.getVisibility() != View.INVISIBLE)
                     txtTypingStatus.setVisibility(View.INVISIBLE);
             }

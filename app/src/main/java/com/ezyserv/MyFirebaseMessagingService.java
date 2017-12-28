@@ -149,6 +149,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent acceptIntent = new Intent(this, ChatActivity.class);
         acceptIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        acceptIntent.putExtra("comeFrom", "Notif");
         acceptIntent.putExtra("user_id", userid);
         acceptIntent.putExtra("serviceman_id", providerid);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, acceptIntent, PendingIntent.FLAG_ONE_SHOT);

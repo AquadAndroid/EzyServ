@@ -59,8 +59,8 @@ public class ChattingListActivity extends CustomActivity {
 
         if (!QBChatService.getInstance().isLoggedIn())
             createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
-
-        loadChatDialogs();
+        else
+            loadChatDialogs();
 
     }
 
@@ -88,7 +88,6 @@ public class ChattingListActivity extends CustomActivity {
 
 
     private void loadChatDialogs() {
-        progressBarChatList.setVisibility(View.VISIBLE);
         QBRequestGetBuilder qbRequestBuilder = new QBRequestGetBuilder();
         qbRequestBuilder.setLimit(100);
 
@@ -140,7 +139,6 @@ public class ChattingListActivity extends CustomActivity {
                     Intent intent = new Intent(ChattingListActivity.this, ChatActivity.class);
                     intent.putExtra(Common.DIALOG_EXTRA, qbChatDialogs.get(position));
                     intent.putExtra("comeFrom", "listing");
-                    //intent.putExtra("chatDialogName", qbChatDialogs.get(position).getName());
                     startActivity(intent);
                 }
             });
@@ -164,6 +162,7 @@ public class ChattingListActivity extends CustomActivity {
     }
 
     private void createSessionForChat(String user, String password) {
+        progressBarChatList.setVisibility(View.VISIBLE);
         Log.e(TAG, "createSessionForChat: " + user);
         //Load All uses and save to cache
         QBUsers.getUsers(null).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
@@ -175,15 +174,18 @@ public class ChattingListActivity extends CustomActivity {
             @Override
             public void onError(QBResponseException e) {
                 Log.e(TAG, "onError: " + e.toString());
+                progressBarChatList.setVisibility(View.GONE);
             }
         });
 
 
+        progressBarChatList.setVisibility(View.VISIBLE);
         final QBUser qbUser = new QBUser(user, password);
 
         QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
             @Override
             public void onSuccess(QBSession qbSession, Bundle bundle) {
+
                 qbUser.setId(qbSession.getUserId());
 
                 try {
@@ -197,12 +199,13 @@ public class ChattingListActivity extends CustomActivity {
                     @Override
                     public void onSuccess(Object o, Bundle bundle) {
                         Log.e(TAG, "onSuccess: Session Created");
-                        progressBarChatList.setVisibility(View.GONE);
+                        loadChatDialogs();
                     }
 
                     @Override
                     public void onError(QBResponseException e) {
                         Log.e(TAG, "onError: QBChatService " + e.toString());
+                        progressBarChatList.setVisibility(View.GONE);
                     }
                 });
             }
@@ -210,27 +213,11 @@ public class ChattingListActivity extends CustomActivity {
             @Override
             public void onError(QBResponseException e) {
                 Log.e(TAG, "onError: createSession " + e.toString());
+                progressBarChatList.setVisibility(View.GONE);
             }
+
         });
     }
 
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-        SignOutFromChat();
-    }
 
-    void SignOutFromChat() {
-        QBUsers.signOut().performAsync(new QBEntityCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid, Bundle bundle) {
-                Log.e(TAG, "onSuccess: Sign Out");
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-                Log.e(TAG, "onError: " + e.toString());
-            }
-        });
-    }*/
 }
