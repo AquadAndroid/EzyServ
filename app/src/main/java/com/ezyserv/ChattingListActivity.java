@@ -18,13 +18,18 @@ import android.widget.TextView;
 import com.ezyserv.application.MyApp;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.quickblox_common.Common;
+import com.ezyserv.utills.quickblox_common.QBUnreadMessageHolder;
 import com.ezyserv.utills.quickblox_common.QBUserHolder;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.session.BaseService;
 import com.quickblox.auth.session.QBSession;
 import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.QBIncomingMessagesManager;
 import com.quickblox.chat.QBRestChatService;
+import com.quickblox.chat.exception.QBChatException;
+import com.quickblox.chat.listeners.QBChatDialogMessageListener;
 import com.quickblox.chat.model.QBChatDialog;
+import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.BaseServiceException;
 import com.quickblox.core.exception.QBResponseException;
@@ -33,7 +38,9 @@ import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,7 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Hector on 12/21/17.
  */
 
-public class ChattingListActivity extends CustomActivity {
+public class ChattingListActivity extends CustomActivity implements QBChatDialogMessageListener {
     String TAG = ChattingListActivity.class.getSimpleName();
     Toolbar toolbar;
     RecyclerView recyclerViewUserChat;
@@ -95,10 +102,29 @@ public class ChattingListActivity extends CustomActivity {
         QBRestChatService.getChatDialogs(null, qbRequestBuilder).performAsync(new QBEntityCallback<ArrayList<QBChatDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBChatDialog> qbChatDialogs, Bundle bundle) {
-                AdapterUserChat adapterUserChat = new AdapterUserChat(getBaseContext(), qbChatDialogs);
-                recyclerViewUserChat.setAdapter(adapterUserChat);
-                adapterUserChat.notifyDataSetChanged();
-                progressBarChatList.setVisibility(View.GONE);
+                final AdapterUserChat adapterUserChat = new AdapterUserChat(getBaseContext(), qbChatDialogs);
+
+                Set<String> setIds = new HashSet<>();
+                for (QBChatDialog chatDialog : qbChatDialogs) {
+                    setIds.add(chatDialog.getDialogId());
+                }
+
+                QBRestChatService.getTotalUnreadMessagesCount(setIds, QBUnreadMessageHolder.getInstance().getBundle())
+                        .performAsync(new QBEntityCallback<Integer>() {
+                            @Override
+                            public void onSuccess(Integer integer, Bundle bundle) {
+                                QBUnreadMessageHolder.getInstance().setBundle(bundle);
+                                recyclerViewUserChat.setAdapter(adapterUserChat);
+                                adapterUserChat.notifyDataSetChanged();
+                                progressBarChatList.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(QBResponseException e) {
+                                Log.e(TAG, "onError: " + e.toString());
+                            }
+                        });
+
             }
 
             @Override
@@ -106,6 +132,16 @@ public class ChattingListActivity extends CustomActivity {
                 Log.e(TAG, "onError: loadChatDialog " + e.toString());
             }
         });
+
+    }
+
+    @Override
+    public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
+        loadChatDialogs();
+    }
+
+    @Override
+    public void processError(String s, QBChatException e, QBChatMessage qbChatMessage, Integer integer) {
 
     }
 
@@ -131,6 +167,13 @@ public class ChattingListActivity extends CustomActivity {
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             holder.txtUserName.setText(qbChatDialogs.get(position).getName());
 
+            int unread_count = QBUnreadMessageHolder.getInstance().getBundle().getInt(qbChatDialogs.get(position).getDialogId());
+            if (unread_count > 0) {
+                holder.txtUnreadMessageCount.setText(String.valueOf(unread_count));
+            } else {
+                holder.txtUnreadMessageCount.setVisibility(View.GONE);
+            }
+
             holder.img_profile.setImageDrawable(getResources().getDrawable(R.drawable.markzuckerberg));
 
             holder.txtUserName.setOnClickListener(new View.OnClickListener() {
@@ -150,13 +193,14 @@ public class ChattingListActivity extends CustomActivity {
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView txtUserName;
+            TextView txtUserName, txtUnreadMessageCount;
             CircleImageView img_profile;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
                 txtUserName = itemView.findViewById(R.id.txtUserName);
                 img_profile = itemView.findViewById(R.id.img_profile);
+                txtUnreadMessageCount = itemView.findViewById(R.id.txtUnreadMessageCount);
             }
         }
     }
@@ -199,6 +243,9 @@ public class ChattingListActivity extends CustomActivity {
                     @Override
                     public void onSuccess(Object o, Bundle bundle) {
                         Log.e(TAG, "onSuccess: Session Created");
+
+                        QBIncomingMessagesManager qbIncomingMessagesManager = QBChatService.getInstance().getIncomingMessagesManager();
+                        qbIncomingMessagesManager.addDialogMessageListener(ChattingListActivity.this);
                         loadChatDialogs();
                     }
 
@@ -218,6 +265,4 @@ public class ChattingListActivity extends CustomActivity {
 
         });
     }
-
-
 }

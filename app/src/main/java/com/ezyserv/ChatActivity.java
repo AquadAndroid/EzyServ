@@ -223,6 +223,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             @Override
             public void afterTextChanged(Editable editable) {
                 try {
+                    Log.e(TAG, "afterTextChanged: ");
                     qbChatDialog.sendStopTypingNotification();
                 } catch (XMPPException | SmackException.NotConnectedException e) {
                     Log.e(TAG, "onTextChanged: stop typing " + e.toString());
@@ -551,23 +552,22 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     }
 
+    QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
+        @Override
+        public void processUserIsTyping(String dialogId, Integer senderId) {
+            if (txtTypingStatus.getVisibility() != View.VISIBLE)
+                txtTypingStatus.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void processUserStopTyping(String dialogId, Integer senderId) {
+            if (txtTypingStatus.getVisibility() != View.INVISIBLE)
+                txtTypingStatus.setVisibility(View.INVISIBLE);
+        }
+    };
+
     //Registering the chat dialog for the message Typing status
     private void registerTypingForCHatDialog(QBChatDialog qbChatDialog) {
-        QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
-            @Override
-            public void processUserIsTyping(String dialogId, Integer senderId) {
-                Log.e(TAG, "processUserIsTyping: ");
-                if (txtTypingStatus.getVisibility() != View.VISIBLE)
-                    txtTypingStatus.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void processUserStopTyping(String dialogId, Integer senderId) {
-                Log.e(TAG, "processUserStopTyping: ");
-                if (txtTypingStatus.getVisibility() != View.INVISIBLE)
-                    txtTypingStatus.setVisibility(View.INVISIBLE);
-            }
-        };
         qbChatDialog.addIsTypingListener(typingListener);
     }
 
@@ -645,11 +645,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                 }
                 break;
             case 2:
-                if (o.optString("status").equals("true")) {
-                    getChatID(userIdLocal, servicemanIdLocal);
-                } else {
-                    Toast.makeText(this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                }
+                getChatID(userIdLocal, servicemanIdLocal);
                 break;
         }
     }

@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/txtUserName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="?actionBarSize"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/img_profile"
@@ -26,6 +26,19 @@
         android:paddingLeft="@dimen/dim_25"
         android:text="Hector Morris"
         android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/txtUnreadMessageCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dim_10"
+        android:background="@drawable/txt_unread_message_count"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="3"
+        android:textColor="@android:color/white" />
 
     <View
         android:layout_width="match_parent"
