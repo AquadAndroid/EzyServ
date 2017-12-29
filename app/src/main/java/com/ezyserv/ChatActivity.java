@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
@@ -55,23 +57,33 @@ import com.loopj.android.http.RequestParams;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.session.BaseService;
 import com.quickblox.auth.session.QBSession;
+import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBIncomingMessagesManager;
 import com.quickblox.chat.QBRestChatService;
+import com.quickblox.chat.QBRoster;
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBChatDialogMessageListener;
 import com.quickblox.chat.listeners.QBChatDialogTypingListener;
 import com.quickblox.chat.model.QBAttachment;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.chat.model.QBPresence;
 import com.quickblox.chat.request.QBMessageGetBuilder;
 import com.quickblox.chat.utils.DialogUtils;
 import com.quickblox.content.QBContent;
 import com.quickblox.content.model.QBFile;
+import com.quickblox.core.Consts;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBProgressCallback;
 import com.quickblox.core.exception.BaseServiceException;
 import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.helper.StringifyArrayList;
+import com.quickblox.messages.QBPushNotifications;
+import com.quickblox.messages.model.QBEnvironment;
+import com.quickblox.messages.model.QBEvent;
+import com.quickblox.messages.model.QBNotificationType;
+import com.quickblox.messages.model.QBPushType;
 import com.quickblox.ui.kit.chatmessage.adapter.utils.LocationUtils;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
@@ -83,10 +95,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,9 +116,9 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     String TAG = ChatActivity.class.getSimpleName();
     private Toolbar toolbar;
     private FloatingActionButton call;
-
     private EditText chat_box;
     TextView txtTypingStatus, txtChatToolbarTitle;
+    ImageView img_profile;
     private ImageButton attach_file, send_msg;
     int IMAGE_PICK_CODE = 101;
     int VIDEO_PICK_CODE = 102;
@@ -116,7 +131,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     ProgressBar progressBarChatActivity;
     FullscreenVideoLayout videoLayout;
     NotificationManager mNotificationManager;
-    String qbChatDialogId, chatRoomId, userIdLocal, servicemanIdLocal;
+    String qbChatDialogId, chatRoomId, userIdLocal, servicemanIdLocal, fileUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +140,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         setContentView(R.layout.activity_chat);
         setResponseListener(this);
 
+
         setupuiElement();
+
+        //Cancel Notification After Accepting it from the Notification Windows
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert mNotificationManager != null;
         mNotificationManager.cancel(1);
@@ -143,8 +162,36 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             initChatDialog();
             retrieveAllMessages();
         }
+
+        chat_box.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    qbChatDialog.sendIsTypingNotification();
+                } catch (XMPPException | SmackException.NotConnectedException e) {
+                    Log.e(TAG, "onTextChanged: typing " + e.toString());
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                try {
+                    Log.e(TAG, "afterTextChanged: ");
+                    qbChatDialog.sendStopTypingNotification();
+                } catch (XMPPException | SmackException.NotConnectedException e) {
+                    Log.e(TAG, "onTextChanged: stop typing " + e.toString());
+                }
+            }
+        });
+
+
     }
 
+    //Respond Service that has been created by the User to make status Accepted.
     void respondService() {
         RequestParams p = new RequestParams();
         p.put("createService_id", MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
@@ -179,6 +226,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         txtChatToolbarTitle = toolbar.findViewById(R.id.txtChatToolbarTitle);
+        img_profile = toolbar.findViewById(R.id.img_profile);
         txtTypingStatus = toolbar.findViewById(R.id.txtTypingStatus);
         txtTypingStatus.setVisibility(View.INVISIBLE);
         actionBar.setTitle("");
@@ -205,31 +253,6 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         attach_file = (ImageButton) findViewById(R.id.img_btn_attach);
         send_msg = (ImageButton) findViewById(R.id.img_btn_send_msg);
 
-
-        chat_box.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                try {
-                    qbChatDialog.sendIsTypingNotification();
-                } catch (XMPPException | SmackException.NotConnectedException e) {
-                    Log.e(TAG, "onTextChanged: typing " + e.toString());
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    Log.e(TAG, "afterTextChanged: ");
-                    qbChatDialog.sendStopTypingNotification();
-                } catch (XMPPException | SmackException.NotConnectedException e) {
-                    Log.e(TAG, "onTextChanged: stop typing " + e.toString());
-                }
-            }
-        });
 
     }
 
@@ -270,9 +293,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         }
 
 
-        /*if (getUserById(qbChatDialog.getOccupants().get(1)).equals("offline")) {
-            sendPushMessage();
+        /*if (getUserById(qbChatDialog.getOccupants().get(0)).equals("offline")) {
+            sendPushMessage(qbChatDialog.getOccupants().get(0));
         }*/
+
         //Put message to catch
 
         QBChatMessageHolder.getInstance().putMessage(qbChatDialog.getDialogId(), qbChatMessage);
@@ -550,6 +574,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         //Registering for the typing
         registerTypingForCHatDialog(qbChatDialog);
 
+        getUserPhotoFromQBAdmin(qbChatDialog.getRecipientId());
     }
 
     QBChatDialogTypingListener typingListener = new QBChatDialogTypingListener() {
@@ -573,7 +598,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     //Retrieving the Old Message history
     private void retrieveAllMessages() {
-        Log.e(TAG, "retrieveAllMessages: ");
+        progressBarChatActivity.setVisibility(View.VISIBLE);
         final QBMessageGetBuilder messageGetBuilder = new QBMessageGetBuilder();
         messageGetBuilder.setLimit(500);
 
@@ -587,15 +612,19 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                     chatMessageAdaprter = new MessageListAdapter(ChatActivity.this, qbChatMessages);
                     listViewMessages.setAdapter(chatMessageAdaprter);
                     chatMessageAdaprter.notifyDataSetChanged();
+                    progressBarChatActivity.setVisibility(View.GONE);
+                    //getUserPhotoFromQBAdmin();
                 }
 
                 @Override
                 public void onError(QBResponseException e) {
                     Toast.makeText(ChatActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    progressBarChatActivity.setVisibility(View.GONE);
                 }
             });
         } else {
             Log.e(TAG, "retrieveAllMessages: qbChatDialog == null");
+            progressBarChatActivity.setVisibility(View.GONE);
         }
 
     }
@@ -976,6 +1005,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
             void bind(QBChatMessage message) {
 
+
                 if (hasAttachments(message)) {
 
                     Collection<QBAttachment> attachments = message.getAttachments();
@@ -1075,7 +1105,80 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         return str;
     }
 
-    //End Call
+    void getUserPhotoFromQBAdmin(int opponentId) {
+        QBUsers.getUser(opponentId).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                if (qbUser.getFileId() != null) {
+                    int avatarId = qbUser.getFileId();
+                    QBContent.getFile(avatarId).performAsync(new QBEntityCallback<QBFile>() {
+                        @Override
+                        public void onSuccess(QBFile qbFile, Bundle bundle) {
+                            fileUrl = qbFile.getPublicUrl();
+                            Picasso.with(getBaseContext()).load(fileUrl).into(img_profile);
+                        }
 
+                        @Override
+                        public void onError(QBResponseException e) {
+                            Log.e(TAG, "onError: getting File " + e.toString());
+                        }
+                    });
+                } else {
+                    Picasso.with(getApplicationContext()).load(R.drawable.ic_tag_faces_black_24dp).into(img_profile);
+                }
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: getting User By Id " + e.toString());
+            }
+        });
+    }
+
+    private String getUserById(int userID) {
+        Log.e(TAG, "getUserById: " + userID);
+        QBRoster chatRoster = QBChatService.getInstance().getRoster(QBRoster.SubscriptionMode.mutual, null);
+        QBPresence presence = chatRoster.getPresence(userID);
+        if (presence == null) {
+            return "";
+        }
+
+        if (presence.getType() == QBPresence.Type.online) {
+            return "online";
+        } else {
+            return "offline";
+        }
+    }
+
+
+    private void sendPushMessage(Integer integer) {
+        StringifyArrayList<Integer> userIds = new StringifyArrayList<Integer>();
+        userIds.add(integer);
+
+        QBEvent event = new QBEvent();
+        event.setUserIds(userIds);
+        event.setEnvironment(QBEnvironment.DEVELOPMENT);
+        event.setNotificationType(QBNotificationType.PUSH);
+        /*HashMap<String, String> data = new HashMap<String, String>();
+        data.put("data.message", "Hello");
+        data.put("data.type", "welcome message");*/
+        event.setMessage(chat_box.getText().toString());
+
+        QBPushNotifications.createEvent(event).performAsync(new QBEntityCallback<QBEvent>() {
+            @Override
+            public void onSuccess(QBEvent qbEvent, Bundle args) {
+                Log.e(TAG, "onSuccess: Notification Sent");
+            }
+
+            @Override
+            public void onError(QBResponseException errors) {
+                Log.e(TAG, "onError: " + errors.toString());
+            }
+        });
+
+    }
+
+
+    //End Call
 
 }

@@ -33,7 +33,7 @@ public class QBUserHolder {
         }
     }
 
-    private void putUser(QBUser user) {
+    public void putUser(QBUser user) {
         qbUserSparseArray.put(user.getId(), user);
     }
 

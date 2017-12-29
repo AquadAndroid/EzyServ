@@ -182,10 +182,10 @@
 
                     <LinearLayout
                         android:id="@+id/ll_services"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -292,6 +292,13 @@
         </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarProfileUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
     <!--<br.com.jeancsanchez.photoviewslider.PhotosViewSlider-->
     <!--android:id="@+id/photosViewSlider"-->

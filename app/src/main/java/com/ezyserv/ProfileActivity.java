@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +34,19 @@ import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
 import com.loopj.android.http.RequestParams;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.BaseService;
+import com.quickblox.auth.session.QBSession;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.content.QBContent;
+import com.quickblox.content.model.QBFile;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,13 +65,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class ProfileActivity extends CustomActivity implements CustomActivity.ResponseCallback {
-
+    String TAG = ProfileActivity.class.getSimpleName();
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private CircleImageView img_profile;
     private ImageView img_bg;
     private TextView txt_name, txt_mail, txt_phone, txt_primary_name, txt_secondary_name;
     private User u;
     private LinearLayout ll_services;
+    ProgressBar progressBarProfileUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +81,7 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         setContentView(R.layout.activity_profile);
         u = MyApp.getApplication().readUser();
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        progressBarProfileUpdate = findViewById(R.id.progressBarProfileUpdate);
         collapsingToolbarLayout.setTitle(u.getName());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,6 +101,7 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
             //do your check here
         }
 
+        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
 
         setImagePath("pic");
     }
@@ -95,9 +112,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         ll_services = findViewById(R.id.ll_services);
 
 
-
-        Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
-        Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
+        Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
+        //Picasso.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
 
         txt_name = findViewById(R.id.txt_name);
         txt_mail = findViewById(R.id.txt_mail);
@@ -303,8 +319,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         Uri imageUri = Uri.fromFile(file);
 
         callChangeProfilePicture(fileString);
-        Glide.with(this).load(imageUri).into(img_profile);
-        Glide.with(getContext()).load(imageUri).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
+        Picasso.with(this).load(imageUri).into(img_profile);
+        //Picasso.with(getContext()).load(imageUri).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
     }
 
     private void callChangeProfilePicture(String path) {
@@ -484,15 +500,50 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
                     MyApp.getApplication().writeUser(u);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
-                    Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
+                    Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
+                    //Picasso.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
                 }
+
+                UploadFileAsQBChatAvatar(mFileTemp);
             } else {
                 MyApp.showMassage(getContext(), "Update failed.");
-                Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
-                Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
+                Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
+                //Picasso.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
             }
         }
+    }
+
+    //Upload Avatar For User In QBAdmin
+    private void UploadFileAsQBChatAvatar(File mFileTemp) {
+        QBContent.uploadFileTask(mFileTemp, true, null).performAsync(new QBEntityCallback<QBFile>() {
+            @Override
+            public void onSuccess(QBFile qbFile, Bundle bundle) {
+                QBUser user = new QBUser();
+                user.setId(QBChatService.getInstance().getUser().getId());
+                user.setFileId(Integer.valueOf(qbFile.getId().toString()));
+
+                //Update User
+                QBUsers.updateUser(user)
+                        .performAsync(new QBEntityCallback<QBUser>() {
+                            @Override
+                            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                                Log.e(TAG, "onSuccess: ");
+                                progressBarProfileUpdate.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(QBResponseException e) {
+                                Log.e(TAG, "onError: ");
+                                progressBarProfileUpdate.setVisibility(View.GONE);
+                            }
+                        });
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
     }
 
     @Override
@@ -502,8 +553,43 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
 
     @Override
     public void onErrorReceived(String error) {
-        Glide.with(getContext()).load(u.getProfilepic()).into(img_profile);
-        Glide.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
+        Picasso.with(getContext()).load(u.getProfilepic()).into(img_profile);
+        //Picasso.with(getContext()).load(u.getProfilepic()).apply(RequestOptions.bitmapTransform(new BlurTransformation(25))).into(img_bg);
         MyApp.popMessage("Error", error, getContext());
+    }
+
+    private void createSessionForChat(String user, String password) {
+
+        final QBUser qbUser = new QBUser(user, password);
+
+        QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
+            @Override
+            public void onSuccess(QBSession qbSession, Bundle bundle) {
+                qbUser.setId(qbSession.getUserId());
+
+                try {
+                    qbUser.setPassword(BaseService.getBaseService().getToken());
+                } catch (BaseServiceException e) {
+                    e.printStackTrace();
+                }
+                QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
+                    @Override
+                    public void onSuccess(Object o, Bundle bundle) {
+                        Log.e(TAG, "onSuccess: Session Created");
+
+                    }
+
+                    @Override
+                    public void onError(QBResponseException e) {
+                        Log.e(TAG, "onError: QBChatService " + e.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.e(TAG, "onError: createSession " + e.toString());
+            }
+        });
     }
 }

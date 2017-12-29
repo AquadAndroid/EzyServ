@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +23,8 @@ import com.ezyserv.utills.AppConstant;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONObject;
+
 /**
  * Created by Aquad on 21-07-2017.
  */
@@ -33,6 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static final String MESAGE_ERROR = "MessageError";
 
     String mType, message, title, userid, providerid;
+    public MediaPlayer player;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -95,15 +100,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (MyApp.getApplication().readUser().getIsServicemen().equals("1")) {
                         SendMessageNotificationBook();
                         sendNotificationBookServiceBackGround(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
-
                         MyApp.setSharedPrefString(AppConstant.SERVICES_MAN_ID, remoteMessage.getData().get("createService_id"));
 
                     }
                     break;
             }
+        } else {
+
+            sendNotification(remoteMessage.getData().get("message"));
         }
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        player = MediaPlayer.create(this, R.raw.loud_alarm_clock);
+    }
 
     private void sendNotification(String messageBody, String title) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -129,8 +141,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    //Hector Call
-    /*Sending Notification Broadcast to Main Activity */
     private void SendMessageNotificationBook() {
         Intent registrationComplete = null;
         try {
@@ -145,12 +155,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    //Hector Call
-    /*Sending Notification If App is In back ground to Accept Reject Service Request*/
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void sendNotificationBookServiceBackGround(String message, String title) {
-
 
         Intent acceptIntent = new Intent(this, ChatActivity.class);
         acceptIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -166,7 +172,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent denyPendingIntent = PendingIntent.getBroadcast(this, 0, denyIntent, 0);
 
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.loud_alarm_clock);
 
         Notification notification = new Notification.Builder(this)
                 // Show controls on lock screen even when user hides sensitive content.
@@ -188,7 +194,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(1 /* ID of notification */, notification);
     }
 
-    //Hector Call to dismiss the notification
+
     public static class AutoDismissReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -199,5 +205,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
+    private void sendNotification(String message) {
+        Intent intent = new Intent(this, ChattingListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_check_black_24dp)
+                        .setContentTitle("New Message")
+                        .setContentText(message)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
 
 }

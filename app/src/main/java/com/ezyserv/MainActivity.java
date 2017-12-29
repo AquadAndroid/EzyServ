@@ -7,6 +7,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +21,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -27,6 +31,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -174,6 +179,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     private MenuItem menuRadius;
 
     //Hector Call
+    public MediaPlayer player;
     private BroadcastReceiver mReceiveMessageFromNotification;
     NotificationManager mNotificationManager;
 
@@ -188,7 +194,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         //createSessionForChat(MyApp.getApplication().readUser().getName().replaceAll(" ", ""), "12345678");
         //Call End
 
-        Log.d("deviceToken", MyApp.getSharedPrefString(AppConstant.DEVICE_TOKEN));
+        player = MediaPlayer.create(this, R.raw.loud_alarm_clock);
 
         bottom_sheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
@@ -454,7 +460,10 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         mReceiveMessageFromNotification = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
                 //If the broadcast has received with success
+
+
                 //that means device is registered successfully
                 Log.e("TAG", "that means device is registered successfully");
 
@@ -475,6 +484,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                         startActivity(intNotif);
                     } else if (type.equals("book_no_one")) {
                         MyApp.popMessage("Message", "No one accepted", getContext());
+                        player.stop();
                     } else {
                         mNotificationManager.cancel(1);
                         if (intent.getExtras() != null) {
@@ -566,6 +576,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         }
 
         //Hector Call
+        LocalBroadcastManager.getInstance(this).registerReceiver(pushBroadcastReceiver, new IntentFilter("new-push-event"));
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReceiveMessageFromNotification,
                 new IntentFilter(MyFirebaseMessagingService.MESSAGE_NOTIFICATION));
 
@@ -1578,11 +1589,13 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 mNotificationManager.cancel(1);
                 countDownTimer.cancel();
                 countDownTimer2.cancel();
+                player.stop();
             }
         });
         btn_accept_req.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                player.stop();
                 mNotificationManager.cancel(1);
                 countDownTimer.onFinish();
                 countDownTimer.cancel();
@@ -1634,57 +1647,33 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     //Hector Call
 
-    private void createSessionForChat(String user, String password) {
+    private BroadcastReceiver pushBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intnt) {
 
-        Log.e(TAG, "createSessionForChat: " + user);
+            Log.e(TAG, "onReceive: Notification" );
 
-        //Load All uses and save to cache
-        QBUsers.getUsers(null).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
-            @Override
-            public void onSuccess(ArrayList<QBUser> qbUsers, Bundle bundle) {
-                QBUserHolder.getInstance().putUser(qbUsers);
-            }
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
 
-            @Override
-            public void onError(QBResponseException e) {
-                Log.e(TAG, "onError: " + e.toString());
-            }
-        });
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(MainActivity.this)
+                            .setSmallIcon(R.drawable.ic_check_black_24dp)
+                            .setContentTitle("New Message")
+                            .setContentText(intent.getStringExtra("message"))
+                            .setAutoCancel(true)
+                            .setSound(defaultSoundUri)
+                            .setContentIntent(pendingIntent);
 
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        final QBUser qbUser = new QBUser(user, password);
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
-        QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
-            @Override
-            public void onSuccess(QBSession qbSession, Bundle bundle) {
-                qbUser.setId(qbSession.getUserId());
-
-                try {
-                    qbUser.setPassword(BaseService.getBaseService().getToken());
-                } catch (BaseServiceException e) {
-                    e.printStackTrace();
-                }
-                Log.e(TAG, "onSuccess: " + qbUser.getPassword());
-
-                QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
-                    @Override
-                    public void onSuccess(Object o, Bundle bundle) {
-                        Log.e(TAG, "onSuccess: Session Created");
-                    }
-
-                    @Override
-                    public void onError(QBResponseException e) {
-                        Log.e(TAG, "onError: QBChatService " + e.toString());
-                    }
-                });
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-                Log.e(TAG, "onError: createSession " + e.toString());
-            }
-        });
-    }
-
+        }
+    };
     //Call End
 }

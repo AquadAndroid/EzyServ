@@ -1,7 +1,9 @@
 package com.ezyserv;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,12 +32,15 @@ import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBChatDialogMessageListener;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.content.QBContent;
+import com.quickblox.content.model.QBFile;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.BaseServiceException;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,7 +58,9 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
     Toolbar toolbar;
     RecyclerView recyclerViewUserChat;
     List<String> stringListUserChat;
-    ProgressBar progressBarChatList;
+    //ProgressBar progressBarChatList;
+    ProgressDialog progressDialog;
+    String fileUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +92,18 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
     }
 
     private void setupuiElement() {
-        progressBarChatList = findViewById(R.id.progressBarChatList);
+        //progressBarChatList = findViewById(R.id.progressBarChatList);
         recyclerViewUserChat = findViewById(R.id.recyclerViewUserChat);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         recyclerViewUserChat.setLayoutManager(manager);
         recyclerViewUserChat.setHasFixedSize(true);
         recyclerViewUserChat.setItemAnimator(new DefaultItemAnimator());
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait while fetching your chat History");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 
 
@@ -98,12 +111,12 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
         QBRequestGetBuilder qbRequestBuilder = new QBRequestGetBuilder();
         qbRequestBuilder.setLimit(100);
 
-
         QBRestChatService.getChatDialogs(null, qbRequestBuilder).performAsync(new QBEntityCallback<ArrayList<QBChatDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBChatDialog> qbChatDialogs, Bundle bundle) {
-                final AdapterUserChat adapterUserChat = new AdapterUserChat(getBaseContext(), qbChatDialogs);
 
+                final AdapterUserChat adapterUserChat = new AdapterUserChat(getBaseContext(), qbChatDialogs);
+                Log.e(TAG, "onSuccess: Dialog Count : " + qbChatDialogs);
                 Set<String> setIds = new HashSet<>();
                 for (QBChatDialog chatDialog : qbChatDialogs) {
                     setIds.add(chatDialog.getDialogId());
@@ -116,7 +129,7 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
                                 QBUnreadMessageHolder.getInstance().setBundle(bundle);
                                 recyclerViewUserChat.setAdapter(adapterUserChat);
                                 adapterUserChat.notifyDataSetChanged();
-                                progressBarChatList.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                             }
 
                             @Override
@@ -164,7 +177,7 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.txtUserName.setText(qbChatDialogs.get(position).getName());
 
             int unread_count = QBUnreadMessageHolder.getInstance().getBundle().getInt(qbChatDialogs.get(position).getDialogId());
@@ -174,7 +187,34 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
                 holder.txtUnreadMessageCount.setVisibility(View.GONE);
             }
 
-            holder.img_profile.setImageDrawable(getResources().getDrawable(R.drawable.markzuckerberg));
+
+            QBUsers.getUser(qbChatDialogs.get(position).getRecipientId()).performAsync(new QBEntityCallback<QBUser>() {
+                @Override
+                public void onSuccess(QBUser qbUser, Bundle bundle) {
+                    if (qbUser.getFileId() != null) {
+                        int avatarId = qbUser.getFileId();
+                        QBContent.getFile(avatarId).performAsync(new QBEntityCallback<QBFile>() {
+                            @Override
+                            public void onSuccess(QBFile qbFile, Bundle bundle) {
+                                fileUrl = qbFile.getPublicUrl();
+                                Picasso.with(context).load(fileUrl).into(holder.img_profile);
+                            }
+
+                            @Override
+                            public void onError(QBResponseException e) {
+                                Log.e(TAG, "onError: getting File " + e.toString());
+                            }
+                        });
+                    } else {
+                        Picasso.with(context).load(R.drawable.ic_tag_faces_black_24dp).into(holder.img_profile);
+                    }
+                }
+
+                @Override
+                public void onError(QBResponseException e) {
+                    Log.e(TAG, "onError: getting User By Id " + e.toString());
+                }
+            });
 
             holder.txtUserName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -206,8 +246,6 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
     }
 
     private void createSessionForChat(String user, String password) {
-        progressBarChatList.setVisibility(View.VISIBLE);
-        Log.e(TAG, "createSessionForChat: " + user);
         //Load All uses and save to cache
         QBUsers.getUsers(null).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
             @Override
@@ -217,13 +255,12 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
 
             @Override
             public void onError(QBResponseException e) {
-                Log.e(TAG, "onError: " + e.toString());
-                progressBarChatList.setVisibility(View.GONE);
+                progressDialog.dismiss();
             }
         });
 
 
-        progressBarChatList.setVisibility(View.VISIBLE);
+        progressDialog.show();
         final QBUser qbUser = new QBUser(user, password);
 
         QBAuth.createSession(qbUser).performAsync(new QBEntityCallback<QBSession>() {
@@ -231,19 +268,15 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
             public void onSuccess(QBSession qbSession, Bundle bundle) {
 
                 qbUser.setId(qbSession.getUserId());
-
                 try {
                     qbUser.setPassword(BaseService.getBaseService().getToken());
                 } catch (BaseServiceException e) {
                     e.printStackTrace();
                 }
-                Log.e(TAG, "onSuccess: " + qbUser.getPassword());
-
                 QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
                     @Override
                     public void onSuccess(Object o, Bundle bundle) {
                         Log.e(TAG, "onSuccess: Session Created");
-
                         QBIncomingMessagesManager qbIncomingMessagesManager = QBChatService.getInstance().getIncomingMessagesManager();
                         qbIncomingMessagesManager.addDialogMessageListener(ChattingListActivity.this);
                         loadChatDialogs();
@@ -252,7 +285,7 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
                     @Override
                     public void onError(QBResponseException e) {
                         Log.e(TAG, "onError: QBChatService " + e.toString());
-                        progressBarChatList.setVisibility(View.GONE);
+                        progressDialog.dismiss();
                     }
                 });
             }
@@ -260,9 +293,10 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
             @Override
             public void onError(QBResponseException e) {
                 Log.e(TAG, "onError: createSession " + e.toString());
-                progressBarChatList.setVisibility(View.GONE);
+                progressDialog.dismiss();
             }
 
         });
     }
+
 }
