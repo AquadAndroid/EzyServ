@@ -19,6 +19,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
@@ -32,12 +33,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.ezyserv.adapter.PlaceAutocompleteAdapter;
 import com.ezyserv.model.Country;
 import com.ezyserv.model.NearbyServices;
 import com.ezyserv.model.Services;
 import com.ezyserv.model.User;
 import com.ezyserv.utills.AppConstant;
 import com.ezyserv.utills.quickblox_common.FileUtils;
+import com.google.android.gms.location.places.Place;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.quickblox.auth.session.QBSettings;
 
 import java.io.File;
@@ -61,6 +66,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -843,27 +849,6 @@ public class MyApp extends Application {
         QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
     }
 
-    //Saving Image File to local Storage
-    public static String saveBitmapToLocal(Bitmap bm, Context context) {
-        String path = null;
-        try {
-            File file = FileUtils.getInstance(context).createTempFile("IMG_", ".jpg");
-            FileOutputStream fos = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos);
-            fos.flush();
-            fos.close();
-            path = file.getAbsolutePath();
-            Log.e("Tag", "Path = " + path);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return path;
-    }
 
     //End Call
 

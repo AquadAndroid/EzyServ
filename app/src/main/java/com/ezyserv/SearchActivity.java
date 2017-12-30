@@ -2,10 +2,7 @@ package com.ezyserv;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.media.Image;
 import android.os.Bundle;
-import android.provider.Browser;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +22,7 @@ import com.ezyserv.application.MyApp;
 import com.ezyserv.application.SingleInstance;
 import com.ezyserv.custome.CustomActivity;
 import com.ezyserv.utills.AppConstant;
+import com.ezyserv.utills.DatabaseHolder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -50,7 +47,6 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
     private RecyclerView mRecyclerView;
     private TextView tv_saved_address;
     LinearLayoutManager llm;
-
     PlaceAutocompleteAdapter mAdapter;
     private static final LatLngBounds BOUNDS_INDIA = new LatLngBounds(
             new LatLng(23.63936, 68.14712), new LatLng(28.20453, 97.34466));
@@ -58,6 +54,7 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
     EditText mSearchEdittext;
     ImageView mClear;
     private ImageButton img_btn_search_back;
+    DatabaseHolder databaseHandler;
 
     @Override
     public void onStart() {
@@ -76,8 +73,8 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        mContext = SearchActivity.this;
 
+        mContext = SearchActivity.this;
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
@@ -94,7 +91,7 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
             tv_saved_address.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.rating_yellow_big, 0);
             tv_saved_address.setText(MyApp.getSharedPrefString(AppConstant.LOCATION));
         }
-
+        databaseHandler = new DatabaseHolder(this);
         setTouchNClick(R.id.img_btn_search_back);
 
         initViews();
@@ -116,8 +113,9 @@ public class SearchActivity extends CustomActivity implements PlaceAutocompleteA
         mClear.setOnClickListener(this);
 
         // Hector Call
-        mAdapter = new PlaceAutocompleteAdapter(this, R.layout.view_placesearch, mGoogleApiClient, BOUNDS_INDIA, null);
+        mAdapter = new PlaceAutocompleteAdapter(this, R.layout.view_placesearch, mGoogleApiClient, BOUNDS_INDIA, null, databaseHandler);
         mRecyclerView.setAdapter(mAdapter);
+
 
         mSearchEdittext.addTextChangedListener(new TextWatcher() {
             @Override

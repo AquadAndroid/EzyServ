@@ -2,7 +2,6 @@ package com.ezyserv.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 
 import com.ezyserv.R;
 import com.ezyserv.application.MyApp;
-import com.ezyserv.utills.AppConstant;
+import com.ezyserv.utills.DatabaseHolder;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
@@ -30,6 +29,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -47,24 +47,31 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     private static final String TAG = "PlaceAutocompleteAdapter";
     private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
     ArrayList<PlaceAutocomplete> mResultList;
-
+    ArrayList<PlaceAutocomplete> mFavList;
     private GoogleApiClient mGoogleApiClient;
+    //    private LatLngBounds mBounds;
 
-//    private LatLngBounds mBounds;
-
+    List<PlaceAutocomplete> favorites;
     private int layout;
 
     private AutocompleteFilter mPlaceFilter;
 
+    DatabaseHolder databaseHandler;
+
+    public PlaceAutocompleteAdapter() {
+    }
 
     public PlaceAutocompleteAdapter(Context context, int resource, GoogleApiClient googleApiClient,
-                                    LatLngBounds bounds, AutocompleteFilter filter) {
+                                    LatLngBounds bounds, AutocompleteFilter filter, DatabaseHolder databaseHandler) {
         this.mContext = context;
         layout = resource;
         mGoogleApiClient = googleApiClient;
 //        mBounds = bounds;
         mPlaceFilter = filter;
         this.mListener = (PlaceAutoCompleteInterface) mContext;
+        this.databaseHandler = databaseHandler;
+        mResultList = databaseHandler.getAllFavourites();
+        mFavList = databaseHandler.getAllFavourites();
     }
 
     /*
@@ -154,7 +161,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
                 AutocompletePrediction prediction = iterator.next();
                 // Get the details of this prediction and copy it into a new PlaceAutocomplete object.
                 resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
-                        prediction.getFullText(STYLE_BOLD)));
+                        prediction.getFullText(STYLE_BOLD), "no"));
             }
 
             // Release the buffer now that all data has been copied.
@@ -176,7 +183,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 
 
     @Override
-    public void onBindViewHolder(PlaceViewHolder mPredictionHolder, final int i) {
+    public void onBindViewHolder(final PlaceViewHolder mPredictionHolder, final int i) {
         mPredictionHolder.mAddress.setText(mResultList.get(i).description);
 
         mPredictionHolder.mParentLayout.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +192,34 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
                 mListener.onPlaceClick(mResultList, i);
             }
         });
+        if (mResultList.get(i).favourite.equals("yes")) {
+            mPredictionHolder.img_btn_star.setImageResource(R.drawable.rating_yellow_big);
+        } else {
+            mPredictionHolder.img_btn_star.setImageResource(R.drawable.rating_blank_big);
+        }
 
+        for (int j = 0; j < mFavList.size(); j++) {
+            if (mResultList.get(i).placeId.equals(mFavList.get(j).placeId)) {
+                mPredictionHolder.img_btn_star.setImageResource(R.drawable.rating_yellow_big);
+                break;
+            } else {
+                mPredictionHolder.img_btn_star.setImageResource(R.drawable.rating_blank_big);
+            }
+        }
+
+
+        mPredictionHolder.img_btn_star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mPredictionHolder.img_btn_star.getDrawable().getConstantState() == mContext.getResources().getDrawable(R.drawable.rating_blank_big).getConstantState()) {
+                    mPredictionHolder.img_btn_star.setImageResource(R.drawable.rating_yellow_big);
+                    databaseHandler.addFavourites(mResultList.get(i));
+                } else {
+                    databaseHandler.removeFavourite(String.valueOf(mResultList.get(i).placeId));
+                    mPredictionHolder.img_btn_star.setImageResource(R.drawable.rating_blank_big);
+                }
+            }
+        });
     }
 
     @Override
@@ -207,41 +241,32 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         public RelativeLayout mParentLayout;
         public TextView mAddress;
         public ImageButton img_btn_star;
-        public int star_img = R.drawable.rating_blank_big;
+
 
         public PlaceViewHolder(View itemView) {
             super(itemView);
-            mParentLayout =  itemView.findViewById(R.id.predictedRow);
-            mAddress =  itemView.findViewById(R.id.address);
+            mParentLayout = itemView.findViewById(R.id.predictedRow);
+            mAddress = itemView.findViewById(R.id.address);
             img_btn_star = itemView.findViewById(R.id.img_btn_star);
-            img_btn_star.setImageResource(star_img);
-            img_btn_star.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (star_img == R.drawable.rating_blank_big) {
-                        star_img = R.drawable.rating_yellow_big;
-                        img_btn_star.setImageResource(star_img);
-                        MyApp.setSharedPrefString(AppConstant.LOCATION, mAddress.getText().toString());
-                    } else {
-                        star_img = R.drawable.rating_blank_big;
-                        img_btn_star.setImageResource(star_img);
-                    }
-                }
-            });
         }
     }
 
     /**
      * Holder for Places Geo Data Autocomplete API results.
      */
-    public class PlaceAutocomplete {
+    public static class PlaceAutocomplete {
 
         public CharSequence placeId;
         public CharSequence description;
+        public String favourite;
 
-        PlaceAutocomplete(CharSequence placeId, CharSequence description) {
+        public PlaceAutocomplete() {
+        }
+
+        public PlaceAutocomplete(CharSequence placeId, CharSequence description, String favourite) {
             this.placeId = placeId;
             this.description = description;
+            this.favourite = favourite;
         }
 
         @Override
