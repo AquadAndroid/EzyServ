@@ -23,6 +23,7 @@ import com.ezyserv.utills.AppConstant;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -106,7 +107,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     break;
             }
         } else {
-
             sendNotification(remoteMessage.getData().get("message"));
         }
     }
@@ -206,6 +206,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String message) {
+
+        String[] arr = message.split(",");
+        String[] msgData = arr[0].split("=");
+        String[] name = arr[1].split("=");
+
         Intent intent = new Intent(this, ChattingListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -215,8 +220,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_check_black_24dp)
-                        .setContentTitle("New Message")
-                        .setContentText(message)
+                        .setContentTitle(name[1].replaceAll("[}]", ""))
+                        .setContentText(msgData[1])
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
@@ -224,7 +229,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(15 /* ID of notification */, notificationBuilder.build());
     }
 
 }

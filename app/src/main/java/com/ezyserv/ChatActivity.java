@@ -65,6 +65,7 @@ import com.quickblox.chat.QBRoster;
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBChatDialogMessageListener;
 import com.quickblox.chat.listeners.QBChatDialogTypingListener;
+import com.quickblox.chat.listeners.QBRosterListener;
 import com.quickblox.chat.model.QBAttachment;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
@@ -111,6 +112,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.ezyserv.application.MyApp.initializeFramworkWithApp;
+import static com.google.firebase.crash.FirebaseCrash.log;
 
 public class ChatActivity extends CustomActivity implements CustomActivity.ResponseCallback {
     String TAG = ChatActivity.class.getSimpleName();
@@ -132,6 +134,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     FullscreenVideoLayout videoLayout;
     NotificationManager mNotificationManager;
     String qbChatDialogId, chatRoomId, userIdLocal, servicemanIdLocal, fileUrl;
+
+    QBRoster chatRoster;
 
 
     @Override
@@ -188,7 +192,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
             }
         });
 
-
+        chatRoster = QBChatService.getInstance().getRoster(QBRoster.SubscriptionMode.mutual, null);
     }
 
     //Respond Service that has been created by the User to make status Accepted.
@@ -243,8 +247,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         progressBarChatActivity = findViewById(R.id.progressBarChatActivity);
         listViewMessages = findViewById(R.id.listViewMessages);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        listViewMessages.setLayoutManager(layoutManager);
         layoutManager.setStackFromEnd(true);
+        listViewMessages.setLayoutManager(layoutManager);
         listViewMessages.setItemAnimator(new DefaultItemAnimator());
 
         //send_address = (TextView) findViewById(R.id.tv_send_address);
@@ -264,7 +268,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         } else if (v.getId() == R.id.img_btn_attach) {
             openAttachmentSelection();
         } else if (v.getId() == R.id.img_btn_send_msg) {
-            sendMessage("text", null);
+            if (chat_box.getText().toString().length() > 0)
+                sendMessage("text", null);
             chat_box.setText("");
         } else if (v.getId() == R.id.call_btn) {
             Toast.makeText(this, "Calling.....", Toast.LENGTH_SHORT).show();
@@ -291,11 +296,16 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
+        try {
+            long lastUserActivity = QBChatService.getInstance().getLastUserActivity(qbChatDialog.getRecipientId()); //returns last activity in seconds or 0 if user online or error (e.g. user never loggedin chat)
 
+            if (lastUserActivity > 20) {
+                sendPushMessage(qbChatDialog.getRecipientId());
+            }
+        } catch (XMPPException.XMPPErrorException | SmackException.NotConnectedException | SmackException.NoResponseException e) {
+            Log.e(TAG, "sendMessage: " + e.toString());
+        }
 
-        /*if (getUserById(qbChatDialog.getOccupants().get(0)).equals("offline")) {
-            sendPushMessage(qbChatDialog.getOccupants().get(0));
-        }*/
 
         //Put message to catch
 
@@ -518,7 +528,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     }
 
     //Loading chat dialog from the id taken from the notification data payload
-    private void loadChatDialogById(String qbChatDialogId) {
+    private void loadChatDialogById(final String qbChatDialogId) {
         Log.e(TAG, "loadChatDialogById: ");
         QBRestChatService.getChatDialogById(qbChatDialogId).performAsync(
                 new QBEntityCallback<QBChatDialog>() {
@@ -1124,7 +1134,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
                         }
                     });
                 } else {
-                    Picasso.with(getApplicationContext()).load(R.drawable.ic_tag_faces_black_24dp).into(img_profile);
+                    img_profile.setImageDrawable(getResources().getDrawable(R.drawable.ic_tag_faces_black_24dp));
                 }
             }
 
@@ -1137,33 +1147,33 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
 
     private String getUserById(int userID) {
         Log.e(TAG, "getUserById: " + userID);
-        QBRoster chatRoster = QBChatService.getInstance().getRoster(QBRoster.SubscriptionMode.mutual, null);
+
         QBPresence presence = chatRoster.getPresence(userID);
+
         if (presence == null) {
             return "";
         }
-
         if (presence.getType() == QBPresence.Type.online) {
             return "online";
         } else {
             return "offline";
         }
-    }
 
+    }
 
     private void sendPushMessage(Integer integer) {
         StringifyArrayList<Integer> userIds = new StringifyArrayList<Integer>();
         userIds.add(integer);
-
         QBEvent event = new QBEvent();
         event.setUserIds(userIds);
         event.setEnvironment(QBEnvironment.DEVELOPMENT);
         event.setNotificationType(QBNotificationType.PUSH);
-        /*HashMap<String, String> data = new HashMap<String, String>();
-        data.put("data.message", "Hello");
-        data.put("data.type", "welcome message");*/
-        event.setMessage(chat_box.getText().toString());
 
+        HashMap<String, String> data = new HashMap<>();
+        data.put("name", MyApp.getApplication().readUser().getName());
+        data.put("message", chat_box.getText().toString());
+
+        event.setMessage(String.valueOf(data));
         QBPushNotifications.createEvent(event).performAsync(new QBEntityCallback<QBEvent>() {
             @Override
             public void onSuccess(QBEvent qbEvent, Bundle args) {

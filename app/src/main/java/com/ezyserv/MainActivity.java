@@ -1671,7 +1671,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+            notificationManager.notify(15 /* ID of notification */, notificationBuilder.build());
 
         }
     };

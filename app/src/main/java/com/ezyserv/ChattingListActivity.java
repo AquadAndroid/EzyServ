@@ -206,7 +206,7 @@ public class ChattingListActivity extends CustomActivity implements QBChatDialog
                             }
                         });
                     } else {
-                        Picasso.with(context).load(R.drawable.ic_tag_faces_black_24dp).into(holder.img_profile);
+                        holder.img_profile.setImageDrawable(getResources().getDrawable(R.drawable.ic_tag_faces_black_24dp));
                     }
                 }
 
