@@ -371,6 +371,9 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
 
         QBUser qbUser = new QBUser(email, pwd);
 
+        if (MyApp.getSharedPrefString(AppConstant.LOGIN_TYPE).equals("FB")) {
+            qbUser.setFacebookId(MyApp.getSharedPrefString(AppConstant.FB_ID));
+        }
 
         qbUser.setFullName(MyApp.getSharedPrefString("name"));
         qbUser.setEmail(MyApp.getSharedPrefString("email"));

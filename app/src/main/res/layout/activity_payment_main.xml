@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ezyserv.PaymentActivityMain">
+
+    <include
+        android:id="@+id/toolbar_payment"
+        layout="@layout/side_toolbar" />
+
+    <EditText
+        android:id="@+id/edtAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_payment"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dim_20"
+        android:hint="Add Amount" />
+
+    <com.stripe.android.view.CardMultilineWidget
+        android:id="@+id/card_input_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edtAmount"
+        android:padding="@dimen/dim_10" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_input_widget"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dim_20"
+        android:background="@color/pink"
+        android:padding="@dimen/dim_15"
+        android:text="Add Money"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dim_18" />
+
+</RelativeLayout>

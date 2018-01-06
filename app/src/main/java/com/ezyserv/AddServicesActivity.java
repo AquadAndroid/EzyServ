@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.ezyserv.model.Services;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddServicesActivity extends CustomActivity {
+    String TAG = AddServicesActivity.class.getSimpleName();
     private Toolbar toolbar;
     private String value;
     private RecyclerView ServiceList;
@@ -27,7 +29,7 @@ public class AddServicesActivity extends CustomActivity {
     private Services services;
     private boolean isPrimary;
     private boolean isCompany;
-
+    String ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class AddServicesActivity extends CustomActivity {
         services = SingleInstance.getInstance().getSelectedServiceCategory();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -71,18 +73,41 @@ public class AddServicesActivity extends CustomActivity {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (value.equals("domestic")) {
-                    SingleInstance.getInstance().setDomesticCount(adapter.count);
-                } else if (value.equals("construction")) {
-                    SingleInstance.getInstance().setMyCareCount(adapter.count);
-                } else if (value.equals("events")) {
-                    SingleInstance.getInstance().setEventsCount(adapter.count);
-                }
 
                 String ids = adapter.idMap.keySet().toString();
                 ids = ids.substring(1, ids.length());
                 ids = SingleInstance.getInstance().getServicesId() + ids;
+
+
+                switch (value) {
+                    case "domestic":
+                        if (adapter.count == 0) {
+                            SingleInstance.getInstance().setDomesticCount(0);
+                            ids = "";
+                        } else {
+                            SingleInstance.getInstance().setDomesticCount(adapter.count);
+                        }
+                        break;
+                    case "construction":
+                        if (adapter.count == 0) {
+                            SingleInstance.getInstance().setMyCareCount(0);
+                            ids = "";
+                        } else
+                            SingleInstance.getInstance().setMyCareCount(adapter.count);
+                        break;
+                    case "events":
+                        if (adapter.count == 0) {
+                            SingleInstance.getInstance().setEventsCount(0);
+                            ids = "";
+                        } else
+                            SingleInstance.getInstance().setEventsCount(adapter.count);
+                        break;
+                }
+
                 SingleInstance.getInstance().setServicesId(ids.replace("]", ","));
+
+                Log.e(TAG, "onClick on Save : " + SingleInstance.getInstance().getServicesId());
+
                 finish();
             }
         });
@@ -94,6 +119,7 @@ public class AddServicesActivity extends CustomActivity {
     }
 
     public void setPrimaryName(String primary, String id) {
+        Log.e(TAG, "setPrimaryName : " + primary + " id  : " + id);
         SingleInstance.getInstance().setPrimaryName(primary + "@" + id);
         finish();
     }

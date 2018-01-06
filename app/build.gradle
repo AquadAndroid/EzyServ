@@ -47,6 +47,10 @@ android {
             signingConfig signingConfigs.config
         }*/
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 
 }
 
@@ -55,18 +59,17 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:26.+'
-    compile 'com.android.support:recyclerview-v7:26.+'
-    compile 'com.android.support:support-v4:26.+'
+    compile 'com.android.support:design:26.0.2'
+    compile 'com.android.support:recyclerview-v7:26.0.2'
+    compile 'com.android.support:support-v4:26.0.2'
 
     //facebook
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     //gson - API call Library
     compile 'com.google.code.gson:gson:2.8.0'
-
 
     //Google Play Services
     compile 'com.google.android.gms:play-services-auth:11.4.2'
@@ -83,7 +86,7 @@ dependencies {
 
     //Other
     compile 'com.hbb20:ccp:2.0.3'
-    compile 'com.android.support:support-vector-drawable:26.+'
+    compile 'com.android.support:support-vector-drawable:26.0.2'
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
     compile 'org.adw.library:discrete-seekbar:1.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -109,6 +112,8 @@ dependencies {
     implementation "com.quickblox:quickblox-android-sdk-messages:3.5.2"
     implementation 'com.quickblox:chat-message-adapter:2.0'
 
+    //Stripe paymetn Gateway
+    implementation 'com.stripe:stripe-android:5.1.0'
 
     //compile 'com.sendbird.sdk:sendbird-android-sdk:3.0.42'
     testCompile 'junit:junit:4.12'

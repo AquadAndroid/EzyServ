@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeServicesActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+    String TAG = ChangeServicesActivity.class.getSimpleName();
     private Toolbar Dtoolbar;
     private TextView tv_domestic_label, txt_mycare_counts, tv_events_label, tv_primary_lable;
     private Button Continue;
@@ -62,22 +64,22 @@ public class ChangeServicesActivity extends CustomActivity implements CustomActi
         User u = MyApp.getApplication().readUser();
 
         try {
-            SingleInstance.getInstance().setPrimaryName("sdf@" + u.getService().getPrimary().get(0).getId());
+            SingleInstance.getInstance().setPrimaryName(u.getService().getPrimary().get(0).getName() + "@" + u.getService().getPrimary().get(0).getId());
         } catch (Exception e) {
-        }
-        try {
-            SingleInstance.getInstance().setPrimaryName("sdf@" + u.getService().getPrimary().get(0).getId());
-        } catch (Exception e) {
+            Log.e(TAG, "onCreate:first catch  " + e.toString());
         }
 
-        try {
+
+        //Assigning the Selected Serivces Ids to Single Instance
+       /* try {
             String ids = "";
             for (int i = 0; i < u.getService().getSecondary().size(); i++) {
                 ids += u.getService().getSecondary().get(i).getId() + ",";
                 SingleInstance.getInstance().setServicesId(ids);
             }
         } catch (Exception e) {
-        }
+            Log.e(TAG, "onCreate: third catch " + e.toString());
+        }*/
     }
 
     private String primaryServiceId = "";
@@ -118,11 +120,17 @@ public class ChangeServicesActivity extends CustomActivity implements CustomActi
                     }
 
                 }
-                tv_primary_lable.setText(u.getService().getPrimary().get(0).getName());
+
+                if (!SingleInstance.getInstance().getPrimaryName().split("@")[0].equals("null")) {
+                    tv_primary_lable.setText(SingleInstance.getInstance().getPrimaryName().split("@")[0]);
+                } else {
+                    tv_primary_lable.setText("0 services added");
+                }
                 tv_domestic_label.setText(domesticNames.substring(0, domesticNames.length() - 2));
                 txt_mycare_counts.setText(myCareNames.substring(0, myCareNames.length() - 2));
                 tv_events_label.setText(eventsNames.substring(0, eventsNames.length() - 2));
             } catch (Exception e) {
+                Log.e(TAG, "onResume: first catch " + e.toString());
             }
         } else {
             try {
@@ -144,39 +152,30 @@ public class ChangeServicesActivity extends CustomActivity implements CustomActi
                     isEventsClicked = false;
                 }
 
-
-//                tv_primary_lable.setText(u.getService().getPrimary().get(0).getName());
-
             } catch (Exception e) {
                 tv_domestic_label.setText("N/A");
                 txt_mycare_counts.setText("N/A");
                 tv_events_label.setText("N/A");
+                Log.e(TAG, "onResume: second catch " + e.toString());
             }
 
 
             if (!SingleInstance.getInstance().getPrimaryName().isEmpty()) {
-                tv_primary_lable.setText(SingleInstance.getInstance().getPrimaryName().split("@")[0]);
-                primaryServiceId = SingleInstance.getInstance().getPrimaryName().split("@")[1];
-//                SingleInstance.getInstance().setPrimaryName("");
+                if (!SingleInstance.getInstance().getPrimaryName().split("@")[0].equals("Primary Service")) {
+                    tv_primary_lable.setText(SingleInstance.getInstance().getPrimaryName().split("@")[0]);
+                    Log.e(TAG, "onResume: " + SingleInstance.getInstance().getPrimaryName().split("@")[0]);
+                    primaryServiceId = SingleInstance.getInstance().getPrimaryName().split("@")[1];
+                } else {
+                    tv_primary_lable.setText("0 services added");
+                }
             }
         }
-
     }
 
     private void getAllServices() {
         allServices = MyApp.getApplication().readService();
-//        getCall(getContext(), AppConstant.BASE_URL + "getAllServices", "Loading services...", 1);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 
     private Context getContext() {
         return ChangeServicesActivity.this;
@@ -287,31 +286,17 @@ public class ChangeServicesActivity extends CustomActivity implements CustomActi
 
 
     private void updateProfileInformation() {
-        String ids = SingleInstance.getInstance().getServicesId();
-        if (ids.contains(","))
-            ids = ids.substring(0, ids.length() - 1);
-        SingleInstance.getInstance().setServicesId("");
-
-        updateServices();
-
-//        MyApp.spinnerStart(getContext(), "Taking you to home...");
-        MyApp.setSharedPrefString(AppConstant.PRIMARY_SERVICE_ID, primaryServiceId);
-//        MyApp.setSharedPrefString(AppConstant.SECONDARY_SERVICES, ids);
-//        MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, false);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                navigateAfterUpdate();
-//            }
-//        }, 1000);
+        if (SingleInstance.getInstance().getServicesId().equals(""))
+            updateServices("");
+        else
+            updateServices(SingleInstance.getInstance().getServicesId().substring(0, SingleInstance.getInstance().getServicesId().length() - 1).replaceAll(" ", ""));
     }
 
-    private void updateServices() {
+    private void updateServices(String serviceids) {
         RequestParams p = new RequestParams();
         p.put("user_id", MyApp.getApplication().readUser().getId());
-        p.put("primaryservices", MyApp.getSharedPrefString(AppConstant.PRIMARY_SERVICE_ID));
-        p.put("services", MyApp.getSharedPrefString(AppConstant.SECONDARY_SERVICES).replace(" ", ""));
-
+        p.put("primaryservices", primaryServiceId);
+        p.put("services", serviceids);
         postCall(getContext(), AppConstant.BASE_URL + "updateServices", p, "Updating...", 9);
     }
 
@@ -338,6 +323,9 @@ public class ChangeServicesActivity extends CustomActivity implements CustomActi
                 MyApp.showMassage(getContext(), "Data parsing error.");
             }
         } else if (callNumber == 9) {
+
+            MyApp.setSharedPrefString(AppConstant.PRIMARY_SERVICE_ID, primaryServiceId);
+            SingleInstance.getInstance().setServicesId("");
             RequestParams p = new RequestParams();
             p.put("phone", MyApp.getApplication().readUser().getPhone());
             postCall(getContext(), AppConstant.BASE_URL + "login", p, "Updating...", 10);

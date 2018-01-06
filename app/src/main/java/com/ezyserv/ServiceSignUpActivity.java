@@ -91,7 +91,7 @@ public class ServiceSignUpActivity extends CustomActivity {
         callbackManager = CallbackManager.Factory.create();
         login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
 
                 MyApp.spinnerStart(getContext(), getString(R.string.loading));
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -105,6 +105,7 @@ public class ServiceSignUpActivity extends CustomActivity {
                                 String fb_id = null;
                                 try {
                                     fb_id = object.getString("id");
+                                    MyApp.setSharedPrefString(AppConstant.FB_ACCESS_TOKEN, loginResult.getAccessToken().toString());
                                     MyApp.setSharedPrefString(AppConstant.FB_ID, fb_id);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -230,6 +231,7 @@ public class ServiceSignUpActivity extends CustomActivity {
                 intent.putExtra("isRegister", true);
                 intent.putExtra("isProvider", true);
                 startActivity(intent);
+                dialog.dismiss();
             }
         });
         dialog.show();

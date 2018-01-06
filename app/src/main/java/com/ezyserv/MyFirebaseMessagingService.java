@@ -219,7 +219,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_check_black_24dp)
+                        .setSmallIcon(R.drawable.ic_chat_notificaiton)
                         .setContentTitle(name[1].replaceAll("[}]", ""))
                         .setContentText(msgData[1])
                         .setAutoCancel(true)
@@ -233,3 +233,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 }
+/*
+* Data Payload
+* {smallIcon=small_icon, userid=e8D8xfCsrNE:APA91bGeONofQZ3uAxNT4H0G4LIwX2UefFscDkx70maCCGztYREJF2L339J4_BBA28Euqj3yZkm61CgEAmzKDu8MumkT7nCzebEtqu2KrhLsyKbmYpbTlwN1Ap4nu3WognC8j180KUV6, createService_id=677, mType=sendRequest, sound=1, title= Ezyserv, providerid=117, jsonObject={"multicast_id":5037123760808121536,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1510659991306200%01c6090df9fd7ecd"}]}, vibrate=1, largeIcon=large_icon, message=Send request to sammy}
+*
+*
+* */

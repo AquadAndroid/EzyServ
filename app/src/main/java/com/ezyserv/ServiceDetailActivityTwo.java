@@ -74,8 +74,7 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
     private ArrayList listdata;
     private ScrollView scrollView;
     private List<Services> allServices = null;
-    private TextView txt_current_address;
-    private TextView tv_primary;
+    private TextView txt_current_address, tv_primary;
     private boolean isCompany;
 
     @Override
@@ -119,9 +118,12 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
         tv_events_label.setText(eventsCounter + " services added");
 
         if (!SingleInstance.getInstance().getPrimaryName().isEmpty()) {
-            tv_primary.setText(SingleInstance.getInstance().getPrimaryName().split("@")[0]);
-            primaryServiceId = SingleInstance.getInstance().getPrimaryName().split("@")[1];
-            SingleInstance.getInstance().setPrimaryName("");
+            if (!SingleInstance.getInstance().getPrimaryName().split("@")[0].equals("Primary Service")) {
+                tv_primary.setText(SingleInstance.getInstance().getPrimaryName().split("@")[0]);
+                primaryServiceId = SingleInstance.getInstance().getPrimaryName().split("@")[1];
+            } else {
+                tv_primary.setText("Primary Service");
+            }
         }
 
 
@@ -463,9 +465,8 @@ public class ServiceDetailActivityTwo extends CustomActivity implements CustomAc
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.w("address", "Canont get Address!");
+            Log.w("address", "Cannot get Address!");
         }
         return strAdd;
     }
-
 }

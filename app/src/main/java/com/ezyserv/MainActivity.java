@@ -5,12 +5,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
@@ -139,49 +141,39 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         LocationListener, LocationProvider.LocationCallback, LocationProvider.PermissionCallback, GoogleMap.OnCameraIdleListener,
         ResultCallback<LocationSettingsResult>, CustomActivity.ResponseCallback {
 
-    private boolean isFirstSet = false;
+    protected static final String TAG = "MainActivity";
+    private boolean isFirstSet = false, isSchedule, isLocationManual = false, isDialogShown = false, isUser = true, isActive = true;
     private GoogleApiClient googleApiClient;
-    private LatLng sourceLocation = null;
     private LocationProvider locationProvider;
     private FragmentDrawer drawerFragment;
-    //private TextView txt_location;
+    private int progress, markerPath = R.drawable.ic_handyman_marker;
     private NestedScrollView bottom_sheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView bottom_sheet_recycler;
     private BottomServiceAdapter adapter;
     private List<Services> services = new ArrayList<>();
-    private TextView tv_serv_catg;
     private GoogleMap mMap;
     private DrawerLayout drawer;
     private SupportMapFragment mapFragment;
     protected GoogleApiClient mGoogleApiClient;
-    protected static final String TAG = "MainActivity";
     private Toolbar toolbar;
-    private int markerPath = R.drawable.ic_handyman_marker;
     private ArcLayout arcLayout;
     private ImageButton fab;
     FrameLayout menu_arc_frame;
     private FloatingActionButton fab_events, fab_construction, fab_domestic, fab_all;
-    String[] SpinnerText = {"Wallet", "Cash"};
-    String[] spinnerBook = {"Book Now", "Schedule"};
+    String[] SpinnerText = {"Wallet", "Cash"}, spinnerBook = {"Book Now", "Schedule"};
     int SpinnerIcons[] = {R.drawable.wallet_white, R.drawable.cash_white};
-    private Spinner wallet_cash_spiner;
-    private Spinner spinner_booking;
-    private TextView txt_book;
+    private Spinner wallet_cash_spiner, spinner_booking;
     private Switch switch_mode;
-    private TextView txt_offline;
-    private TextView txt_online;
+    private TextView txt_offline, txt_online, txt_book, txt_address, tv_serv_catg;
     private RelativeLayout rl_provider;
-    private CardView cardView;
-    private CardView card_book;
-    private LatLng mCenterLatLong;
-    private TextView txt_address;
+    private CardView cardView, card_book;
+    private LatLng mCenterLatLong, sourceLocation = null;
     private MenuItem menuRadius;
-
-    //Hector Call
-    public MediaPlayer player;
+    private BoomMenuButton bmb;
+    private MediaPlayer player;
     private BroadcastReceiver mReceiveMessageFromNotification;
-    NotificationManager mNotificationManager;
+    private NotificationManager mNotificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,10 +181,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         setContentView(R.layout.activity_main);
         setResponseListener(this);
 
-        // Hector Call
         initializeFramworkWithApp(this);
-        //createSessionForChat(MyApp.getApplication().readUser().getName().replaceAll(" ", ""), "12345678");
-        //Call End
 
         player = MediaPlayer.create(this, R.raw.loud_alarm_clock);
 
@@ -203,7 +192,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main4);
 
-        //Hector Call
         setupUiElements();
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -232,16 +220,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
         wallet_cash_spiner = findViewById(R.id.wallet_cash_spiner);
         spinner_booking = findViewById(R.id.spinner_booking);
-        wallet_cash_spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         if (getIntent().getBooleanExtra("showAlert", false)) {
             MyApp.popMessage("Message", "You are redirected to this activity even the verification of the " +
@@ -275,7 +253,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-//        txt_location = findViewById(R.id.txt_location);
         txt_address = findViewById(R.id.txt_address);
         menu_arc_frame = findViewById(R.id.menu_arc_frame);
         arcLayout = findViewById(R.id.arc_layout);
@@ -334,6 +311,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_4_2);
         bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_4_2);
         bmb.clearBuilders();
+
+
         bmb.addBuilder(new TextInsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_handyman_new)
                 .normalTextRes(R.string.text_ham_button_handyman).normalColor(Color.parseColor("#dd000000"))
@@ -356,6 +335,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 .normalColor(Color.parseColor("#dd000000"))
                 .normalTextRes(R.string.text_ham_button_my_care)
                 .highlightedColor(Color.WHITE).shadowColor(Color.GRAY));
+
 
         bmb.setOnBoomListener(new OnBoomListener() {
             @Override
@@ -449,55 +429,63 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         });
 
 
-        //Hector Call
         getMessageFromNotification();
+
+        spinner_booking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if (position == 1) {
+                    txt_book.setEnabled(true);
+                    txt_book.setTextColor(Color.WHITE);
+                } else {
+                    txt_book.setEnabled(false);
+                    txt_book.setTextColor(Color.GRAY);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
 
-    //Hector Call
     private void getMessageFromNotification() {
         mReceiveMessageFromNotification = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-                //If the broadcast has received with success
-
-
-                //that means device is registered successfully
-                Log.e("TAG", "that means device is registered successfully");
-
                 if (intent.getAction().equals(MyFirebaseMessagingService.MESAGE_ERROR)) {
                     Toast.makeText(context, "MESSAGE_ERROR", Toast.LENGTH_SHORT).show();
                 } else if (intent.getAction().equals(MyFirebaseMessagingService.MESSAGE_NOTIFICATION)) {
 
                     String type = intent.getStringExtra("type");
-                    Log.e(TAG, "onReceive: " + intent.getStringExtra("type"));
-                    Log.e(TAG, "onReceive: " + intent.getStringExtra("userid"));
-                    Log.e(TAG, "onReceive: " + intent.getStringExtra("providerid"));
 
-                    if (type.equals("accepted")) {
-                        Intent intNotif = new Intent(MainActivity.this, ChatActivity.class);
-                        intNotif.putExtra("user_id", intent.getStringExtra("userid"));
-                        intNotif.putExtra("serviceman_id", intent.getStringExtra("providerid"));
-                        intNotif.putExtra("comeFrom", "Notif");
-                        startActivity(intNotif);
-                    } else if (type.equals("book_no_one")) {
-                        MyApp.popMessage("Message", "No one accepted", getContext());
-                        player.stop();
-                    } else {
-                        mNotificationManager.cancel(1);
-                        if (intent.getExtras() != null) {
+                    switch (type) {
+                        case "accepted":
+                            Intent intNotif = new Intent(MainActivity.this, ChatActivity.class);
+                            intNotif.putExtra("user_id", intent.getStringExtra("userid"));
+                            intNotif.putExtra("serviceman_id", intent.getStringExtra("providerid"));
+                            intNotif.putExtra("comeFrom", "Notif");
+                            startActivity(intNotif);
+                            break;
+                        case "book_no_one":
+                            MyApp.popMessage("Message", "No one accepted", getContext());
+                            player.stop();
+                            break;
+                        default:
                             mNotificationManager.cancel(1);
-                            dialogTimer();
-                        }
+                            if (intent.getExtras() != null) {
+                                mNotificationManager.cancel(1);
+                                dialogTimer();
+                            }
+                            break;
                     }
                 }
             }
         };
     }
-
-    //End Call
 
     private void updateProviderAvailabilityStatus(boolean isChecked) {
         RequestParams p = new RequestParams();
@@ -506,7 +494,26 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         postCall(getContext(), AppConstant.BASE_URL + "changeAvailability", p, "", 8);
     }
 
-    private BoomMenuButton bmb;
+    private void chooseScheduleServiceView() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Service Accepted");
+        builder.setMessage("Your Schedule Service is Accepted.");
+        builder.setPositiveButton("View", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Display Schedule Service List Activity
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
 
     public int getStatusBarHeight() {
         int result = 0;
@@ -523,8 +530,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         locationProvider.connect();
     }
 
-    private boolean isLocationManual = false;
-    private boolean isDialogShown = false;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -575,19 +580,16 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             openTutorialView();
         }
 
-        //Hector Call
         LocalBroadcastManager.getInstance(this).registerReceiver(pushBroadcastReceiver, new IntentFilter("new-push-event"));
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReceiveMessageFromNotification,
                 new IntentFilter(MyFirebaseMessagingService.MESSAGE_NOTIFICATION));
 
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
 
-        //Hector Call
         Log.e("MainActivity", "onPause");
         LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mReceiveMessageFromNotification);
     }
@@ -643,7 +645,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         sequence.start();
     }
 
-
     private void openSearchServiceView() {
 
         final TapTargetSequence sequence = new TapTargetSequence(this)
@@ -690,6 +691,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     public void onSequenceCanceled(TapTarget lastTarget) {
 //                        https://github.com/KeepSafe/TapTargetView
 //                        https://github.com/KeepSafe/TapTargetView/blob/master/app/src/main/java/com/getkeepsafe/taptargetviewsample/MainActivity.java
+
                     }
                 });
         sequence.start();
@@ -793,11 +795,8 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
+        int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_radius) {
             searchRadius();
@@ -812,12 +811,14 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         super.onClick(v);
         if (v.getId() == R.id.txt_book) {
 
-            String sId = "";
-            for (String s : servicesIDs) {
-                sId += s + ",";
-            }
-            sId = sId.substring(0, sId.length() - 1);
             if (spinner_booking.getSelectedItemPosition() == 0) {
+
+                String sId = "";
+                for (String s : servicesIDs) {
+                    sId += s + ",";
+                }
+                sId = sId.substring(0, sId.length() - 1);
+
                 RequestParams p = new RequestParams();
                 p.put("serviceman_ids", sId);
                 p.put("user_id", MyApp.getApplication().readUser().getId());
@@ -830,26 +831,42 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 p.put("service_description ", "service");
                 searchWithinRadius("Searching you a serviceman");
                 postCall(getContext(), AppConstant.BASE_URL + "createService", p, "", 10);
+
             } else {
-                startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
+                if (isSchedule) {
+                    String sId = "";
+                    for (String s : servicesIDs) {
+                        sId += s + ",";
+                    }
+                    sId = sId.substring(0, sId.length() - 1);
+
+                    RequestParams p = new RequestParams();
+                    p.put("serviceman_ids", sId);
+                    p.put("user_id", MyApp.getApplication().readUser().getId());
+                    p.put("service_id", "");
+                    p.put("service_lat", sourceLocation.latitude + "");
+                    p.put("service_long", sourceLocation.longitude + "");
+                    p.put("service_time", "");
+                    p.put("service_address", txt_address.getText().toString());
+                    p.put("service_type ", "scheduled"); //general, emergency ,scheduled
+                    p.put("service_description ", "service");
+                    searchWithinRadius("Searching you a serviceman");
+                    postCall(getContext(), AppConstant.BASE_URL + "createService", p, "", 10);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, ScheduleServiceActivity.class);
+                    startActivityForResult(intent, 222);
+                }
+
             }
 
-        } /*else if (v == navBtn) {
-            drawer.openDrawer(GravityCompat.START);
-        }*//* else if (v == txt_location) {
+        } else if (v == txt_address) {
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
             MainActivity.this.startActivityForResult(intent, 122);
-        }*/ else if (v == txt_address) {
-            Intent intent = new Intent(getContext(), SearchActivity.class);
-            intent.putExtra(AppConstant.EXTRA_1, "Enter your location");
-            MainActivity.this.startActivityForResult(intent, 122);
-        } /*else if (v == btn_search) {
-            searchRadius();
-        }*/ else if (v == fab_all) {
+        } else if (v == fab_all) {
             fab.setImageResource(R.drawable.all_cats);
             hideMenu();
-            //  fab_menu.collapse();
+            //fab_menu.collapse();
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
@@ -858,9 +875,9 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (v == fab_domestic) {
             fab.setImageResource(R.drawable.domestic);
             hideMenu();
-            // fab_menu.collapse();
-            tv_serv_catg.setText("Domestic Services ((" + services.get(0).getServices().size() + ")");
-//            adapter = new BottomServiceAdapter(services, this, 0);
+            //fab_menu.collapse();
+            tv_serv_catg.setText("Domestic Services (" + services.get(0).getServices().size() + ")");
+            //adapter = new BottomServiceAdapter(services, this, 0);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -872,7 +889,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             hideMenu();
             //  fab_menu.collapse();
             tv_serv_catg.setText("Construction Services (" + services.get(1).getServices().size() + ")");
-//            adapter = new BottomServiceAdapter(services, this, 1);
+            //adapter = new BottomServiceAdapter(services, this, 1);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
 
@@ -885,7 +902,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             hideMenu();
             //  fab_menu.collapse();
             tv_serv_catg.setText("Events Services (" + services.get(2).getServices().size() + ")");
-//            adapter = new BottomServiceAdapter(services, this, 2);
+            //adapter = new BottomServiceAdapter(services, this, 2);
             bottom_sheet_recycler.setAdapter(adapter);
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -893,14 +910,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else if (v == fab) {
-
-
-//            if (v.isSelected()) {
-//                hideMenu();
-//            } else {
-//                showMenu();
-//            }
-//            v.setSelected(!v.isSelected());
         }
     }
 
@@ -962,7 +971,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         return anim;
     }
 
-
     private Animator createHideItemAnimator(final View item) {
         float dx = fab.getX() - item.getX();
         float dy = fab.getY() - item.getY();
@@ -1005,9 +1013,51 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 } else {
                     return;
                 }
+            case 222:
+                String service_start_date = data.getStringExtra("service_start_date");
+                String service_start_time = data.getStringExtra("service_start_time");
+                String scheduleTime = null;
+
+                if (service_start_time.startsWith("09")) {
+                    scheduleTime = "09:00:00";
+                } else if (service_start_time.startsWith("12")) {
+                    scheduleTime = "12:00:00";
+                } else if (service_start_time.startsWith("03")) {
+                    scheduleTime = "03:00:00";
+                } else if (service_start_time.startsWith("06")) {
+                    scheduleTime = "06:00:00";
+                }
+
+                showAlertForScheduleService();
+
+                return;
             default:
                 return;
         }
+    }
+
+    //Alert Dialog After Selecting the Time and Date From the Schedule Activity
+    private void showAlertForScheduleService() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Schedule Service");
+        builder.setMessage("You should select service to be scheduled as you set Time and Date.");
+        builder.setPositiveButton("Select Service", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                bmb.boom();
+                dialogInterface.dismiss();
+                isSchedule = true;
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                txt_book.setEnabled(false);
+                txt_book.setTextColor(Color.GRAY);
+            }
+        });
+        builder.show();
     }
 
     private Context getContext() {
@@ -1197,7 +1247,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.w("address", "Canont get Address!");
+            Log.w("address", "Cannot get Address!");
         }
         return strAdd;
     }
@@ -1334,8 +1384,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
     public void onDrawerItemSelected(View view, int position) {
 
         if (position == 0) {
-            //  MyApp.showMassage(getContext(), "will go to my service requests");
-            startActivity(new Intent(getContext(), ScheduleServiceActivity.class));
+            MyApp.showMassage(getContext(), "will go to my service requests");
         } else if (position == 1) {
             MyApp.showMassage(getContext(), "will go to my service requests");
         } else if (position == 2) {
@@ -1356,7 +1405,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "EzyServ (Open it in Google Play Store to Download the Application)");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
-            //  MyApp.showMassage(getContext(), "will invite your friends");
         } else if (position == 8) {
             try {
                 if (MyApp.getApplication().readUser().getAvailability().equals("0")) {
@@ -1386,8 +1434,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         }
     }
 
-    private boolean isUser = true;
-    private boolean isActive = true;
 
     @Override
     public void onCameraIdle() {
@@ -1451,22 +1497,11 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                             markerPath = R.drawable.ic_handyman_marker;
                         }
 
-
-                        //Hector Call
                         /*Marker For the Map Services*/
-                        Marker m1 = mMap.addMarker(new MarkerOptions()
+                        mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude))
-                                .title(nearBy.get(i).getService_name())
+                                .title(nearBy.get(i).getName())
                                 .icon(BitmapDescriptorFactory.fromResource(markerPath)));
-
-                        /*LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                        builder.include(new LatLng(this.sourceLocation.latitude, this.sourceLocation.longitude));
-                        Marker m1 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(nearBy.get(i).getCurrentlat()),
-                                Double.parseDouble(nearBy.get(i).getCurrentlong()) - 0.0901))
-                                .icon(BitmapDescriptorFactory.fromResource(markerPath)));
-                        m1.setSnippet(nearBy.get(i).getName());
-                        m1.setTitle(nearBy.get(i).getService_name());
-                        builder.include(m1.getPosition());*/
                     }
 
                     if (servicesIDs.size() == 0) {
@@ -1481,6 +1516,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                 } catch (JsonSyntaxException ee) {
                 }
             } else {
+                isSchedule = false;
                 MyApp.popMessage("Alert!", o.optString("Message"), MainActivity.this);
                 return;
             }
@@ -1503,6 +1539,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         } else if (callNumber == 9) {
             if (o.optString("status").equals("true")) {
                 MyApp.setStatus(AppConstant.IS_SERVICES_UPDATE, true);
+                MyApp.setSharedPrefString(AppConstant.SECONDARY_SERVICES, "");
             }
         } else if (callNumber == 12) {
             if (o.optString("status").equals("true")) {
@@ -1526,11 +1563,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
                     e.printStackTrace();
                 }
             }
+        } else if (callNumber == 14) {
+
         }
     }
 
 
-    //Hector Call
     //Show Timer Dialog If App Is Open
     void getCreateServiceDetails() {
         Log.e(TAG, "getCreateServiceDetails: Called" + MyApp.getSharedPrefString(AppConstant.REQUESTED_SERVICE_ID));
@@ -1539,11 +1577,7 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         postCall(getContext(), AppConstant.BASE_URL + "getCreateServiceDetails", p, "", 13);
     }
 
-    //End Call
 
-    private int progress;
-
-    //Hector Call
     /*Dialog to Display the user request if app is open and will count down for 20 seconds*/
     private void dialogTimer() {
         final Dialog dialog = new Dialog(MainActivity.this);
@@ -1613,7 +1647,6 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    //End Call
 
     @Override
     public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
@@ -1644,36 +1677,12 @@ public class MainActivity extends CustomActivity implements FragmentDrawer.Fragm
         locationProvider.connect();
     }
 
-
-    //Hector Call
-
     private BroadcastReceiver pushBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intnt) {
-
-            Log.e(TAG, "onReceive: Notification" );
-
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(MainActivity.this)
-                            .setSmallIcon(R.drawable.ic_check_black_24dp)
-                            .setContentTitle("New Message")
-                            .setContentText(intent.getStringExtra("message"))
-                            .setAutoCancel(true)
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
-
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            notificationManager.notify(15 /* ID of notification */, notificationBuilder.build());
-
+            Log.e(TAG, "onReceive: Notification");
         }
     };
-    //Call End
+
+
 }

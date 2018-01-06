@@ -101,7 +101,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
             //do your check here
         }
 
-        createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");
+        /*if (!QBChatService.getInstance().isLoggedIn())
+            createSessionForChat(MyApp.getApplication().readUser().getEmail(), "12345678");*/
 
         setImagePath("pic");
     }

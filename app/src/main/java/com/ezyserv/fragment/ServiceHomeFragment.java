@@ -1,8 +1,6 @@
 package com.ezyserv.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,16 +10,11 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ezyserv.AddMoneyActivity;
 import com.ezyserv.AddMoneyServicesActivity;
-import com.ezyserv.AddServicesActivity;
 import com.ezyserv.ProfileUpdateActivity;
 import com.ezyserv.R;
 import com.ezyserv.ServiceDetailActivityTwo;
-import com.ezyserv.adapter.SpinnerAdapter;
 import com.ezyserv.adapter.SpinnerAdapterTwo;
-
-import org.w3c.dom.Text;
 
 
 public class ServiceHomeFragment extends Fragment implements View.OnClickListener {

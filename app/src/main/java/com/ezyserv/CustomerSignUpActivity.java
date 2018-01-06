@@ -69,7 +69,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         if (MyApp.getApplication().readCountry().size() == 0) {
             collectCountryData();
         }
-       // MyApp.setStatus(AppConstant.LOGIN_TYPE, false);
+        // MyApp.setStatus(AppConstant.LOGIN_TYPE, false);
         setupUiElement();
     }
 
@@ -105,7 +105,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
         callbackManager = CallbackManager.Factory.create();
         login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
 
                 MyApp.spinnerStart(getContext(), getString(R.string.loading));
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -119,8 +119,9 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
                                 String fb_id = null;
                                 try {
                                     fb_id = object.getString("id");
+                                    MyApp.setSharedPrefString(AppConstant.FB_ACCESS_TOKEN, loginResult.getAccessToken().toString());
                                     MyApp.setSharedPrefString(AppConstant.FB_ID, fb_id);
-                                    MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"FB");
+                                    MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE, "FB");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -195,7 +196,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.customer_login) {
-            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"NORMAL");
+            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE, "NORMAL");
             startActivity(new Intent(CustomerSignUpActivity.this, CustomerLoginActivity.class));
         } else if (v.getId() == R.id.tv_term_con) {
             Toast.makeText(this, "Term Condition yet To be described ", Toast.LENGTH_SHORT).show();
@@ -220,7 +221,7 @@ public class CustomerSignUpActivity extends CustomActivity implements CustomActi
                 Toast.makeText(this, "Please accept the terms and Condition", Toast.LENGTH_SHORT).show();
                 return;
             }
-            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE,"NORMAL");
+            MyApp.setSharedPrefString(AppConstant.LOGIN_TYPE, "NORMAL");
             MyApp.setSharedPrefString("name", cust_name.getText().toString());
             MyApp.setSharedPrefString("email", cust_email.getText().toString());
             registerUser();

@@ -1,5 +1,6 @@
 package com.ezyserv;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ezyserv.custome.CustomActivity;
@@ -24,7 +26,7 @@ import java.util.List;
 public class WalletActivity extends CustomActivity {
 
     private Toolbar toolbar;
-
+    private Button btn_add_money;
 
     private ViewPager mViewPager;
 
@@ -45,11 +47,11 @@ public class WalletActivity extends CustomActivity {
 
 
         mViewPager = (ViewPager) findViewById(R.id.view_container);
+        btn_add_money = findViewById(R.id.btn_add_money);
 
         setupViewPager(mViewPager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
 
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -68,6 +70,13 @@ public class WalletActivity extends CustomActivity {
 
             }
         });
+
+        btn_add_money.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(WalletActivity.this, PaymentActivityMain.class));
+            }
+        });
     }
 
 
@@ -78,8 +87,6 @@ public class WalletActivity extends CustomActivity {
 
         mViewPager.setAdapter(adapter);
     }
-
-
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -22,14 +22,14 @@ public class AppConstant {
     public static final String SECONDARY_SERVICES = "secondaryServices";
     public static final String IS_SERVICES_UPDATE = "isServiceUpdated";
 
-    //Hector Call
     public static final String SERVICES_MAN_ID = "servicemen_id";
     public static final String REQUESTED_SERVICE_ID = "requestedServiceId";
+    public static final String FB_ACCESS_TOKEN= "facebookAccessToken";
+
 
     public static final String APP_ID = "66127";
     public static final String AUTH_KEY = "knWndQTHBwQN5qD";
     public static final String AUTH_SECRET = "A6PYrWY4rLSKCcC";
     public static final String ACCOUNT_KEY = "MtdhABE73yjeYNUz-x-z";
-    //End Call
 
 }

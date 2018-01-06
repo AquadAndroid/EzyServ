@@ -27,7 +27,6 @@
             android:drawablePadding="@dimen/dim_10"
             android:fontFamily="@font/ptsans_regular"
             android:paddingLeft="@dimen/dim_10"
-            android:text="Service Name"
             android:textColor="@color/black"
             android:textSize="@dimen/dim_15" />
 
@@ -40,7 +39,6 @@
             android:layout_marginRight="@dimen/dim_10"
             android:fontFamily="@font/ptsans_bold"
             android:padding="@dimen/dim_10"
-            android:text="Add"
             android:textColor="@color/pink"
             android:textSize="@dimen/dim_15" />
     </RelativeLayout>

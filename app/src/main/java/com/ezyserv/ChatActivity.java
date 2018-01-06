@@ -264,7 +264,7 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.tv_send_address) {
-            startActivity(new Intent(ChatActivity.this, AddAddressActivity.class));
+            //startActivity(new Intent(ChatActivity.this, AddAddressActivity.class));
         } else if (v.getId() == R.id.img_btn_attach) {
             openAttachmentSelection();
         } else if (v.getId() == R.id.img_btn_send_msg) {
