@@ -7,21 +7,21 @@ repositories {
     maven {
         url 'https://maven.google.com'
     }
+    maven {
+        url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
+    }
 //    maven { url "https://raw.githubusercontent.com/smilefam/SendBird-SDK-Android/master/" }
 }
 android {
 
-    /*signingConfigs {
+    signingConfigs {
         config {
             keyAlias 'enolasia'
             keyPassword '111111'
-
-            *//*Comment By Hector For the Setup of project*//*
-
-            //storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
+            storeFile file('D:/Android/Projects/EzyServ/enolAsia_key.jks')
             storePassword '111111'
         }
-    }*/
+    }
 
     lintOptions {
         checkReleaseBuilds false
@@ -43,9 +43,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        /*debug {
+        debug {
             signingConfig signingConfigs.config
-        }*/
+        }
     }
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'

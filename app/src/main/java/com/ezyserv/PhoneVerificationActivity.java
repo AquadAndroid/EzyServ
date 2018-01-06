@@ -124,10 +124,12 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
             }
 
         }
-        // [START verify_with_code]
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        // [END verify_with_code]
-        signInWithPhoneAuthCredential(credential);
+      try{
+          // [START verify_with_code]
+          PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+          // [END verify_with_code]
+          signInWithPhoneAuthCredential(credential);
+      }catch (Exception e){}
     }
 
     @Override

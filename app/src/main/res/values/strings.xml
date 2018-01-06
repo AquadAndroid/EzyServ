@@ -27,6 +27,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="facebook_app_id">791987927637895</string>
+    <string name="google_api_key_map">AIzaSyCQ4-nqC85wyQtTBd9ZqrAxJ9t1SBRz-0U</string>
     <string name="sender_id">356369631946</string>
 
     <string name="fb_login_protocol_scheme">fb791987927637895</string>
@@ -39,5 +40,6 @@
     <string name="text_ham_button_handyman">Handyman</string>
     <string name="text_ham_button_events">Events</string>
     <string name="text_ham_button_my_care">My Care</string>
+    <string name="services">Services</string>
 
 </resources>

@@ -160,7 +160,10 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
         if (!getIntent().getStringExtra("comeFrom").equals("listing")) {
             userIdLocal = getIntent().getStringExtra("user_id");
             servicemanIdLocal = getIntent().getStringExtra("serviceman_id");
-            //First Call to respondService
+            Log.e(TAG, "onCreate: "+userIdLocal );
+            Log.e(TAG, "onCreate: "+servicemanIdLocal );
+            //First Call to getChatID
+            getChatID(userIdLocal, servicemanIdLocal);
             respondService();
         } else {
             initChatDialog();
@@ -207,8 +210,8 @@ public class ChatActivity extends CustomActivity implements CustomActivity.Respo
     private void getChatID(String userid, String servicemanid) {
         Log.e(TAG, "getChatID: " + userid + " : " + servicemanid);
         RequestParams p = new RequestParams();
-        p.put("user_id", userid);
         p.put("serviceman_id", servicemanid);
+        p.put("user_id", userid);
         postCall(this, AppConstant.BASE_URL + "getChatID", p, "", 0);
     }
 

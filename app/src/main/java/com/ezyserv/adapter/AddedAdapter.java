@@ -26,9 +26,7 @@ public class AddedAdapter extends RecyclerView.Adapter<AddedAdapter.DataHolder> 
 
     public interface ItemClickCallback {
         void onItemClick(int p);
-
         void onSecondaryIconClick(int p);
-
     }
 
 

@@ -55,6 +55,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         title = remoteMessage.getData().get("title");
         userid = remoteMessage.getData().get("userid");
         providerid = remoteMessage.getData().get("providerid");
+        Log.e(TAG, "onMessageReceived: " + userid);
+        Log.e(TAG, "onMessageReceived: " + providerid);
 
         Log.e(TAG, "onMessageReceived:  userid : " + userid + "  providerid :  " + providerid);
 
@@ -70,6 +72,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
                     Intent registrationCompletef = null;
                     try {
+                        registrationCompletef = new Intent(MESSAGE_NOTIFICATION).putExtra("type", "accepted")
+                                .putExtra("userid", userid).putExtra("providerid", providerid);
                         registrationCompletef = new Intent(MESSAGE_NOTIFICATION)
                                 .putExtra("type", "accepted")
                                 .putExtra("userid", userid)
